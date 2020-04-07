@@ -148,13 +148,19 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByEmail(email);
     }
 
-    public User getUserById(Long id) throws Exception {
+    public User getUserById(Long id)  {
         Optional<User> user = userRepository.findById(id);
 
-        if (user.isPresent()) {
+//        if (user.isPresent()) {
             return user.get();
-        } else {
-            throw new Exception("No employee record exist for given id");
-        }
+//        } else {
+//            throw new Exception("No employee record exist for given id");
+//        }
     }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+
 }

@@ -28,7 +28,9 @@ public interface UserService {
 
      User findByEmail(String email);
 
-    User getUserById(Long id) throws Exception;
+    User getUserById(Long id) ;
 
     User updateUser(UserDto userDto, UserPrincipal principal);
+
+    void save(User user);
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,6 +30,11 @@ import static am.egs.bookRepository.util.Constant.*;
 @Controller
 @RequestMapping(value = USER)
 public class UserController {
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+
 
     @Autowired
     private MessageSource messageSource;
@@ -179,6 +184,7 @@ public class UserController {
 
     /**
      * Error page.
+     * @return
      */
 //    @RequestMapping(value = REQUEST_ERROR, method = RequestMethod.GET)
 //    public String error(HttpServletRequest request, Model model) {
@@ -191,4 +197,50 @@ public class UserController {
 //        return PAGE_ERROR;
 //    }
 
+    @RequestMapping(value = "/savePass_change", method = RequestMethod.POST)
+    public ModelAndView confirmPasswordChange(@Valid UserDto userDto, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        String oldPassword = userService.getUserById(userDto.getId()).getPassword();
+        String postOldPassword =userDto.getName();
+
+        System.out.println(oldPassword + " ---- " +postOldPassword+"  ----- "+ userDto.getPassword()) ;
+        User user = userService.getUserById(userDto.getId());
+
+        String name  = user.getName();
+        String surName  = user.getSurName();
+
+        if(passwordEncoder.matches(postOldPassword, oldPassword)){
+            user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+            userService.save(user);
+            modelAndView.addObject("user", userService.getUserById(userDto.getId()));
+            modelAndView.addObject("process", "SUCCESS");
+            modelAndView.addObject("pw_success", "Well done! You successfully change your password.");
+            modelAndView.addObject("name", name);
+            modelAndView.addObject("tab",  " ");
+            modelAndView.addObject("surname", surName);
+            List<Role> role = user.getRoles();
+            if (role.stream().map(Role::getRole).anyMatch("USER"::equals)) {
+                modelAndView.setViewName("user-profile");
+            } else {
+                modelAndView.setViewName("admin-profile");
+            }
+        }
+        else {
+            modelAndView.addObject("user", userService.getUserById(userDto.getId()));
+            modelAndView.addObject("process", "ERROR");
+            modelAndView.addObject("pw_error", "Error : Check your old password!");
+            modelAndView.addObject("rule", new User());
+            modelAndView.addObject("name", name);
+            modelAndView.addObject("tab",  " ");
+            modelAndView.addObject("surname", surName);
+            List<Role> role = user.getRoles();
+            if (role.stream().map(Role::getRole).anyMatch("USER"::equals)) {
+                modelAndView.setViewName("user-profile");
+            } else {
+                modelAndView.setViewName("admin-profile");
+            }
+        }
+        return modelAndView;
+    }
 }
