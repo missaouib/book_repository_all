@@ -2,6 +2,7 @@ package am.egs.socialSyte.security;
 
 import am.egs.socialSyte.model.Role;
 import am.egs.socialSyte.model.User;
+import am.egs.socialSyte.service.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +29,8 @@ public class UserPrincipal implements UserDetails {
     private boolean isAccountNonLocked;
 
     private boolean isEnabled;
+
+    private UserService userService;
 
     private UserPrincipal(Long id, String email, String password, boolean isAccountNonLocked,
                           boolean isEnabled, LocalDateTime expireDate, boolean isAccountNonExpired, Collection<? extends GrantedAuthority> authorities) {

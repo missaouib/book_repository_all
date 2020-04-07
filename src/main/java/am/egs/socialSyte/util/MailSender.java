@@ -2,6 +2,7 @@ package am.egs.socialSyte.util;
 
 import am.egs.socialSyte.model.User;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,14 +11,17 @@ import org.springframework.stereotype.Service;
 @Service
 @Data
 public class MailSender {
-
-    private final JavaMailSender mailSender;
+private final JavaMailSender mailSender;
 
     @Value("${server.port}")
     private int port;
 
     @Value(value = "${spring.mail.username}")
     private String userName;
+
+    public MailSender(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     public void send(User user) {
         String subject = "Activation Code";

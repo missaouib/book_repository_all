@@ -4,6 +4,7 @@ import am.egs.socialSyte.controller.UserController;
 import am.egs.socialSyte.exception.DuplicateUserException;
 import am.egs.socialSyte.exception.UserNotFoundException;
 import am.egs.socialSyte.payload.ErrorDto;
+import am.egs.socialSyte.payload.auth.SignInRequest;
 import am.egs.socialSyte.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -75,9 +78,11 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value
             = {BadCredentialsException.class})
-    protected ResponseEntity<Object> handleException(BadCredentialsException ex, WebRequest wr) {
+    protected ResponseEntity<Object> handleException(BadCredentialsException ex,WebRequest wr) {
+
         String email = wr.getParameter("email");
         String password = wr.getParameter("password");
+
         userService.tryNumberIncrement(email, password);
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());

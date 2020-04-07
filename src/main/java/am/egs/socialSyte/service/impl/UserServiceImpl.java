@@ -1,10 +1,12 @@
 package am.egs.socialSyte.service.impl;
 
 import am.egs.socialSyte.exception.DuplicateUserException;
+import am.egs.socialSyte.exception.UserNotFoundException;
 import am.egs.socialSyte.model.Role;
 import am.egs.socialSyte.model.User;
 import am.egs.socialSyte.payload.UserDto;
 import am.egs.socialSyte.payload.auth.AuthResponse;
+import am.egs.socialSyte.payload.auth.SignInRequest;
 import am.egs.socialSyte.repository.RoleRepository;
 import am.egs.socialSyte.repository.UserRepository;
 import am.egs.socialSyte.service.UserService;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -32,7 +35,6 @@ public class UserServiceImpl implements UserService {
     private final MailSender mailSender;
     private User user;
     private UserDto userDto;
-    private int count;
     private LocalDateTime currentLocalDateTime = LocalDateTime.now();
 
     @Autowired
@@ -77,10 +79,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AuthResponse signIn(String email, String password) {
-        user = userRepository.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
+        user.setTryNumber(0);
+        userRepository.save(user);
         return AuthResponse.builder()
                 .build();
     }
+
+//    @Override
+//    public AuthResponse signIn(@RequestBody SignInRequest signInRequest) {
+//        User user = userRepository.findUserByEmail(signInRequest.getEmail());
+//        user.setTryNumber(0);
+//        userRepository.save(user);
+//        return AuthResponse.builder()
+//                .build();
+//    }
 
     @Override
     public UserDto getUserByEmail(String email) {
@@ -95,7 +108,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(String email) {
-        user = userRepository.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
         userRepository.deleteByEmail(email);
     }
 
@@ -131,7 +147,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void tryNumberIncrement(String email, String password) {
         LocalDateTime unLockedTime;
-        user = userRepository.findUserByEmail(email);
+        int count;
+        User user = userRepository.findUserByEmail(email);
         count = user.getTryNumber();
         count++;
         user.setTryNumber(count);
