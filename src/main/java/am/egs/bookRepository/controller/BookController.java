@@ -40,48 +40,40 @@ public class BookController {
     }
 
     @GetMapping(READ)
-    public String readBooksList(Model model, @AuthenticationPrincipal UserPrincipal principal) {
+    public ModelAndView readBooksList(ModelAndView modelAndView, @AuthenticationPrincipal UserPrincipal principal) {
         logger.info(" User getting books read.");
         final List<Book> bookList = bookService.findAllBooks();
-        model.addAttribute("books", bookList);
+        modelAndView.addObject("books", bookList);
+        modelAndView.addObject("control", showRole(principal));
+        modelAndView.setViewName("books-list");
         logger.info(" User successfully read list of all books.");
-        String email = principal.getUsername();
-        User user = userService.findByEmail(email);
-        List<Role> role = user.getRoles();
-        if (role.stream().map(Role::getRole).anyMatch("USER"::equals)) {
-            model.addAttribute("control", "USER");
-        } else {
-            model.addAttribute("control", "ADMIN");
-        }
-        return "books-list";
+        return modelAndView;
     }
 
     @PostMapping("/create")
-    public ModelAndView creatNewBook(@Valid BookDto bookDto) {
+    public ModelAndView creatNewBook(@Valid BookDto bookDto,@AuthenticationPrincipal UserPrincipal principal) {
         Book book = bookMapper.map(bookDto, Book.class);
         logger.info("User getting creat book " + book);
         bookService.addBook(book);
-
-
         ModelAndView modelAndView = new ModelAndView();
         final List<Book> bookList = bookService.findAllBooks();
         modelAndView.addObject("books", bookList);
+        modelAndView.addObject("control",showRole(principal));
         modelAndView.addObject("process", "SUCCESS");
         modelAndView.addObject("pw_success", "Well done! You successfully  create this book.");
         modelAndView.setViewName("books-list");
         logger.info(" User successfully create book." + book);
         return modelAndView;
-
-//        return "redirect:/book/read";
     }
 
     @GetMapping(value = "/delete/{id}")
-    public ModelAndView deleteBook(@PathVariable Long id) {
+    public ModelAndView deleteBook(@PathVariable Long id,@AuthenticationPrincipal UserPrincipal principal) {
         logger.info("User getting delete book " + id);
         bookService.deleteBook(id);
         ModelAndView modelAndView = new ModelAndView();
         final List<Book> bookList = bookService.findAllBooks();
         modelAndView.addObject("books", bookList);
+        modelAndView.addObject("control",showRole(principal));
         modelAndView.addObject("process", "SUCCESS");
         modelAndView.addObject("pw_success", "Well done! You successfully  delete this book.");
         modelAndView.setViewName("books-list");
@@ -99,17 +91,38 @@ public class BookController {
     }
 
     @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
-    public ModelAndView update(BookDto bookDto) {
+    public ModelAndView update(BookDto bookDto,@AuthenticationPrincipal UserPrincipal principal) {
         logger.info(" User getting update this book.");
         bookService.update(bookDto);
         ModelAndView modelAndView = new ModelAndView();
         final List<Book> bookList = bookService.findAllBooks();
         modelAndView.addObject("books", bookList);
+        modelAndView.addObject("control",showRole(principal));
         modelAndView.addObject("process", "SUCCESS");
         modelAndView.addObject("pw_success", "Well done! You successfully  updated this book.");
         modelAndView.setViewName("books-list");
         logger.info(" You successfully updated this book.");
         return modelAndView;
+    }
+
+    public List<Role> getRole(UserPrincipal principal) {
+        User user = getUser(principal);
+        List<Role> role = user.getRoles();
+        return role;
+    }
+
+    public User getUser(UserPrincipal principal) {
+        String email = principal.getUsername();
+        User user = userService.findByEmail(email);
+        return user;
+    }
+
+    public String showRole(UserPrincipal principal) {
+        List<Role> role = getRole(principal);
+        if (role.stream().map(Role::getRole).anyMatch("USER"::equals)) {
+            return "USER";
+        } else
+            return "ADMIN";
     }
 
 }

@@ -54,10 +54,12 @@ public class FavoriteBookController {
             favoriteBook.setBook(book);
             favoriteBookService.save(favoriteBook);
             modelAndView.addObject("books", bookList);
+            modelAndView.addObject("control",showRole(principal));
             modelAndView.addObject("process", "SUCCESS");
             modelAndView.addObject("pw_success", "Well done! You successfully  make this book favorite.");
         } else {
             modelAndView.addObject("books", bookList);
+            modelAndView.addObject("control",showRole(principal));
             modelAndView.addObject("process", "ERROR");
             modelAndView.addObject("pw_error", "Error : This book already favorite for you!");
         }

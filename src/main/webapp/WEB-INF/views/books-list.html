@@ -43,7 +43,6 @@
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">Settings</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item btn nBtn">Add Book</a>
                     <form class="dropdown-item" th:action="@{/logout}" method="post">
                         <button sec:authorize="isAuthenticated()" class="btn-outline">Logout</button>
                     </form>
@@ -73,6 +72,7 @@
                      th:utext="${pw_error}">...
                 </div>
             </div>
+            <a class="btn btn-success nBtn" th:if="${control == 'ADMIN'}">Add Book</a>
 
 
             <table class="table table-bordered my-2">
@@ -92,11 +92,11 @@
                     <td th:text="${book.title}"></td>
                     <td th:text="${book.author}"></td>
                     <td>
-                        <a th:href="@{/book/getOne/(id=${book.id})}"
+                        <a th:if="${control == 'ADMIN'}" th:href="@{/book/getOne/(id=${book.id})}"
                            class="btn btn-success eBtn">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a th:href="@{/book/delete/{id}(id=${book.id})}"
+                        <a th:if="${control == 'ADMIN'}" th:href="@{/book/delete/{id}(id=${book.id})}"
                            class="btn btn-danger delBtn" id="deleteButton">
                             <i class="far fa-trash-alt"></i>
                         </a>

@@ -39,7 +39,7 @@ public class UserController {
 
     @RequestMapping("/edit")
     @ResponseBody
-    public UserDto editUsersById(Long id) throws Exception {
+    public UserDto editUsersById(Long id) {
         User user = userService.getUserById(id);
         UserDto userDto = userMapper.map(user, UserDto.class);
         return userDto;
@@ -51,7 +51,7 @@ public class UserController {
         logger.info(" User getting update profile.");
         userService.updateUser(userDto, principal);
         ModelAndView modelAndView = new ModelAndView();
-        String profile = showRole(principal);
+        String profile = showProfileDependenceFromRole(principal);
         modelAndView.setViewName(profile);
         User user = getUser(principal);
         UserDto userDto1 = userMapper.map(user,UserDto.class);
@@ -77,7 +77,7 @@ public class UserController {
         return user;
     }
 
-    public String showRole(UserPrincipal principal) {
+    public String showProfileDependenceFromRole(UserPrincipal principal) {
         List<Role> role = getRole(principal);
         if (role.stream().map(Role::getRole).anyMatch("USER"::equals)) {
             return "user-profile";
