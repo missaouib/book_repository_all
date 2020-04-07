@@ -1,11 +1,8 @@
 package am.egs.socialSite.security;
 
-
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -32,7 +29,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
             authentication.getAuthorities();
 
-            //    User principal = (User) authentication.getPrincipal();
             System.out.println("principal" + authUser.getUsername());
             boolean isAdmin = false;
             Iterator<GrantedAuthority> grantedAuthorityIterator = (Iterator<GrantedAuthority>) authUser.getAuthorities().iterator();

@@ -5,6 +5,7 @@ import am.egs.socialSite.security.CustomAuthenticationSuccessHandler;
 import am.egs.socialSite.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@ComponentScan({"am.egs.socialSite.util", "am.egs.socialSite.security"})
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private PasswordEncoder passwordEncoder;
@@ -53,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http
                 .headers()
                 .frameOptions()
@@ -73,7 +75,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
                 .authorizeRequests()
-                //              .loginProcessingUrl("/authenticateTheUser")
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest()
@@ -82,8 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/user/signIn")
                 .successForwardUrl("/user/signed-successfully")
-//                .loginProcessingUrl("/authenticateTheUser")
-                .successHandler(new CustomAuthenticationSuccessHandler())                 // On authentication success custom handler
+                .successHandler(new CustomAuthenticationSuccessHandler())           // On authentication success custom handler
                 .failureHandler(customAuthenticationFailureHandler)                 // on authentication fail custom handler
                 .permitAll();
     }

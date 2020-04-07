@@ -1,6 +1,5 @@
 package am.egs.socialSite.config;
 
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -27,7 +26,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter implements Applica
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/");
-
     }
 
     @Bean(name = "templateResolver")
@@ -39,7 +37,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter implements Applica
         templateResolver.setTemplateMode("HTML");
         templateResolver.setCacheable(false);
         templateResolver.setCharacterEncoding("UTF-8");
-
         return templateResolver;
     }
 }

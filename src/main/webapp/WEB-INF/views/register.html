@@ -1,6 +1,7 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
@@ -12,81 +13,188 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>
-    <title>Register</title>
+    <title>Login</title>
+
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" th:href="@{/user/}">Book Repository</a>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active"></li>
-        </ul>
-
-        <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
-            <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/signIn}">Login</a>
-            <button sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0">Logout</button>
-            <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/signUp}">Register</a>
-        </form>
-
-    </div>
-</nav>
+<div th:replace="fragments/header :: header"/>
 
 <div class="container">
-    <div class="row py-2">
-        <div class="col-12">
 
+    <div class="row" style="margin-top:20px">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
             <form th:action="@{/user/signUp}" method="post" th:object="${user}">
+                <fieldset>
+                    <h1>Please Register</h1>
 
-                <div class="form-group">
-                    <label><span class="required">* </span>Name</label>
-                    <input type="text" class="form-control" th:field="*{name}" placeholder="name">
-                    <small class="text-danger" th:each="err: ${#fields.errors('name')}" th:text="${err}"></small>
-                </div>
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger">
+                            Invalid username and password.
+                        </div>
+                    </div>
+                    <div th:if="${param.logout}">
+                        <div class="alert alert-info">
+                            You have been logged out.
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label><span class="required">* </span>Surname</label>
-                    <input type="text" class="form-control" th:field="*{surName}" placeholder="surname">
-                    <small class="text-danger" th:each="err: ${#fields.errors('surName')}" th:text="${err}"></small>
-                </div>
 
-                <div class="form-group">
-                    <label><span class="required">* </span>Age</label>
-                    <input type="text" class="form-control" th:field="*{age}" placeholder="age">
-                    <small class="text-danger" th:each="err: ${#fields.errors('age')}" th:text="${err}"></small>
-                </div>
 
-                <div class="form-group">
-                    <label><span class="required">* </span>Email</label>
-                    <input type="email" class="form-control" th:field="*{email}" placeholder="email">
-                    <small class="text-danger" th:each="err: ${#fields.errors('email')}" th:text="${err}"></small>
-                </div>
+                    <div class="form-group">
+                        <input type="text"  th:field="*{email}"  class="form-control input-lg"
+                               placeholder="email"  autofocus="true"/>
+                        <small class="text-danger" th:each="err: ${#fields.errors('email')}" th:text="${err}"></small>
 
-                <div class="form-group">
-                    <label><span class="required">* </span>Password</label>
-                    <input type="text" class="form-control" th:field="*{password}" placeholder="password">
-                    <small class="text-danger" th:each="err: ${#fields.errors('password')}" th:text="${err}"></small>
-                </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" th:field="*{name}"  class="form-control input-lg"
+                               placeholder="name" required="true" autofocus="true"/>
+                        <small class="text-danger" th:each="err: ${#fields.errors('name')}" th:text="${err}"></small>
 
-                <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" th:field="*{surName}" class="form-control input-lg"
+                               placeholder="surname" required="true" autofocus="true"/>
+                        <small class="text-danger" th:each="err: ${#fields.errors('surName')}" th:text="${err}"></small>
 
-<!--                <h2><span class="text-success" >Success registered</span></h2>-->
+                    </div>
+                    <div class="form-group">
+                        <input type="password" th:field="*{password}"   class="form-control input-lg"
+                               placeholder="password" required="true"/>
+                        <small class="text-danger" th:each="err: ${#fields.errors('password')}" th:text="${err}"></small>
 
+                    </div>
+                    <div class="form-group">
+                        <input type="text" th:field="*{age}" id="username" class="form-control input-lg"
+                               placeholder="age" required="true" autofocus="true"/>
+                        <small class="text-danger" th:each="err: ${#fields.errors('age')}" th:text="${err}"></small>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign Up"/>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                        </div>
+                    </div>
+                </fieldset>
             </form>
-
         </div>
     </div>
+
 </div>
+
+<!--<div th:replace="fragments/footer :: footer"/>-->
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<!doctype html>-->
+<!--<html lang="en"-->
+<!--      xmlns:th="http://www.thymeleaf.org"-->
+<!--      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+
+<!--<head>-->
+<!--    &lt;!&ndash; Required meta tags &ndash;&gt;-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+
+<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
+<!--          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+<!--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>-->
+<!--    <title>Register</title>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--<div th:replace="fragments/header :: header"/>-->
+
+
+<!--&lt;!&ndash;<nav class="navbar navbar-expand-lg navbar-light bg-light">&ndash;&gt;-->
+<!--&lt;!&ndash;    <a class="navbar-brand" th:href="@{/user/}">Book Repository</a>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"&ndash;&gt;-->
+<!--&lt;!&ndash;            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">&ndash;&gt;-->
+<!--&lt;!&ndash;        <span class="navbar-toggler-icon"></span>&ndash;&gt;-->
+<!--&lt;!&ndash;    </button>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div class="collapse navbar-collapse" id="navbarSupportedContent">&ndash;&gt;-->
+<!--&lt;!&ndash;        <ul class="navbar-nav mr-auto">&ndash;&gt;-->
+<!--&lt;!&ndash;            <li class="nav-item active"></li>&ndash;&gt;-->
+<!--&lt;!&ndash;        </ul>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">&ndash;&gt;-->
+<!--&lt;!&ndash;            <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/signIn}">Login</a>&ndash;&gt;-->
+<!--&lt;!&ndash;            <button sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0">Logout</button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/signUp}">Register</a>&ndash;&gt;-->
+<!--&lt;!&ndash;        </form>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</nav>&ndash;&gt;-->
+
+<!--<div class="container">-->
+<!--    <div class="row py-2">-->
+<!--        <div class="col-12">-->
+
+<!--            <form th:action="@{/user/signUp}" method="post" th:object="${user}">-->
+
+<!--                <div class="form-group">-->
+<!--                    <label><span class="required">* </span>Name</label>-->
+<!--                    <input type="text" class="form-control" th:field="*{name}" placeholder="name">-->
+<!--                    <small class="text-danger" th:each="err: ${#fields.errors('name')}" th:text="${err}"></small>-->
+<!--                </div>-->
+
+<!--                <div class="form-group">-->
+<!--                    <label><span class="required">* </span>Surname</label>-->
+<!--                    <input type="text" class="form-control" th:field="*{surName}" placeholder="surname">-->
+<!--                    <small class="text-danger" th:each="err: ${#fields.errors('surName')}" th:text="${err}"></small>-->
+<!--                </div>-->
+
+<!--                <div class="form-group">-->
+<!--                    <label><span class="required">* </span>Age</label>-->
+<!--                    <input type="text" class="form-control" th:field="*{age}" placeholder="age">-->
+<!--                    <small class="text-danger" th:each="err: ${#fields.errors('age')}" th:text="${err}"></small>-->
+<!--                </div>-->
+
+<!--                <div class="form-group">-->
+<!--                    <label><span class="required">* </span>Email</label>-->
+<!--                    <input type="email" class="form-control" th:field="*{email}" placeholder="email">-->
+<!--                    <small class="text-danger" th:each="err: ${#fields.errors('email')}" th:text="${err}"></small>-->
+<!--                </div>-->
+
+<!--                <div class="form-group">-->
+<!--                    <label><span class="required">* </span>Password</label>-->
+<!--                    <input type="text" class="form-control" th:field="*{password}" placeholder="password">-->
+<!--                    <small class="text-danger" th:each="err: ${#fields.errors('password')}" th:text="${err}"></small>-->
+<!--                </div>-->
+
+<!--                <button type="submit" class="btn btn-primary">Register</button>-->
+
+<!--                &lt;!&ndash;                <h2><span class="text-success" >Success registered</span></h2>&ndash;&gt;-->
+
+<!--            </form>-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
 
 
 

@@ -20,7 +20,9 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         this.userService = userService;
     }
 
-    @ExceptionHandler({DuplicateUserException.class})
+    @ExceptionHandler({
+            DuplicateUserException.class,
+    })
     protected String customExceptionHandler(Exception ex) throws Exception {
         if (ex instanceof DuplicateUserException) {
             return ERROR_DUPLICATE_USER;

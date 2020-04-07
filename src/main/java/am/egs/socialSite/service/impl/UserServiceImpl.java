@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userMapper.map(userDto, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Optional<Role> role = roleRepository.findByRole("USER");
+        Optional<Role> role = roleRepository.findByRole("ADMIN");
         if (role.isPresent()) {
             List<Role> roleNameSet = Collections.singletonList(role.get());
             user.setRoles(roleNameSet);
@@ -149,16 +149,13 @@ public class UserServiceImpl implements UserService {
     public void tryNumberIncrement(String email) {
         LocalDateTime unLockedTime;
         User user = userRepository.findUserByEmail(email);
-//        if (user == null) {
-//            throw new UserNotFoundException("User Not Found");
-//        }
         int count = user.getTryNumber();
         count++;
         user.setTryNumber(count);
         if (count >= 3) {
             user.setAccountNonLocked(false);
             user.setLockedTime(currentLocalDateTime);
-            unLockedTime = currentLocalDateTime.plusHours(12);
+            unLockedTime = currentLocalDateTime.plusHours(24);
             user.setUnLockedTime(unLockedTime);
             userRepository.save(user);
         }

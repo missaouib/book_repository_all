@@ -14,8 +14,6 @@ import static am.egs.socialSite.util.Constant.*;
 @ControllerAdvice
 public class ErrorController {
 
-//    private static final Logger LOGGER = Logger.getLogger(ErrorController.class);
-
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView

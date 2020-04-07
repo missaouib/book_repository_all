@@ -16,12 +16,14 @@ public final class Constant {
     public static final String READ = "/read";
     public static final String DELETE = "/delete";
     public static final String ERROR_DUPLICATE_USER = "error-duplicateUser";
-    public static final String ERROR_401 = "error-401";
-    public static final String ERROR_403 = "error-403";
-    public static final String ERROR_404 = "error-404";
-    public static final String ERROR_423 = "error-423";
     public static final String ACTIVATION_CODE = "activationCode";
     public static final String USER_PROFILE = "userProfile";
+
+    public static final String DJADJ = "user.auth.failed";
+
+
+    public static final String NOT_VERIFIED = "email.not.verified";
+
 
     public static final String  PAGE_ERROR  = "error";
     public static final String  URL  = "url";

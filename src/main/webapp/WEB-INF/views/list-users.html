@@ -40,6 +40,7 @@
     </div>
 </nav>
 
+
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
@@ -69,7 +70,8 @@
                                 <td th:text="${user.age}"></td>
 
                                 <td>
-                                    <a th:href="@{/admin/delete/{id}(id=${user.id})}" class="btn btn-danger">
+                                    <a th:href="@{/admin/delete/{id}(id=${user.id})}"
+                                       class="btn btn-danger">
                                         <i class="far fa-trash-alt"></i>
                                     </a>
                                 </td>

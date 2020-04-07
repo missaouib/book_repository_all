@@ -1,15 +1,16 @@
 package am.egs.socialSite.util;
 
 public enum ResponseStatus {
-    UNAUTHORIZED_REQUEST                    (401,"unauthorized.request",   "unauthorized request"),
 
-    USER_LOCKED                             (423,"user.locked","locked"),
-    INTERNAL_ERROR                          (500, "internal.error",  "internal error"),
-    USER_NOT_FOUND                          (601,"user.not.found",   "user not found"),
+    UNAUTHORIZED_REQUEST(401, "unauthorized.request", "unauthorized request"),
+    USER_LOCKED(423, "user.locked", "locked"),
+    INTERNAL_ERROR(500, "internal.error", "internal error"),
+    USER_NOT_FOUND(601, "user.not.found", "user not found"),
+    USER_BAD_CREDENTIALS(602, "user.bad.credentials", "authentication failed"),
+    USER_AUTHENTICATION_ERROR(604, "user.auth.error", "auth error"),
+    NOT_VERIFIED(999,"email.not.verified", "Email not verified");
 
-    USER_BAD_CREDENTIALS                    (602, "user.bad.credentials", "authentication failed"),
-    USER_AUTHENTICATION_ERROR               (604, "user.auth.error", "auth error");
-
+  //  public static final String NOT_VERIFIED = "Email not verified";
     /**
      * Code of response
      */
@@ -78,6 +79,6 @@ public enum ResponseStatus {
     public String toString() {
         return description + "|" + messageKey + "|" + code + "|";
     }
-    }
+}
 
 

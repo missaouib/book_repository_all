@@ -20,7 +20,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -74,7 +73,6 @@ public class UserController {
             result.rejectValue("email", null, "There is already an account registered with that email");
         }
         userService.addUser(userDto);
-        modelAndView.addObject("successMessage", "User has been registered successfully");
         logger.info(" User successful registered.");
         return ACTIVATION_CODE;
     }
@@ -142,32 +140,15 @@ public class UserController {
         return "redirect:/user/profile";
     }
 
-//    @RequestMapping(value = "/loginFailed")
-//    public String loginFailed() {
-//        return "error-403";
-//    }
-//
-//    @RequestMapping(value = "/error-423")
-//    public String userLocked() {
-//        return "error-423";
-//    }
-//
-//    @RequestMapping(value = "/error-401")
-//    public String userExpired() {
-//        return "error-401";
-//    }
-//
-//    @RequestMapping(value = "/error-404")
-//    public String usernameNotFound() {
-//        return "error-404";
-//    }
-
-
     /**
      * Login form with error.
      */
     @RequestMapping("/login-error")
-    public String loginError(@RequestParam(value = PAGE_ERROR, required = false) final int error, Model model, Locale locale) {
+    public String loginError(@RequestParam(value = PAGE_ERROR, required = false) final int error, Model model, Locale locale){
+//                             @RequestParam("email") String email){
+//        System.out.println(email);
+//        User user = userRepository.findUserByEmail(email);
+
         ResponseStatus errorStatus = ResponseStatus.valueOf(error);
         String errorMessage;
         String messageKey;
@@ -175,8 +156,11 @@ public class UserController {
         if (errorStatus != null) {
             messageKey = errorStatus.getMessageKey();
 
-        } else {
-            messageKey = "user.auth.failed";
+//        }  if (errorStatus != null && !user.getEmailVerified()) {
+//            messageKey = NOT_VERIFIED;
+
+        }else {
+            messageKey = DJADJ;
         }
 
         errorMessage = messageSource.getMessage(messageKey, null, locale);
@@ -192,7 +176,7 @@ public class UserController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(Model model) {
-        return "redirect:/login";
+        return "redirect:/user/login";
     }
 
     /**

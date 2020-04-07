@@ -2,7 +2,6 @@ package am.egs.socialSite.payload;
 
 import am.egs.socialSite.validation.ValidEmail;
 import am.egs.socialSite.validation.ValidPassword;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +15,6 @@ public class UserDto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotNull
     @Size(min = 3, max = 12, message = "{Size.name}")
     private String name;
@@ -28,12 +26,11 @@ public class UserDto implements Serializable {
     @Min(value = 18, message = "{age.size}")
     private Integer age;
 
-    @Email
+//    @Email
     @ValidEmail
     private String email;
 
     @ValidPassword
-//  @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")
     private String password;
 
 

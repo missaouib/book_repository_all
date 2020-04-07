@@ -13,7 +13,6 @@ public class User {
     @Column(name = "id", columnDefinition = "BIGINT(20)", nullable = false)
     private Long id;
 
-
     @Column(unique = true, name = "email", columnDefinition = "VARCHAR(255)", nullable = false)
     private String email;
 
