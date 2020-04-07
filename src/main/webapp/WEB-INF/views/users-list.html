@@ -45,13 +45,13 @@
         </ul>
     </div>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active"></li>
         </ul>
 
         <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
-            <button sec:authorize="isAuthenticated()" class="btn btn-primary">Logout</button>
+            <button sec:authorize="isAuthenticated()" class="btn btn-outline-primary">Logout</button>
         </form>
 
     </div>
@@ -60,46 +60,51 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <div th:switch="${users}" class="container my-5">
-                <div class="col-12">
+            <!--            <div th:switch="${users}" class="container my-5">-->
+            <!--                <div class="col-12">-->
 
-                    <h2 th:case="null">No record found !!</h2>
+            <!--                    <h2 th:case="null">No record found !!</h2>-->
 
-                    <div th:case="*">
-                        <table class="table table-bordered my-2">
+            <!--                    <div th:case="*">-->
+            <!--                        <table class="table table-bordered my-2">-->
+            <div class="col-12">
+                <table class="table table-bordered my-2">
 
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Surname</th>
-                                <th>Email</th>
-                                <th>Age</th>
-                                <th>Delete</th>
-                            </tr>
-                            </thead>
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Age</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
 
-                            <tbody>
-                            <tr th:each="user : ${users}">
-                                <td th:text="${user.name}"></td>
-                                <td th:text="${user.surName}"></td>
-                                <td th:text="${user.email}"></td>
-                                <td th:text="${user.age}"></td>
+                    <tbody>
+                    <tr th:if="${users.empty}">
+                        <td class="text-center" colspan="5">No data</td>
+                    </tr>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.surName}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.age}"></td>
 
-                                <td>
-                                    <a th:href="@{/admin/delete/{id}(id=${user.id})}"
-                                       class="btn btn-danger modDel" id="deleteButton">
-                                        <i class="far fa-trash-alt"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
+                        <td>
+                            <a th:href="@{/admin/delete/{id}(id=${user.id})}"
+                               class="btn btn-danger modDel" id="deleteButton">
+                                <i class="far fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
 
-                        </table>
-                    </div>
-                </div>
+                </table>
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>
 
 

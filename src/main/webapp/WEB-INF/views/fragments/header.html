@@ -35,13 +35,11 @@
                 </ul>
 
                 <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
-                    <a class="btn btn-primary" th:href="@{/user/signIn}">Login</a>
-                    <button sec:authorize="isAuthenticated()" class="btn btn-primary">Logout</button>
-                    <a class="btn btn-primary" th:href="@{/user/signUp}">Register</a>
+                    <a class="btn btn-outline-primary" th:href="@{/user/signIn}">Login</a>
+                    <button sec:authorize="isAuthenticated()" class="btn btn-outline-primary">Logout</button>
+                    <a class="btn btn-outline-primary" th:href="@{/user/signUp}">Register</a>
                 </form>
-
             </div>
         </nav>
     </div>
-
 </html>

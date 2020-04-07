@@ -43,18 +43,18 @@
         </ul>
 
         <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
-            <button sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0">Logout</button>
+            <button sec:authorize="isAuthenticated()" class="btn btn-outline-primary">Logout</button>
         </form>
     </div>
 </nav>
 
-<h2>   Profile Details</h2>
+<!--<h2>   Profile Details</h2>-->
 
 <div class="container">
     <div class="row py-2">
-        <div class="col-12">
-            <div th:text="${time}"/>
-        </div>
+<!--        <div class="col-12">-->
+<!--            <div th:text="${time}"/>-->
+<!--        </div>-->
 
         <div class="col-12">
             <table class="table table-bordered my-2">

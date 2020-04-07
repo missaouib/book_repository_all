@@ -49,15 +49,15 @@
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
-            <a sec:authorize="!isAuthenticated()" class="btn btn-primary"
+            <a sec:authorize="!isAuthenticated()" class="btn btn-outline-primary"
                th:href="@{/user/signIn}">Login</a>
 
 <!--            <a sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0"-->
 <!--               th:href="@{/user/profile}">Your Profile</a>-->
 
-            <a sec:authorize="!isAuthenticated()" class="btn btn-primary"
+            <a sec:authorize="!isAuthenticated()" class="btn btn-outline-primary"
                th:href="@{/user/signUp}">Register</a>
-            <button sec:authorize="isAuthenticated()" class="btn btn-primary">Logout</button>
+            <button sec:authorize="isAuthenticated()" class="btn btn-outline-primary">Logout</button>
         </form>
     </div>
 </nav>
