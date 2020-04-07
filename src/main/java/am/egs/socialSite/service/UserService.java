@@ -2,6 +2,7 @@ package am.egs.socialSite.service;
 
 import am.egs.socialSite.model.User;
 import am.egs.socialSite.payload.UserDto;
+import am.egs.socialSite.security.UserPrincipal;
 
 import java.util.List;
 
@@ -13,11 +14,11 @@ public interface UserService {
 
     User signIn(String email, String password);
 
-    void delete(String email);
+    void delete(Long id);
 
     List<User> findAllUsers();
 
-    User update(User user);
+ //   User update(User user);
 
     void expired(String email);
 
@@ -26,8 +27,10 @@ public interface UserService {
     void tryNumberIncrement(String email);
 
     boolean exists(final String email);
- User getEmployeeById(Long id) throws Exception ;
-  User createOrUpdateEmployee(User entity);
+
+    User getEmployeeById(Long id) throws Exception;
+
+    User createOrUpdateEmployee(User entity, UserPrincipal principal);
 
 
 }

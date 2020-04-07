@@ -131,26 +131,32 @@ public class UserController {
         if (id.isPresent()) {
             User entity = userService.getEmployeeById(id.get());
             model.addAttribute("employee", entity);
-//        } else {
-//            model.addAttribute("employee", new User());
-//        }
+        } else {
+            model.addAttribute("employee", new User());
         }
         return "edit-user";
-
     }
 
-    @RequestMapping(path = "/createEmployee", method = RequestMethod.POST)
-    public String createOrUpdateEmployee(User employee) {
-        userService.createOrUpdateEmployee(employee);
-        return "redirect:/admin/read";
-    }
+
+//    @RequestMapping(path = "/createEmployee", method = RequestMethod.POST)
+//    public String createOrUpdateEmployee(User employee) {
+//        userService.createOrUpdateEmployee(employee);
+//        return "redirect:/admin/read";
+//    }
 
     @PostMapping(UPDATE)
-    public ResponseEntity update(@RequestBody User user) {
-        userService.update(user);
+//    public String update(@RequestBody User user) {
+    public String update(User user,@AuthenticationPrincipal UserPrincipal principal) {
+
+//        userService.update(user);
+        userService.createOrUpdateEmployee(user,principal);
+
         logger.info(" User account was successful updated.");
-        return new ResponseEntity("User successful updated!", HttpStatus.MOVED_PERMANENTLY);
+        return "redirect:/admin/read";
+
+//        return new ResponseEntity("User successful updated!", HttpStatus.MOVED_PERMANENTLY);
     }
+
 
 
     @RequestMapping(value = "/loginFailed")

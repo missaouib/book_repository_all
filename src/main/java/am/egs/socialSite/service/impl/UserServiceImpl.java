@@ -8,9 +8,11 @@ import am.egs.socialSite.model.User;
 import am.egs.socialSite.payload.UserDto;
 import am.egs.socialSite.repository.RoleRepository;
 import am.egs.socialSite.repository.UserRepository;
+import am.egs.socialSite.security.UserPrincipal;
 import am.egs.socialSite.service.UserService;
 import am.egs.socialSite.util.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,22 +91,40 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    @Override
-    public void delete(String email) {
-        User user = userRepository.findUserByEmail(email);
-        if (user == null) {
-            throw new UserNotFoundException("User not found");
-        }
-        userRepository.deleteByEmail(email);
+//    @Override
+//    public void delete(Long id) {
+//        Optional<User> user = userRepository.getUserById(id);
+//        if (user == null) {
+//            throw new UserNotFoundException("User not found");
+//        }
+//        userRepository.deleteByEmail(user);
+//    }
+
+    public void delete(Long id) {
+        userRepository.findById(id)
+                .ifPresent(user -> userRepository.delete(user));
     }
 
-    @Override
-    public User update(User user) {
-        Optional<User> currentUser = userRepository.getUserByEmail(user.getEmail());
-        if (currentUser == null) {
-            return null;
-        }
-        return userRepository.save(user);
+//    @Override
+//    public User update(User user) {
+//        Optional<User> currentUser = userRepository.getUserById(user.getId());
+//        if (currentUser == null) {
+//            return null;
+//        }
+//        return userRepository.save(user);
+//    }
+
+    public User createOrUpdateEmployee(User entity, @AuthenticationPrincipal UserPrincipal principal) {
+        String email = principal.getUsername();
+        System.out.println(email);
+        User user = userRepository.findUserByEmail(email);
+        user.setEmail(entity.getEmail());
+        user.setName(entity.getName());
+        user.setSurName(entity.getSurName());
+        user.setAge(entity.getAge());
+        user.setPassword(entity.getPassword());
+        User userUpdated = userRepository.save(user);
+        return userUpdated;
     }
 
     @Override
@@ -156,44 +176,12 @@ public class UserServiceImpl implements UserService {
     public User getEmployeeById(Long id) throws Exception {
         Optional<User> employee = userRepository.findById(id);
 
-        if(employee.isPresent()) {
+        if (employee.isPresent()) {
             return employee.get();
         } else {
             throw new Exception("No employee record exist for given id");
         }
     }
 
-    public User createOrUpdateEmployee(User entity)
-    {
-        if(entity.getId()  == null)
-        {
-            entity = userRepository.save(entity);
-
-            return entity;
-        }
-        else
-        {
-            Optional<User> employee = userRepository.findById(entity.getId());
-//
-//            if(employee.isPresent())
-//            {
-
-                User newEntity = employee.get();
-                newEntity.setEmail(entity.getEmail());
-                newEntity.setName(entity.getName());
-                newEntity.setSurName(entity.getSurName());
-
-                newEntity.setPassword(entity.getPassword());
-
-                newEntity = userRepository.save(newEntity);
-
-                return newEntity;
-//            } else {
-//                entity = userRepository.save(entity);
-//
-//                return entity;
-//            }
-     }
-    }
 
 }

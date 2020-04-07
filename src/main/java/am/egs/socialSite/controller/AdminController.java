@@ -36,14 +36,16 @@ public class AdminController {
         userList = userService.findAllUsers();
         model.addAttribute("users", userList);
         logger.info(" ADMIN successful read list of all users.");
+
         return "list-users";
     }
 
-    @DeleteMapping(DELETE)
-    public ResponseEntity<Object> deleteUser(@RequestParam String email) {
-        userService.delete(email);
+    @GetMapping("/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.delete(id);
         logger.info(" User successful deleted.");
-        return new ResponseEntity("User successful deleted", HttpStatus.OK);
+        return "redirect:/admin/read";
+//        return new ResponseEntity("User successful deleted", HttpStatus.OK);
     }
 
 
