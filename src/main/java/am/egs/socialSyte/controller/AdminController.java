@@ -29,15 +29,17 @@ public class AdminController {
     }
 
     @PostMapping("/read")
-    public ResponseEntity<List<User>> read() {
+    public ResponseEntity<List<User>> readUsersList() {
         List<User> userList;
         userList = userService.findAllUsers();
+        logger.info(" ADMIN successful read list of all users.");
         return ResponseEntity.ok(userList);
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<Object> deleteUser(@RequestParam String email) {
         userService.delete(email);
+        logger.info(" User successful deleted.");
         return new ResponseEntity("User successful deleted", HttpStatus.OK);
     }
 }

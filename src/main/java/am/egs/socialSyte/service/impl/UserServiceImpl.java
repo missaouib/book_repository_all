@@ -1,7 +1,6 @@
 package am.egs.socialSyte.service.impl;
 
 import am.egs.socialSyte.exception.DuplicateUserException;
-import am.egs.socialSyte.exception.UserNotFoundException;
 import am.egs.socialSyte.model.Role;
 import am.egs.socialSyte.model.User;
 import am.egs.socialSyte.payload.UserDto;
@@ -11,8 +10,6 @@ import am.egs.socialSyte.repository.UserRepository;
 import am.egs.socialSyte.service.UserService;
 import am.egs.socialSyte.util.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,26 +29,23 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
     private final MailSender mailSender;
     private User user;
     private UserDto userDto;
     private int count;
+    private LocalDateTime currentLocalDateTime = LocalDateTime.now();
 
     @Autowired
-    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
-                           AuthenticationManager authenticationManager, MailSender mailSender) {
+    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, MailSender mailSender) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
         this.mailSender = mailSender;
     }
 
     @Override
     public void activateUser(String code) {
-        User user = userRepository.findByActivationCode(code).orElseThrow(
-                () -> new UserNotFoundException());
+        User user = userRepository.findByActivationCode(code);
         user.setActivationCode(null);
         user.setEmailVerified(true);
         userRepository.save(user);
@@ -74,83 +68,80 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(true);
         user.setAccountNonLocked(true);
         user.setTryNumber(0);
-
+        user.setAccountNonExpired(true);
         expireDate = userExpiredDateTime();
         user.setExpireDate(expireDate);
-
         mailSender.send(user);
         userRepository.save(user);
     }
 
     @Override
     public AuthResponse signIn(String email, String password) {
-        user = userRepository.getUserByEmail(email).orElseThrow(
-                () -> new UserNotFoundException());
+        user = userRepository.findUserByEmail(email);
         return AuthResponse.builder()
                 .build();
     }
 
     @Override
-    public void tryNuymberIncrement(String email, String password) {
-        LocalDateTime currentDateTime, unLockedTime;
+    public UserDto getUserByEmail(String email) {
+        User user = userRepository.findUserByEmail(email);
+        return userDto;
+    }
 
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public void delete(String email) {
+        user = userRepository.findUserByEmail(email);
+        userRepository.deleteByEmail(email);
+    }
+
+    @Override
+    public User update(User user) {
+        Optional<User> currentUser = userRepository.getUserByEmail(user.getEmail());
+        if (currentUser == null) {
+            return null;
+        }
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void expired(String email) {
+        User user = userRepository.findUserByEmail(email);
+        user.setAccountNonExpired(false);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void userUnLocked(String email) {
+        User user = userRepository.findUserByEmail(email);
+        LocalDateTime unLockedTime = user.getUnLockedTime();
+        if (unLockedTime.isBefore(currentLocalDateTime)) {
+            user.setTryNumber(0);
+            user.setAccountNonLocked(true);
+            user.setLockedTime(null);
+            user.setUnLockedTime(null);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void tryNumberIncrement(String email, String password) {
+        LocalDateTime unLockedTime;
         user = userRepository.findUserByEmail(email);
         count = user.getTryNumber();
         count++;
         user.setTryNumber(count);
         if (count >= 3) {
             user.setAccountNonLocked(false);
-            currentDateTime = LocalDateTime.now();
-            user.setLokedTime(currentDateTime);
-            unLockedTime = currentDateTime.plusSeconds(10);
-            user.setUnLokedTime(unLockedTime);
+            user.setLockedTime(currentLocalDateTime);
+            unLockedTime = currentLocalDateTime.plusHours(12);
+            user.setUnLockedTime(unLockedTime);
             userRepository.save(user);
         }
         userRepository.save(user);
-    }
-
-    @Override
-    public void isUserNonLocked(String email,String password) {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        if (currentDateTime.isBefore(user.getUnLokedTime())) {
-            user.setTryNumber(0);
-            user.setAccountNonLocked(true);
-            userRepository.save(user);
-            signIn(email, password);
-        }
-    }
-
-    @Override
-    public UserDto getUserByEmail(String email) {
-        User user = userRepository.getUserByEmail(email).orElseThrow(
-                () -> new UserNotFoundException());
-        return userDto;
-    }
-
-    @Override
-    public List<User> findAllUsers() {
-        //          throws UserNotFoundException
-        return userRepository.findAll();
-    }
-
-    @Override
-    public void delete(String email) {
-        user = userRepository.getUserByEmail(email).orElseThrow(
-                () -> new UserNotFoundException());
-        userRepository.deleteByEmail(email);
-    }
-
-    public List<User> userList(Role roleName) {
-        List<User> userList = userRepository.findAllByRoles(roleName);
-        return userList;
-    }
-
-    @Override
-    public User update(User user) {
-        Optional<User> persitedUser = userRepository.getUserByEmail(user.getEmail());
-        if (persitedUser == null) {
-            return null;
-        }
-        return userRepository.save(user);
     }
 }

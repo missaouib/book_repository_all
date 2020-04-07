@@ -26,18 +26,15 @@ public class UserDto {
     @NotEmpty(message = "{NotEmpty.name}")
     private String surName;
 
-    private Date createdDate;
-
     public UserDto() {
     }
 
-    public UserDto(Long id, String email, String password, String name, String surName, Date createdDate) {
+    public UserDto(Long id, String email, String password, String name, String surName) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.surName = surName;
-        this.createdDate = createdDate;
     }
 
     public Long getId() {
@@ -76,14 +73,6 @@ public class UserDto {
         this.surName = surName;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -93,13 +82,12 @@ public class UserDto {
                 email.equals(userDto.email) &&
                 password.equals(userDto.password) &&
                 name.equals(userDto.name) &&
-                surName.equals(userDto.surName) &&
-                createdDate.equals(userDto.createdDate);
+                surName.equals(userDto.surName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, name, surName, createdDate);
+        return Objects.hash(id, email, password, name, surName);
     }
 }
 

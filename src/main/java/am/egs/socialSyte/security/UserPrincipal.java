@@ -2,7 +2,6 @@ package am.egs.socialSyte.security;
 
 import am.egs.socialSyte.model.Role;
 import am.egs.socialSyte.model.User;
-import am.egs.socialSyte.util.UserLocalDateTime;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,8 +13,6 @@ import java.util.stream.Collectors;
 
 public class UserPrincipal implements UserDetails {
 
-    private UserLocalDateTime userLocalDateTime;
-
     private Long id;
 
     private String email;
@@ -24,25 +21,24 @@ public class UserPrincipal implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    private boolean isAccountNonLocked;
-
     private LocalDateTime expireDate;
+
+    private boolean isAccountNonExpired;
+
+    private boolean isAccountNonLocked;
 
     private boolean isEnabled;
 
-    //private int tryNumber;
-
     private UserPrincipal(Long id, String email, String password, boolean isAccountNonLocked,
-                          boolean isEnabled, LocalDateTime expireDate, Collection<? extends GrantedAuthority> authorities) {  //int tryNumber,
+                          boolean isEnabled, LocalDateTime expireDate, boolean isAccountNonExpired, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
         this.isAccountNonLocked = isAccountNonLocked;
+        this.isAccountNonExpired = isAccountNonExpired;
         this.isEnabled = isEnabled;
-        // this.tryNumber = tryNumber;
         this.expireDate = expireDate;
-
     }
 
     static UserPrincipal create(User user) {
@@ -58,8 +54,8 @@ public class UserPrincipal implements UserDetails {
                 user.getPassword(),
                 user.isAccountNonLocked(),
                 user.isEnabled(),
-                // user.getTryNumber(),
                 user.getExpireDate(),
+                user.isAccountNonExpired(),
                 authorities
         );
     }
@@ -84,28 +80,6 @@ public class UserPrincipal implements UserDetails {
         return password;
     }
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        //TODO expireDate
-//        boolean userNonExpired;
-//        userNonExpired = userLocalDateTime.isUserNonExpired();
-//        return userNonExpired;
-        return true;
-    }
-
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        //TODO expireDate
-        return true;
-    }
-
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -118,32 +92,39 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
-    /**
-     * @return
-     */
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        if (expireDate.isBefore(currentDateTime)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
     @Override
     public boolean isAccountNonLocked() {
         return isAccountNonLocked;
     }
 
-    /**
-     * @param accountNonLocked
-     */
     public void setAccountNonLocked(boolean accountNonLocked) {
         isAccountNonLocked = accountNonLocked;
     }
 
-    /**
-     * @return
-     */
     @Override
     public boolean isEnabled() {
         return isEnabled;
     }
 
-    /**
-     * @param enabled
-     */
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
     }
@@ -155,73 +136,4 @@ public class UserPrincipal implements UserDetails {
     public void setExpireDate(LocalDateTime expireDate) {
         this.expireDate = expireDate;
     }
-
-
-/*
-    public int getTryNumber() {
-        return tryNumber;
-    }
-
-    public void setTryNumber(int tryNumber) {
-        this.tryNumber = tryNumber;
-    }*/
-
-    //    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-//
-//    @Override
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return email;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-//
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return authorities;
-//    }
-//
-//    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-//        this.authorities = authorities;
-//    }
 }

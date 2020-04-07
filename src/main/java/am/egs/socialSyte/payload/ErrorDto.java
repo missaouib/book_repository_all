@@ -7,16 +7,17 @@ import java.util.List;
 @XmlRootElement(name = "error")
 public class ErrorDto {
 
-    //General error message about nature of error
     private String message;
 
-    //Specific errors in API request processing
     private List<String> details;
 
     public ErrorDto(String message, List<String> details) {
         super();
         this.message = message;
         this.details = details;
+    }
+
+    public ErrorDto(String s) {
     }
 
     @XmlElement(name = "General error message")

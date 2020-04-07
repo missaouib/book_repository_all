@@ -23,10 +23,9 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private AuthResponse authResponse;
-
-    private final AuthenticationManager authenticationManager;
 
     @Autowired
     public UserController(UserService userService, AuthenticationManager authenticationManager) {
@@ -38,9 +37,9 @@ public class UserController {
     public ResponseEntity activate(@PathVariable String code) {
         userService.activateUser(code);
         authResponse = AuthResponse.builder()
-                .message("Your email was successfully confirmed")
+                .message(" Your email was successfully confirmed")
                 .build();
-        logger.info("User successful loged.");
+        logger.info(" Activation code successful sended to user and successfully confirmed");
         return ResponseEntity.ok().body(authResponse);
     }
 
@@ -49,9 +48,9 @@ public class UserController {
         logger.info("New user", user);
         userService.addUser(user);
         authResponse = AuthResponse.builder()
-                .message("User successfully registered.")
+                .message(" User successfully registered.")
                 .build();
-        logger.info("User successful registered.");
+        logger.info(" User successful registered.");
         return ResponseEntity.ok().body(authResponse);
     }
 
@@ -61,15 +60,16 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         authResponse = userService.signIn(email, password);
         authResponse = AuthResponse.builder()
-                .message("User successfully loged.")
+                .message(" User successfully loged.")
                 .build();
-        logger.info("User successful loged.");
+        logger.info(" User successful loged.");
         return ResponseEntity.ok().body(authResponse);
     }
 
     @PostMapping("/update")
     public ResponseEntity update(@RequestBody User user) {
-       userService.update(user);
-         return new ResponseEntity("User successful updated!", HttpStatus.MOVED_PERMANENTLY);
+        userService.update(user);
+        logger.info(" User account was successful updated.");
+        return new ResponseEntity("User successful updated!", HttpStatus.MOVED_PERMANENTLY);
     }
 }

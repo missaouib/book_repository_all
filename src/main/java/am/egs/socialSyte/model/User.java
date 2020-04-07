@@ -18,7 +18,7 @@ public class User {
 
     @Email
     @Column(unique = true, name = "email", columnDefinition = "VARCHAR(255)", nullable = false)
-    @NotEmpty(message = "{NotEmpty.email}}")
+    @NotEmpty(message = "{NotEmpty.email}")
     private String email;
 
     @Column(name = "name", columnDefinition = "VARCHAR(50)", nullable = false)
@@ -34,29 +34,32 @@ public class User {
     @Column(name = "age", columnDefinition = "INT(11)", nullable = false)
     private int age;
 
-    @Column(name = "isAccountNonLocked")
-    private boolean isAccountNonLocked;
+    @Column(name = "tryNumberToLogin")
+    private int tryNumber;
 
     @Column(name = "expireDate")
     private LocalDateTime expireDate;
 
-    @Column(name = "isEnabled")
-    private boolean isEnabled;
+    @Column(name = "lockedTime")
+    private LocalDateTime lockedTime;
 
-    @Column(name = "tryNumberToLogin")
-    private int tryNumber;
-
-    @Column(name = "lokedTime")
-    private LocalDateTime lokedTime;
-
-    @Column(name = "unLokedTime")
-    private LocalDateTime unLokedTime;
+    @Column(name = "unLockedTime")
+    private LocalDateTime unLockedTime;
 
     @Column(name = "activationCode")
     private String activationCode;
 
     @Column(nullable = false)
     private Boolean emailVerified = false;
+
+    @Column(name = "isEnabled")
+    private boolean isEnabled;
+
+    @Column(name = "isAccountNonExpired")
+    private boolean isAccountNonExpired;
+
+    @Column(name = "isAccountNonLocked")
+    private boolean isAccountNonLocked;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -66,6 +69,14 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {
@@ -84,14 +95,6 @@ public class User {
         this.surName = surname;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -108,20 +111,12 @@ public class User {
         this.age = age;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public int getTryNumber() {
+        return tryNumber;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-    public boolean isAccountNonLocked() {
-        return isAccountNonLocked;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        isAccountNonLocked = accountNonLocked;
+    public void setTryNumber(int tryNumber) {
+        this.tryNumber = tryNumber;
     }
 
     public LocalDateTime getExpireDate() {
@@ -132,36 +127,20 @@ public class User {
         this.expireDate = expireDate;
     }
 
-    public boolean isEnabled() {
-        return isEnabled;
+    public LocalDateTime getLockedTime() {
+        return lockedTime;
     }
 
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
+    public void setLockedTime(LocalDateTime lokedTime) {
+        this.lockedTime = lokedTime;
     }
 
-    public int getTryNumber() {
-        return tryNumber;
+    public LocalDateTime getUnLockedTime() {
+        return unLockedTime;
     }
 
-    public void setTryNumber(int tryNumber) {
-        this.tryNumber = tryNumber;
-    }
-
-    public LocalDateTime getLokedTime() {
-        return lokedTime;
-    }
-
-    public void setLokedTime(LocalDateTime lokedTime) {
-        this.lokedTime = lokedTime;
-    }
-
-    public LocalDateTime getUnLokedTime() {
-        return unLokedTime;
-    }
-
-    public void setUnLokedTime(LocalDateTime unLokedTime) {
-        this.unLokedTime = unLokedTime;
+    public void setUnLockedTime(LocalDateTime unLokedTime) {
+        this.unLockedTime = unLokedTime;
     }
 
     public String getActivationCode() {
@@ -180,6 +159,38 @@ public class User {
         this.emailVerified = emailVerified;
     }
 
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public boolean isAccountNonExpired() {
+        return isAccountNonExpired;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        isAccountNonExpired = accountNonExpired;
+    }
+
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -189,13 +200,15 @@ public class User {
                 ", surName='" + surName + '\'' +
                 ", password='" + password + '\'' +
                 ", age=" + age +
-                ", isAccountNonLocked=" + isAccountNonLocked +
-                ", expireDate=" + expireDate +
-                ", isEnabled=" + isEnabled +
                 ", tryNumber=" + tryNumber +
-                ", lokedTime=" + lokedTime +
+                ", expireDate=" + expireDate +
+                ", lockedTime=" + lockedTime +
+                ", unLockedTime=" + unLockedTime +
                 ", activationCode='" + activationCode + '\'' +
                 ", emailVerified=" + emailVerified +
+                ", isEnabled=" + isEnabled +
+                ", isAccountNonExpired=" + isAccountNonExpired +
+                ", isAccountNonLocked=" + isAccountNonLocked +
                 ", roles=" + roles +
                 '}';
     }

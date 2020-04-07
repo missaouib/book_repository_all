@@ -18,12 +18,13 @@ public interface UserService {
 
     UserDto getUserByEmail(String email);
 
-    void tryNuymberIncrement(String email, String password);
-
     List<User> findAllUsers();
 
     User update(User user);
 
-    void isUserNonLocked(String email, String password);
+    void expired(String email);
 
+    void userUnLocked(String email);
+
+    void tryNumberIncrement(String email, String password);
 }
