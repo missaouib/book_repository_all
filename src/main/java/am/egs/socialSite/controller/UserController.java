@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+
+import java.time.LocalDateTime;
 
 import static am.egs.socialSite.util.Constant.*;
 
@@ -85,26 +84,18 @@ public class UserController {
     }
 
     @PostMapping("/signed-successfully")
-    public String signedSuccessfully(@RequestParam("email") String email) {
-        User user = userRepository.findUserByEmail(email);
-        boolean isVerified = user.getEmailVerified();
-        if (isVerified) {
-            return "redirect:/user/userProfile";
-        }else{
-            return "emailNotVerified";
-        }
-    //    return "redirect:/user/userProfile";
-
-    }
-
-    @PostMapping("/signIn")
-    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password) {
-        final Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
-        userService.signIn(email, password);
-        logger.info(" User successful logged.");
+    public String signedSuccessfully() {
         return "redirect:/user/userProfile";
     }
+
+//    @PostMapping("/signIn")
+//    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password) {
+//        final Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+//        SecurityContextHolder.getContext().setAuthentication(authenticate);
+//        userService.signIn(email, password);
+//        logger.info(" User successful logged.");
+//        return "redirect:/user/userProfile";
+//    }
 
 
     @RequestMapping(value = "/userProfile", method = RequestMethod.GET)
@@ -114,10 +105,29 @@ public class UserController {
         User user = userRepository.findUserByEmail(email);
         UserDto userDto = userMapper.map(user, UserDto.class);
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("time", LocalDateTime.now());
         modelAndView.addObject("user", userDto);
-        modelAndView.setViewName("userProfile");
+        modelAndView.setViewName("user-Profile");
         return modelAndView;
     }
+
+
+
+    @RequestMapping(value = "/admin-Profile", method = RequestMethod.GET)
+    public ModelAndView currentAdminName(@AuthenticationPrincipal UserPrincipal principal) {
+        String email = principal.getUsername();
+        System.out.println(email);
+        User user = userRepository.findUserByEmail(email);
+        UserDto userDto = userMapper.map(user, UserDto.class);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("time", LocalDateTime.now());
+        modelAndView.addObject("user", userDto);
+        modelAndView.setViewName("admin-Profile");
+        return modelAndView;
+    }
+
+
+
 
     @PostMapping(UPDATE)
     public ResponseEntity update(@RequestBody User user) {

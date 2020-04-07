@@ -33,8 +33,6 @@ public class UserPrincipal implements UserDetails {
 
     private boolean isEnabled;
 
-    private UserService userService;
-
 
     public UserPrincipal(Long id, String email, String password, boolean isAccountNonLocked,
                          boolean isEnabled, LocalDateTime expireDate, boolean isAccountNonExpired, Collection<? extends GrantedAuthority> authorities) {

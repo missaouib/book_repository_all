@@ -1,6 +1,7 @@
 package am.egs.socialSite.config;
 
 import am.egs.socialSite.security.CustomAuthenticationFailureHandler;
+import am.egs.socialSite.security.CustomAuthenticationSuccessHandler;
 import am.egs.socialSite.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -73,6 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/user/signIn")
                 .successForwardUrl("/user/signed-successfully")
 //                .loginProcessingUrl("/authenticateTheUser")
+                .successHandler(new CustomAuthenticationSuccessHandler())                 // On authentication success custom handler
                 .failureHandler(customAuthenticationFailureHandler)                 // on authentication fail custom handler
                 .permitAll();
     }
