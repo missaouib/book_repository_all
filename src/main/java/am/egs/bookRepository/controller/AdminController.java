@@ -50,7 +50,7 @@ public class AdminController {
         return "users-list";
     }
 
-    @RequestMapping(value = "/delete/{id}", method={RequestMethod.DELETE, RequestMethod.GET})
+    @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
     public String deleteUser(@PathVariable Long id) {
         userService.delete(id);
         logger.info(" User successfully deleted.");
@@ -60,13 +60,16 @@ public class AdminController {
     @RequestMapping(value = "/admin-Profile", method = RequestMethod.GET)
     public ModelAndView currentAdminName(@AuthenticationPrincipal UserPrincipal principal) {
         String email = principal.getUsername();
-        System.out.println(email);
         userService.signInSuccess(email);
         User user = userRepository.findUserByEmail(email);
         UserDto userDto = userMapper.map(user, UserDto.class);
+        String name  = userDto.getName();
+        String surName  = userDto.getSurName();
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("time", LocalDateTime.now());
         modelAndView.addObject("user", userDto);
+        modelAndView.addObject("name", name);
+        modelAndView.addObject("tab",  " ");
+        modelAndView.addObject("surname", surName);
         modelAndView.setViewName("admin-profile");
         return modelAndView;
     }

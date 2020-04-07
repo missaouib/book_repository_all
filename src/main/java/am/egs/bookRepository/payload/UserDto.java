@@ -32,6 +32,9 @@ public class UserDto implements Serializable {
     @ValidPassword
     private String password;
 
+    @NotEmpty
+    private String matchingPassword;
+
 
     public UserDto() {
     }
@@ -92,6 +95,13 @@ public class UserDto implements Serializable {
         this.age = age;
     }
 
+    public String getMatchingPassword() {
+        return matchingPassword;
+    }
+
+    public void setMatchingPassword(String matchingPassword) {
+        this.matchingPassword = matchingPassword;
+    }
 
     @Override
     public int hashCode() {

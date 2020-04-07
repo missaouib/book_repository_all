@@ -2,17 +2,24 @@ package am.egs.bookRepository.controller;
 
 import am.egs.bookRepository.mappers.BookMapper;
 import am.egs.bookRepository.model.Book;
+import am.egs.bookRepository.model.Role;
+import am.egs.bookRepository.model.User;
 import am.egs.bookRepository.payload.BookDto;
+import am.egs.bookRepository.repository.UserRepository;
+import am.egs.bookRepository.security.UserPrincipal;
 import am.egs.bookRepository.service.BookService;
+import am.egs.bookRepository.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static am.egs.bookRepository.util.Constant.READ;
 
@@ -24,19 +31,29 @@ public class BookController {
 
     private BookService bookService;
     private BookMapper bookMapper;
+    private UserService userService;
 
     @Autowired
-    public BookController(BookService bookService, BookMapper bookMapper) {
+    public BookController(BookService bookService, BookMapper bookMapper, UserService userService) {
         this.bookService = bookService;
         this.bookMapper = bookMapper;
+        this.userService = userService;
     }
 
     @GetMapping(READ)
-    public String readBooksList(Model model) {
+    public String readBooksList(Model model, @AuthenticationPrincipal UserPrincipal principal) {
         logger.info(" User getting books read.");
         final List<Book> bookList = bookService.findAllBooks();
         model.addAttribute("books", bookList);
         logger.info(" User successfully read list of all books.");
+        String email = principal.getUsername();
+        User user = userService.findByEmail(email);
+        List<Role> role = user.getRoles();
+        if (role.stream().map(Role::getRole).anyMatch("USER"::equals)) {
+            model.addAttribute("control", "USER");
+        } else {
+            model.addAttribute("control", "ADMIN");
+        }
         return "books-list";
     }
 

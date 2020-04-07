@@ -62,17 +62,25 @@ public class UserController {
 
     @PostMapping(SIGN_UP)
     public String registerNewUser(@Valid @ModelAttribute("user") @RequestBody UserDto userDto,
-                                  BindingResult result) {
+                                  BindingResult result,Model model) {
         logger.info("New user {}", userDto);
+
+        if (!userDto.getPassword().equals(userDto.getMatchingPassword())) {
+            result.rejectValue("password", "", "*Password not matching");
+            return REGISTER;
+        }
+        User existing = userService.findByEmail(userDto.getEmail());
+        if (existing != null) {
+            result.rejectValue("email", null, "*There is already an account registered with that email");
+            return REGISTER;
+        }
         if (result.hasErrors()) {
             return REGISTER;
         }
-        User existing = userRepository.findUserByEmail(userDto.getEmail());
-        if (existing != null) {
-            result.rejectValue("email", null, "There is already an account registered with that email");
-        }
         userService.addUser(userDto);
-        logger.info(" User successful registered.");
+        logger.info(" User successfully registered.");
+        String email = userDto.getEmail();
+        model.addAttribute("email", email);
         return ACTIVATION_CODE;
     }
 
@@ -96,13 +104,16 @@ public class UserController {
     @RequestMapping(value = "/userProfile", method = RequestMethod.GET)
     public ModelAndView currentUserName(@AuthenticationPrincipal UserPrincipal principal) {
         String email = principal.getUsername();
-        System.out.println(email);
         User user = userRepository.findUserByEmail(email);
         userService.signInSuccess(email);
         UserDto userDto = userMapper.map(user, UserDto.class);
+        String name  = userDto.getName();
+        String surName  = userDto.getSurName();
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("time", LocalDateTime.now());
         modelAndView.addObject("user", userDto);
+        modelAndView.addObject("name", name);
+        modelAndView.addObject("tab",  " ");
+        modelAndView.addObject("surname", surName);
         modelAndView.setViewName("user-profile");
         return modelAndView;
     }
@@ -110,7 +121,6 @@ public class UserController {
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String current(@AuthenticationPrincipal UserPrincipal principal) {
         String email = principal.getUsername();
-        System.out.println(email);
         User user = userRepository.findUserByEmail(email);
         userService.signInSuccess(email);
         List<Role> role = user.getRoles();

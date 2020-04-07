@@ -14,9 +14,11 @@ public class BookDto implements Serializable {
     private Long id;
 
     @NotBlank
+    @Size(min = 2, max = 256)
     private String title;
 
     @NotBlank
+    @Size(min = 2, max = 256)
     private String author;
 
     public BookDto() {

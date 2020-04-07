@@ -26,9 +26,9 @@ public interface UserService {
 
     boolean exists(final String email);
 
+     User findByEmail(String email);
+
     User getUserById(Long id) throws Exception;
 
     User updateUser(UserDto userDto, UserPrincipal principal);
-
-
 }

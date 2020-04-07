@@ -1,6 +1,5 @@
 package am.egs.bookRepository.service.impl;
 
-import am.egs.bookRepository.exception.DuplicateUserException;
 import am.egs.bookRepository.mappers.UserMapper;
 import am.egs.bookRepository.model.Role;
 import am.egs.bookRepository.model.User;
@@ -55,10 +54,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(UserDto userDto) {
         LocalDateTime expireDate;
-        Optional<User> currentUser = userRepository.getUserByEmail(userDto.getEmail());
-        if (currentUser.isPresent()) {
-            throw new DuplicateUserException("There are already user with this email.");
-        }
         User user = userMapper.map(userDto, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Optional<Role> role = roleRepository.findByRole("USER");
@@ -106,6 +101,7 @@ public class UserServiceImpl implements UserService {
         return userUpdated;
     }
 
+
     @Override
     public void expired(String email) {
         User user = userRepository.findUserByEmail(email);
@@ -148,6 +144,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsUserByEmail(email);
     }
 
+    public User findByEmail(String email){
+        return userRepository.findUserByEmail(email);
+    }
 
     public User getUserById(Long id) throws Exception {
         Optional<User> user = userRepository.findById(id);

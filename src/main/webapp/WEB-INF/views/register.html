@@ -1,119 +1,183 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Registration</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>
-    <title>Login</title>
 
+    <!-- Website Font style -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Passion+One'
+          rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oxygen'
+          rel='stylesheet' type='text/css'>
 </head>
-
-<body>
 <style>
-
-    body{
+    body, html {
         height: 100%;
         background-repeat: no-repeat;
-        background:url(https://i.ytimg.com/vi/4kfXjatgeEU/maxresdefault.jpg);
+        background: url(https://i.ytimg.com/vi/4kfXjatgeEU/maxresdefault.jpg);
         font-family: 'Oxygen', sans-serif;
         background-size: cover;
     }
 
-
-    .form-control {
-        position: relative;
-        font-size: 16px;
-        height: auto;
-        padding: 10px;
+    .main {
+        margin-top: 70px;
     }
 
-    input[type="text"] {
-        margin-bottom: 0px;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
+    hr {
+        width: 10%;
+        color: #fff;
     }
 
-    input[type="password"] {
-        margin-bottom: 20px;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
+    label {
+        margin-bottom: 15px;
     }
 
+    input,
+    input::-webkit-input-placeholder {
+        font-size: 11px;
+        padding-top: 3px;
+    }
+
+    .main-login {
+        background-color: #fff;
+        /* shadows and rounded borders */
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+        -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+
+    }
+
+    .main-center {
+        margin-top: 30px;
+        margin: 0 auto;
+        max-width: 330px;
+        padding: 40px 40px;
+
+    }
 </style>
 
-
-<div th:replace="fragments/header :: header"/>
-<br>
-<br>
+<body>
 <div class="container">
-
-    <div class="row" style="margin-top:20px">
-        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-            <form th:action="@{/user/signUp}" method="post" th:object="${user}">
+    <div class="row main">
+        <div class="main-login main-center">
+            <form autocomplete="off" action="#" th:action="@{/user/signUp}"
+                  th:object="${user}" method="post" class="form-horizontal"
+                  role="form">
                 <fieldset>
-                    <h1>Please Register</h1>
-
-                    <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error':''">
-                        <input type="email"  th:field="*{email}"  class="form-control input-lg"
-                               placeholder="email"  autofocus="true"/>
-                        <small class="text-danger" th:each="err: ${#fields.errors('email')}" th:text="${err}"></small>
-                    </div>
-
+                    <!-- Form Name -->
+                    <legend>Create your account</legend>
+                    <!-- Text input-->
                     <div class="form-group">
-                        <input type="text" th:field="*{name}"  class="form-control input-lg"
-                               placeholder="name" required="true" autofocus="true"/>
-                        <small class="text-danger" th:each="err: ${#fields.errors('name')}" th:text="${err}"></small>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="text" th:field="*{surName}" class="form-control input-lg"
-                               placeholder="surname" required="true" autofocus="true"/>
-                        <small class="text-danger" th:each="err: ${#fields.errors('surName')}" th:text="${err}"></small>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="password" th:field="*{password}"   class="form-control input-lg"
-                               placeholder="password" required="true"/>
-                        <small class="text-danger" th:each="err: ${#fields.errors('password')}" th:text="${err}"></small>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="text" th:field="*{age}" id="username" class="form-control input-lg"
-                               placeholder="age" required="true" autofocus="true"/>
-                        <small class="text-danger" th:each="err: ${#fields.errors('age')}" th:text="${err}"></small>
-                    </div>
-
-
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-6">
-                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign Up"/>
-                            <span>Already registered? <a href="/" th:href="@{/user/signIn}">Login
-								here</a></span>
+                        <!--                        <label for="name" class="cols-sm-2 control-label"></label>-->
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa"
+                                                                       aria-hidden="true"></i>
+                                    </span> <input type="text" th:field="*{name}" required="true"
+                                                   placeholder="Name" class="form-control"/>
+                            </div>
+                            <small class="text-danger" th:each="err: ${#fields.errors('name')}"
+                                   th:text="${err}"></small>
                         </div>
-<!--                        <div class="col-xs-6 col-sm-6 col-md-6"></div>-->
                     </div>
 
+                    <div class="form-group">
+                        <!--                        <label for="surName" class="cols-sm-2 control-label"></label>-->
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa"
+                                                                       aria-hidden="true"></i>
+                                    </span> <input type="text" required="true" th:field="*{surName}"
+                                                   placeholder="Surname" class="form-control"/>
+                            </div>
+                            <small class="text-danger" th:each="err: ${#fields.errors('surName')}"
+                                   th:text="${err}"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <!--                        <label for="age" class="cols-sm-2 control-label"></label>-->
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa"
+                                                                       aria-hidden="true"></i>
+                                    </span> <input type="text" required="true" th:field="*{age}"
+                                                   placeholder="Age" class="form-control"/>
+                            </div>
+                            <small class="text-danger" th:each="err: ${#fields.errors('age')}" th:text="${err}"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <!--                        <label for="email" class="cols-sm-2 control-label"> </label>-->
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+									<span class="input-group-addon"><i
+                                            class="fa fa-envelope fa" aria-hidden="true"></i>
+                                    </span> <input required="true" type="text" th:field="*{email}"
+                                                   placeholder="Email" class="form-control"/>
+                            </div>
+                            <small class="text-danger" th:each="err: ${#fields.errors('email')}"
+                                   th:text="${err}"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <!--                        <label for="password" class="cols-sm-2 control-label"></label>-->
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+									<span class="input-group-addon"><i
+                                            class="fa fa-lock fa-lg" aria-hidden="true"></i>
+                                    </span> <input required="true" type="password" th:field="*{password}"
+                                                   placeholder="Password" class="form-control"/>
+                            </div>
+                            <small class="text-danger" th:each="err: ${#fields.errors('password')}"
+                                   th:text="${err}"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <!--                        <label for="password" class="cols-sm-2 control-label"></label>-->
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+									<span class="input-group-addon"><i
+                                            class="fa fa-lock fa-lg" aria-hidden="true"></i>
+                                    </span> <input required="true" type="password" th:field="*{matchingPassword}"
+                                                   placeholder="Repeat password" class="form-control"/>
+                            </div>
+                            <small class="text-danger" th:each="err: ${#fields.errors('matchingPassword')}"
+                                   th:text="${err}"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-lg btn-primary btn-block"
+                               name="Submit" value="Register">
+                    </div>
                 </fieldset>
             </form>
+            <div class="panel-footer ">
+                Already have an account? <a th:href="@{/user/signIn}" onClick="">
+                Login </a>
+            </div>
         </div>
     </div>
-
 </div>
-
-<!--<div th:replace="fragments/footer :: footer"/>-->
-
 </body>
 </html>
-
 
 
 
