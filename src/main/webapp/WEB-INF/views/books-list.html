@@ -51,7 +51,6 @@
     <div class="row py-2">
         <div class="col">
             <a class="btn btn-primary nBtn">Add Book</a>
-
         </div>
         <div class="col-12">
             <table class="table table-bordered my-2">
@@ -67,11 +66,14 @@
                 <tr th:if="${books.empty}">
                     <td class="text-center" colspan="5">No data</td>
                 </tr>
-
                 <tr th:each="book : ${books}">
                     <td th:text="${book.title}"></td>
                     <td th:text="${book.author}"></td>
                     <td>
+                        <a th:href="@{/book/getOne/(id=${book.id})}"
+                           class="btn btn-success">
+                            <i class="fas fa-edit"></i>
+                        </a>
                         <a th:href="@{/book/delete/{id}(id=${book.id})}"
                            class="btn btn-danger delBtn" id="deleteButton">
                             <i class="far fa-trash-alt"></i>
@@ -79,13 +81,51 @@
                     </td>
                 </tr>
                 </tbody>
-
             </table>
         </div>
     </div>
 </div>
 </div>
 </div>
+</div>
+
+
+<!--Modal form for book update-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <form th:action="@{/book/update}" method="put">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Book</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <!--                        <label  class="col-form-label">Id:</label>-->
+                        <input type="hidden" class="form-control" id="idEdit" name="id">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-form-label">Title:</label>
+                        <input type="text" class="form-control" id="titleEdit" name="title">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-form-label">Author:</label>
+                        <input type="text" class="form-control" id="authorEdit" name="author">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 
 
@@ -108,7 +148,7 @@
                         </p>
 
                         <div class="form-group">
-                            <label fclass="col-form-label">Title:</label>
+                            <label class="col-form-label">Title:</label>
                             <input type="text" class="form-control" id="title" name="title" value=""/>
                         </div>
                         <div class="form-group">
@@ -127,9 +167,7 @@
 </div>
 <!--End form-->
 
-
-<!--#Modal for removing books
--->
+<!--#Modal for removing books-->
 <div class="modal fade" id="removeModalCenter" tabindex="-1" role="dialog" aria-labelledby="removeModalCenterTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -153,35 +191,39 @@
     </div>
 </div>
 
-
 <script>
     $(document).ready(function () {
         //for creating book
-        $('.nBtn, .table .eBtn').on('click', function (event) {
+        $('.nBtn').on('click', function (event) {
             event.preventDefault();
             $('.myFormCreate #title').val('');
             $('.myFormCreate #author').val('');
             $('.myFormCreate #myModalCreate').modal();
-
         });
         //for delete book
-
-        $('.table .delBtn').on('click', function(event) {
+        $('.table .delBtn').on('click', function (event) {
             event.preventDefault();
             var href = $(this).attr('href');
             $('#removeModalCenter #delRef').attr('href', href);
             $('#removeModalCenter').modal();
         });
+        //for update book
+        $('.table .btn-success').on('click', function (event) {
+            event.preventDefault();
+            var href = $(this).attr('href');
+            $.get(href, function (book, status) {
+                $('#idEdit').val(book.id);
+                $('#titleEdit').val(book.title);
+                $('#authorEdit').val(book.author);
+            });
+            $('#editModal').modal();
+        });
+
     });
 </script>
 
-
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>

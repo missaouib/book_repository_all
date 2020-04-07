@@ -133,9 +133,10 @@ public class UserController {
         return "user-edit";
     }
 
+
     @PostMapping(UPDATE)
     public String update(User user, @AuthenticationPrincipal UserPrincipal principal) {
-        userService.createOrUpdateUser(user, principal);
+        userService.updateUser(user, principal);
         logger.info(" User account was successful updated.");
         return "redirect:/user/profile";
     }

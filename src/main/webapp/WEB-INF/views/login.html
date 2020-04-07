@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+      xmlns="http://www.w3.org/1999/xhtml">
 <head>
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -14,8 +12,6 @@
 <!--              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
 <!--        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>-->
         <title>Login</title>
-
-
 <!--    <link rel="stylesheet" th:href="@{/css/login.css}" />-->
 <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
 <!--    <link rel="stylesheet"  th:href="@{/css/register.css}" />-->
@@ -157,88 +153,3 @@ border-top-right-radius: 0;
 
 
 
-
-
-<!--<!doctype html>-->
-<!--<html lang="en"-->
-<!--      xmlns:th="http://www.thymeleaf.org"-->
-<!--      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
-
-<!--<head>-->
-<!--    &lt;!&ndash; Required meta tags &ndash;&gt;-->
-<!--    <meta charset="utf-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
-
-<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
-<!--          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
-<!--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>-->
-<!--    <title>Login</title>-->
-<!--</head>-->
-
-<!--<body>-->
-<!--<div th:replace="fragments/header :: header"/>-->
-
-
-<!--&lt;!&ndash;<nav class="navbar navbar-expand-lg navbar-light bg-light">&ndash;&gt;-->
-<!--&lt;!&ndash;    <a class="navbar-brand" th:href="@{/user/}">Book repository</a>&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"&ndash;&gt;-->
-<!--&lt;!&ndash;            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">&ndash;&gt;-->
-<!--&lt;!&ndash;        <span class="navbar-toggler-icon"></span>&ndash;&gt;-->
-<!--&lt;!&ndash;    </button>&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <div class="collapse navbar-collapse" id="navbarSupportedContent">&ndash;&gt;-->
-<!--&lt;!&ndash;        <ul class="navbar-nav mr-auto">&ndash;&gt;-->
-<!--&lt;!&ndash;            <li class="nav-item active"></li>&ndash;&gt;-->
-<!--&lt;!&ndash;        </ul>&ndash;&gt;-->
-
-<!--&lt;!&ndash;        <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">&ndash;&gt;-->
-<!--&lt;!&ndash;            <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/signIn}">Login</a>&ndash;&gt;-->
-<!--&lt;!&ndash;            <button sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0">Logout</button>&ndash;&gt;-->
-<!--&lt;!&ndash;            <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/signUp}">Register</a>&ndash;&gt;-->
-<!--&lt;!&ndash;        </form>&ndash;&gt;-->
-
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;</nav>&ndash;&gt;-->
-
-<!--<div class="container">-->
-<!--    <div class="row py-2">-->
-<!--        <div class="col-12">-->
-
-<!--            <form th:action="@{/user/signIn}" method="post">-->
-
-<!--                <fieldset>-->
-
-<!--                    <div th:if="${param.error}">-->
-<!--                        <div class="alert alert-danger">-->
-<!--                            Invalid username and password.-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div th:if="${param.logout}">-->
-<!--                        <div class="alert alert-info">-->
-<!--                            You have been logged out.-->
-<!--                        </div>-->
-<!--                    </div>-->
-
-<!--                    <div class="form-group">-->
-<!--                    <label for="email">*Email</label>-->
-<!--                    <input type="text" class="form-control" id="email" name="username" placeholder="email">-->
-<!--                    <small class="form-text text-danger" th:if="${param.error != null}">Incorrect email or password</small>-->
-<!--                </div>-->
-
-<!--                <div class="form-group">-->
-<!--                    <label for="password">*Password</label>-->
-<!--                    <input type="password" class="form-control" id="password" name="password" placeholder="password">-->
-<!--                </div>-->
-
-<!--                <button type="submit" class="btn btn-primary">Login</button>-->
-
-<!--                <a class="px-3" th:href="@{/user/signUp}">Register</a>-->
-<!--                </fieldset>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--</body>-->
-<!--</html>-->

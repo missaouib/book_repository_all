@@ -9,10 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +20,6 @@ import static am.egs.socialSite.util.Constant.READ;
 public class BookController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
 
     private BookService bookService;
     private BookMapper bookMapper;
@@ -59,4 +55,17 @@ public class BookController {
         logger.info(" User successfully delete book.");
         return "redirect:/book/read";
     }
+
+    @RequestMapping("/getOne")
+    @ResponseBody
+    public Book getOne(Long id) {
+        return bookService.getOne(id);
+    }
+
+    @RequestMapping(value="/update", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String update(BookDto bookDto) {
+        bookService.update(bookDto);
+        return "redirect:/book/read";
+    }
+
 }

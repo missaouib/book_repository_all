@@ -43,7 +43,6 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-<!--                <a class="nav-link" th:href="@{/book/read}">Books</a>-->
                 <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/profile}">Your Profile</a>
 
             </li>
@@ -51,17 +50,12 @@
         <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
             <a sec:authorize="!isAuthenticated()" class="btn btn-outline-primary"
                th:href="@{/user/signIn}">Login</a>
-
-<!--            <a sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0"-->
-<!--               th:href="@{/user/profile}">Your Profile</a>-->
-
             <a sec:authorize="!isAuthenticated()" class="btn btn-outline-primary"
                th:href="@{/user/signUp}">Register</a>
             <button sec:authorize="isAuthenticated()" class="btn btn-outline-primary">Logout</button>
         </form>
     </div>
 </nav>
-
 
 
 <div class="container my-2">
