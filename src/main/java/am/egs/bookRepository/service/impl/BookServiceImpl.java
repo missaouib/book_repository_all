@@ -50,4 +50,10 @@ public class BookServiceImpl implements BookService {
         Book book = bookMapper.map(bookDto, Book.class);
         bookRepository.save(book);
     }
+
+    @Override
+    public List<Book> findByTitle(String search) {
+        return bookRepository.findByTitleLike("%"+search+"%");
+    }
+
 }

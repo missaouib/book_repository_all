@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.w3.org/1999/xhtml">
-
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-
-    <title>Books</title>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <title>Search</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery.js"></script>
@@ -14,8 +12,8 @@
 
 </head>
 
-<body>
 
+<body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="#">Book Repository</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
@@ -36,6 +34,11 @@
                 <a class="nav-link" th:href="@{/book/read}">Books</a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/favoriteBook/all}">Favorite Books</a>
+            </li>
+
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">Settings</a>
@@ -46,12 +49,18 @@
                 </div>
             </li>
         </ul>
+        <form class="form-inline my-2 my-lg-0" th:action="@{/book/search}"  method="get">
+            <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search Book"
+                   th:value="${search}" aria-label="Search" required="true">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
 
     </div>
 </nav>
 <br>
 <br>
 <br>
+
 
 <div class="container">
     <div class="row py-2">
@@ -64,11 +73,6 @@
                 </div>
             </div>
 
-            <div th:if="${process == 'ERROR'}">
-                <div class="alert alert-danger" role="alert"
-                     th:utext="${pw_error}">...
-                </div>
-            </div>
             <table class="table table-bordered my-2">
                 <thead>
                 <tr>
@@ -77,19 +81,20 @@
                     <th>Actions</th>
                 </tr>
                 </thead>
-
                 <tbody>
-                <tr th:if="${favoriteBooks.empty}">
+                <tr th:if="${searchResult.empty}">
                     <td class="text-center" colspan="5">No data</td>
                 </tr>
-                <tr th:each="book : ${favoriteBooks}">
+
+                <tr th:each="book : ${searchResult}">
                     <td th:text="${book.title}"></td>
                     <td th:text="${book.author}"></td>
                     <td>
-                    <a th:href="@{/favoriteBook/delete/{id}(id=${book.id})}"
-                       class="btn btn-danger delBtn" id="deleteButton">
-                        <i class="far fa-trash-alt"></i>
-                    </a>
+                        <a th:href="@{/favoriteBook/add/{id}(id=${book.id})}"
+                           class="btn btn-warning favBtn">
+                            <i class="fas fa-star"></i>
+                        </a>
+
                         <a th:href="@{/book/info/{id}(id=${book.id})}"
                            class="btn btn-info">
                             <i class="fas fa-poll-h"></i>
@@ -101,58 +106,7 @@
         </div>
     </div>
 </div>
-</div>
-</div>
-</div>
-
-<!--#Modal for removing favoriteBooks-->
-<div class="modal fade" id="favoriteBookModalCenter" tabindex="-1" role="dialog" aria-labelledby="favoriteBookModalCenterTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="favoriteBookModalCenterTitle">Delete Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p class="alert alert-danger">
-                    Are You sure You want to delete this favorite book?
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="" class="btn btn-danger" id="delRef">Delete</a>
-            </div>
-        </div>
-    </div>
-</div>
-<!--End form-->
 
 
-<script>
-    $(document).ready(function () {
-
-        //for delete book
-        $('.table .delBtn').on('click', function (event) {
-            event.preventDefault();
-            var href = $(this).attr('href');
-            $('#favoriteBookModalCenter #delRef').attr('href', href);
-            $('#favoriteBookModalCenter').modal();
-        });
-
-    });
-</script>
-
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -16,4 +16,7 @@ public interface BookService {
     Book getOne(Long id);
 
     void update(BookDto bookDto);
+
+    List<Book> findByTitle(String search);
+
 }

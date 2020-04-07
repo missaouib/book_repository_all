@@ -101,6 +101,24 @@
         </dependency>
 
 
+
+
+
+<!--// search aneluc exc er talis, vorpes lucum sa-->
+<!--        //BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource-->
+<!--        <dependency>-->
+<!--            <groupId>javax.xml.bind</groupId>-->
+<!--            <artifactId>jaxb-api</artifactId>-->
+<!--            <version>2.3.0</version>-->
+<!--        </dependency>-->
+
+
+
+
+
+
+
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

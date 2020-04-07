@@ -8,16 +8,19 @@ import am.egs.bookRepository.payload.BookDto;
 import am.egs.bookRepository.security.UserPrincipal;
 import am.egs.bookRepository.service.BookService;
 import am.egs.bookRepository.service.UserService;
+import com.jayway.jsonpath.Criteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static am.egs.bookRepository.util.Constant.READ;
@@ -27,6 +30,7 @@ import static am.egs.bookRepository.util.Constant.READ;
 public class BookController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
 
     private BookService bookService;
     private BookMapper bookMapper;
@@ -111,6 +115,28 @@ public class BookController {
         Book book = bookService.getOne(id);
         modelAndView.addObject("book", book);
         modelAndView.setViewName("book_info");
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/search")
+    public ModelAndView bookInfo(@RequestParam(required = false, value = "search") String search,
+                                 @AuthenticationPrincipal UserPrincipal principal)  {
+        ModelAndView modelAndView = new ModelAndView();
+
+        List<Book> searchResult = bookService.findByTitle(search);
+        if (searchResult.isEmpty()) {
+            final List<Book> bookList = bookService.findAllBooks();
+            modelAndView.addObject("books", bookList);
+            modelAndView.addObject("control",showRole(principal));
+            modelAndView.addObject("process", "ERROR");
+            modelAndView.addObject("pw_error", "Error : Oops, no result!");
+            modelAndView.setViewName("books-list");
+        } else {
+            modelAndView.addObject("process", "SUCCESS");
+            modelAndView.addObject("pw_success", "Well done! Enjoy!");
+            modelAndView.addObject("searchResult", searchResult);
+            modelAndView.setViewName("search");
+        }
         return modelAndView;
     }
 
