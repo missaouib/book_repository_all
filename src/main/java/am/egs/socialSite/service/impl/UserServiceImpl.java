@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userMapper.map(userDto, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Optional<Role> role = roleRepository.findByRole("USER");
+        Optional<Role> role = roleRepository.findByRole("ADMIN");
         if (role.isPresent()) {
             List<Role> roleNameSet = Collections.singletonList(role.get());
             user.setRoles(roleNameSet);
@@ -150,6 +150,50 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean exists(String email) {
         return userRepository.existsUserByEmail(email);
+    }
+
+
+    public User getEmployeeById(Long id) throws Exception {
+        Optional<User> employee = userRepository.findById(id);
+
+        if(employee.isPresent()) {
+            return employee.get();
+        } else {
+            throw new Exception("No employee record exist for given id");
+        }
+    }
+
+    public User createOrUpdateEmployee(User entity)
+    {
+        if(entity.getId()  == null)
+        {
+            entity = userRepository.save(entity);
+
+            return entity;
+        }
+        else
+        {
+            Optional<User> employee = userRepository.findById(entity.getId());
+//
+//            if(employee.isPresent())
+//            {
+
+                User newEntity = employee.get();
+                newEntity.setEmail(entity.getEmail());
+                newEntity.setName(entity.getName());
+                newEntity.setSurName(entity.getSurName());
+
+                newEntity.setPassword(entity.getPassword());
+
+                newEntity = userRepository.save(newEntity);
+
+                return newEntity;
+//            } else {
+//                entity = userRepository.save(entity);
+//
+//                return entity;
+//            }
+     }
     }
 
 }

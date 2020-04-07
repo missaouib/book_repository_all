@@ -30,6 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void setCustomAuthenticationFailureHandler(CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
         this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
     }
+
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -54,6 +55,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .headers()
+                .frameOptions()
+                .sameOrigin()
+                .disable()
+                .authorizeRequests()
+                .antMatchers("/resources/**")
+                .permitAll()
+                .and()
                 .csrf()
                 .disable()
                 .authorizeRequests()
@@ -91,6 +100,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.setPasswordEncoder(passwordEncoder);
         return auth;
     }
-
-
 }

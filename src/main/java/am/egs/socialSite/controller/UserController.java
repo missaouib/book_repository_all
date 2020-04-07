@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static am.egs.socialSite.util.Constant.*;
 
@@ -112,7 +113,6 @@ public class UserController {
     }
 
 
-
     @RequestMapping(value = "/admin-Profile", method = RequestMethod.GET)
     public ModelAndView currentAdminName(@AuthenticationPrincipal UserPrincipal principal) {
         String email = principal.getUsername();
@@ -126,8 +126,24 @@ public class UserController {
         return modelAndView;
     }
 
+    @RequestMapping(path = {"/edit", "/edit/{id}"})
+    public String editEmployeeById(Model model, @PathVariable("id") Optional<Long> id) throws Exception {
+        if (id.isPresent()) {
+            User entity = userService.getEmployeeById(id.get());
+            model.addAttribute("employee", entity);
+//        } else {
+//            model.addAttribute("employee", new User());
+//        }
+        }
+        return "edit-user";
 
+    }
 
+    @RequestMapping(path = "/createEmployee", method = RequestMethod.POST)
+    public String createOrUpdateEmployee(User employee) {
+        userService.createOrUpdateEmployee(employee);
+        return "redirect:/admin/read";
+    }
 
     @PostMapping(UPDATE)
     public ResponseEntity update(@RequestBody User user) {

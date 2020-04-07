@@ -25,13 +25,13 @@
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <!--    <div class="container">-->
-    <!--        <div class="row py-2">-->
-    <!--            <div class="col-12">-->
-    <!--                <a class="btn btn-primary" th:href="@{/userProfile}">User profile</a>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
+        <div class="container">
+            <div class="row py-2">
+                <div class="col-12">
+                    <a class="btn btn-primary" th:href="@{/admin/read}">See All Users</a>
+                </div>
+            </div>
+        </div>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
@@ -65,7 +65,7 @@
                 </thead>
 
                 <tbody>
-                <tr th:each="users : ${user}">
+                <tr th:each="us : ${user}">
                     <td th:text="${user.name}">Name</td>
                     <td th:text="${user.surName}">Name</td>
                     <td th:text="${user.email}">Name</td>

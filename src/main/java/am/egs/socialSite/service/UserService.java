@@ -26,4 +26,8 @@ public interface UserService {
     void tryNumberIncrement(String email);
 
     boolean exists(final String email);
+ User getEmployeeById(Long id) throws Exception ;
+  User createOrUpdateEmployee(User entity);
+
+
 }

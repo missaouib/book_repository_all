@@ -30,12 +30,13 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @PostMapping(READ)
-    public ResponseEntity<List<User>> readUsersList() {
+    @GetMapping(READ)
+    public String readUsersList(Model model) {
         List<User> userList;
         userList = userService.findAllUsers();
+        model.addAttribute("users", userList);
         logger.info(" ADMIN successful read list of all users.");
-        return ResponseEntity.ok(userList);
+        return "list-users";
     }
 
     @DeleteMapping(DELETE)
@@ -44,6 +45,7 @@ public class AdminController {
         logger.info(" User successful deleted.");
         return new ResponseEntity("User successful deleted", HttpStatus.OK);
     }
+
 
 
 }
