@@ -8,6 +8,7 @@ public class FavoriteBook implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", columnDefinition = "BIGINT(20)", nullable = false)
     private Long id;
 
     @ManyToOne

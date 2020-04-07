@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class FavoriteBookServiceImpl implements FavoriteBookService {
@@ -32,8 +34,13 @@ public class FavoriteBookServiceImpl implements FavoriteBookService {
     }
 
 
+//    @Override
+//    public Object getOne(Long id) {
+//        return favoriteBookRepository.getOne(id);
+//    }
+
     @Override
-    public Object getOne(Long id) {
-        return favoriteBookRepository.getOne(id);
+    public List<FavoriteBook> findByUser(User user) {
+        return favoriteBookRepository.findByUser(user);
     }
 }

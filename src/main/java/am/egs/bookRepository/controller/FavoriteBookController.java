@@ -2,7 +2,9 @@ package am.egs.bookRepository.controller;
 
 import am.egs.bookRepository.model.Book;
 import am.egs.bookRepository.model.FavoriteBook;
+import am.egs.bookRepository.model.Role;
 import am.egs.bookRepository.model.User;
+import am.egs.bookRepository.payload.BookDto;
 import am.egs.bookRepository.security.UserPrincipal;
 import am.egs.bookRepository.service.BookService;
 import am.egs.bookRepository.service.FavoriteBookService;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import static am.egs.bookRepository.util.Constant.READ;
 
 @Controller
 @RequestMapping("/favoriteBook")
@@ -40,8 +47,9 @@ public class FavoriteBookController {
 
 
     @GetMapping(value = "/add/{id}")
-    public ModelAndView addFavoriteBook(@Valid FavoriteBook favoriteBook, BindingResult bindingResult,
-                                        @PathVariable Long id, @AuthenticationPrincipal UserPrincipal principal) {
+    public ModelAndView addFavoriteBook(  @PathVariable Long id, @AuthenticationPrincipal UserPrincipal principal) {
+//            @Valid FavoriteBook favoriteBook , BindingResult bindingResult,
+
         String email = principal.getUsername();
         User user = userService.findByEmail(email);
         Book book = bookService.getOne(id);
@@ -49,6 +57,7 @@ public class FavoriteBookController {
         ModelAndView modelAndView = new ModelAndView();
         final List<Book> bookList = bookService.findAllBooks();
         if (favoriteBookFromDb == null) {
+            FavoriteBook favoriteBook = new FavoriteBook();
             favoriteBook.setUser(user);
             favoriteBook.setBook(book);
             favoriteBookService.save(favoriteBook);
@@ -62,5 +71,30 @@ public class FavoriteBookController {
         }
         modelAndView.setViewName("books-list");
         return modelAndView;
+    }
+
+    @GetMapping("/all")
+    public String readFavoriteBooksList(Model model, @AuthenticationPrincipal UserPrincipal principal) {
+        logger.info(" User getting favorite books read.");
+        String email = principal.getUsername();
+        User user = userService.findByEmail(email);
+        List<Role> role = user.getRoles();
+        final List<FavoriteBook> userFavoriteBooks = favoriteBookService.findByUser(user);
+
+        Iterator<FavoriteBook> iterator = userFavoriteBooks.iterator();
+        List<Book> books = new ArrayList<>();
+        while (iterator.hasNext()) {
+            FavoriteBook favoriteBook = iterator.next();
+            Book book = favoriteBook.getBook();
+            books.add(book);
+        }
+        model.addAttribute("favoriteBooks", books);
+        if (role.stream().map(Role::getRole).anyMatch("USER"::equals)) {
+            model.addAttribute("control", "USER");
+        } else {
+            model.addAttribute("control", "ADMIN");
+        }
+        logger.info(" User successfully read list of all favorite books.");
+        return "favoriteBooks-list";
     }
 }

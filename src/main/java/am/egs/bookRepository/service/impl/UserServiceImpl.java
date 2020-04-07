@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
         LocalDateTime expireDate;
         User user = userMapper.map(userDto, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Optional<Role> role = roleRepository.findByRole("ADMIN");
+        Optional<Role> role = roleRepository.findByRole("USER");
         if (role.isPresent()) {
             List<Role> roleNameSet = Collections.singletonList(role.get());
             user.setRoles(roleNameSet);
