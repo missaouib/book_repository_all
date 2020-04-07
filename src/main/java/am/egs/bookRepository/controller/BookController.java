@@ -89,9 +89,17 @@ public class BookController {
     }
 
     @RequestMapping(value="/update", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String update(BookDto bookDto) {
+    public ModelAndView update(BookDto bookDto) {
+        logger.info(" User getting update this book.");
         bookService.update(bookDto);
-        return "redirect:/book/read";
+        ModelAndView modelAndView = new ModelAndView();
+        final List<Book> bookList = bookService.findAllBooks();
+        modelAndView.addObject("books", bookList);
+        modelAndView.addObject("process", "SUCCESS");
+        modelAndView.addObject("pw_success", "Well done! You successfully  updated this book.");
+        modelAndView.setViewName("books-list");
+        logger.info(" You successfully updated this book.");
+        return modelAndView;
     }
 
 }
