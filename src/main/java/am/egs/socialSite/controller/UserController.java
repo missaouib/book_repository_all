@@ -7,6 +7,7 @@ import am.egs.socialSite.payload.UserDto;
 import am.egs.socialSite.repository.UserRepository;
 import am.egs.socialSite.security.UserPrincipal;
 import am.egs.socialSite.service.UserService;
+import am.egs.socialSite.util.ResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 import static am.egs.socialSite.util.Constant.*;
-
-import am.egs.socialSite.util.ResponseStatus;
 
 @Controller
 @RequestMapping(value = USER)
@@ -75,6 +74,7 @@ public class UserController {
             result.rejectValue("email", null, "There is already an account registered with that email");
         }
         userService.addUser(userDto);
+        modelAndView.addObject("successMessage", "User has been registered successfully");
         logger.info(" User successful registered.");
         return ACTIVATION_CODE;
     }
@@ -142,25 +142,25 @@ public class UserController {
         return "redirect:/user/profile";
     }
 
-    @RequestMapping(value = "/loginFailed")
-    public String loginFailed() {
-        return "error-403";
-    }
-
-    @RequestMapping(value = "/error-423")
-    public String userLocked() {
-        return "error-423";
-    }
-
-    @RequestMapping(value = "/error-401")
-    public String userExpired() {
-        return "error-401";
-    }
-
-    @RequestMapping(value = "/error-404")
-    public String usernameNotFound() {
-        return "error-404";
-    }
+//    @RequestMapping(value = "/loginFailed")
+//    public String loginFailed() {
+//        return "error-403";
+//    }
+//
+//    @RequestMapping(value = "/error-423")
+//    public String userLocked() {
+//        return "error-423";
+//    }
+//
+//    @RequestMapping(value = "/error-401")
+//    public String userExpired() {
+//        return "error-401";
+//    }
+//
+//    @RequestMapping(value = "/error-404")
+//    public String usernameNotFound() {
+//        return "error-404";
+//    }
 
 
     /**
@@ -198,15 +198,15 @@ public class UserController {
     /**
      * Error page.
      */
-    @RequestMapping(value = REQUEST_ERROR, method = RequestMethod.GET)
-    public String error(HttpServletRequest request, Model model) {
-        model.addAttribute(ERROR_CODE, ERROR + request.getAttribute("javax.servlet.error.status_code"));
-        StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append("<ul>");
-
-        errorMessage.append("</ul>");
-        model.addAttribute(ERROR_MESSAGE, errorMessage.toString());
-        return PAGE_ERROR;
-    }
+//    @RequestMapping(value = REQUEST_ERROR, method = RequestMethod.GET)
+//    public String error(HttpServletRequest request, Model model) {
+//        model.addAttribute(ERROR_CODE, ERROR + request.getAttribute("javax.servlet.error.status_code"));
+//        StringBuilder errorMessage = new StringBuilder();
+//        errorMessage.append("<ul>");
+//
+//        errorMessage.append("</ul>");
+//        model.addAttribute(ERROR_MESSAGE, errorMessage.toString());
+//        return PAGE_ERROR;
+//    }
 
 }

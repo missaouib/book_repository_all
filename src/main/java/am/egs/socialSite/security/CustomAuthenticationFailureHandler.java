@@ -1,23 +1,22 @@
 package am.egs.socialSite.security;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import am.egs.socialSite.exception.UserNotFoundException;
 import am.egs.socialSite.service.UserService;
 import am.egs.socialSite.util.ResponseStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 /**
@@ -39,7 +38,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
      * Constructor
      */
 
-        private UserService userService;
+    private UserService userService;
 
     @Autowired
     public CustomAuthenticationFailureHandler(final UserService userService) {
@@ -84,7 +83,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
             }
             message = "Bad Credentials";
             errorCode = ResponseStatus.USER_BAD_CREDENTIALS.getCode();
-                        response.sendRedirect("/user/error");
+//                        response.sendRedirect("/user/error");
 
         } else if (exception.getClass().equals(LockedException.class)) {
             errorCode = ResponseStatus.USER_LOCKED.getCode();
@@ -96,22 +95,16 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         } else if (exception.getClass().equals(AccountExpiredException.class)) {
             errorCode = ResponseStatus.UNAUTHORIZED_REQUEST.getCode();
             message = "Cannot find a user";
-        }else if (exception.getClass().equals(UserNotFoundException.class)) {
-            errorCode = ResponseStatus.USER_NOT_FOUND.getCode();
-            message = "Cannot find a user";
-        }
-
-        else {
+        } else {
             message = "Bad Credentials";
             errorCode = ResponseStatus.USER_BAD_CREDENTIALS.getCode();
         }
         System.out.println(message);
         LOGGER.debug(message);
 
-        request.getRequestDispatcher(String.format("/login-error?error=%s", errorCode)).forward(request, response);
+        request.getRequestDispatcher(String.format("/user/login-error?error=%s", errorCode)).forward(request, response);
     }
 }
-
 
 
 //package am.egs.socialSite.security;

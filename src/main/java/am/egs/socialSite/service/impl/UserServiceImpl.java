@@ -1,7 +1,6 @@
 package am.egs.socialSite.service.impl;
 
 import am.egs.socialSite.exception.DuplicateUserException;
-import am.egs.socialSite.exception.UserNotFoundException;
 import am.egs.socialSite.mappers.UserMapper;
 import am.egs.socialSite.model.Role;
 import am.egs.socialSite.model.User;
@@ -58,7 +57,7 @@ public class UserServiceImpl implements UserService {
         LocalDateTime expireDate;
         Optional<User> currentUser = userRepository.getUserByEmail(userDto.getEmail());
         if (currentUser.isPresent()) {
-            throw new DuplicateUserException();
+            throw new DuplicateUserException("There are already user with this email.");
         }
         User user = userMapper.map(userDto, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -150,9 +149,9 @@ public class UserServiceImpl implements UserService {
     public void tryNumberIncrement(String email) {
         LocalDateTime unLockedTime;
         User user = userRepository.findUserByEmail(email);
-        if (user == null) {
-            throw new UserNotFoundException("User Not Found");
-        }
+//        if (user == null) {
+//            throw new UserNotFoundException("User Not Found");
+//        }
         int count = user.getTryNumber();
         count++;
         user.setTryNumber(count);
