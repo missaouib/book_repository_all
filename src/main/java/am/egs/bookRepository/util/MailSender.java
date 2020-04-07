@@ -27,7 +27,7 @@ private final JavaMailSender mailSender;
         String message = String.format(
                 "Hello, %s! welcome " +
                         "click on this link to activate your email " +
-                        "http://localhost:%s/user/activate/%s",
+                        "http://localhost:%s/main/activate/%s",
                 user.getName(), port, user.getActivationCode()
         );
 

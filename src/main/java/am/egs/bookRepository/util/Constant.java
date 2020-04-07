@@ -11,7 +11,7 @@ public final class Constant {
     public static final String SIGN_IN = "/signIn";
     public static final String LOGIN = "login";
     public static final String UPDATE = "/update";
-    public static final String REDIRECT_USER_SIGN_IN = "redirect:/user/signIn";
+    public static final String REDIRECT_USER_SIGN_IN = "redirect:/main/signIn";
     public static final String ADMIN = "/admin";
     public static final String READ = "/read";
     public static final String DELETE = "/delete";

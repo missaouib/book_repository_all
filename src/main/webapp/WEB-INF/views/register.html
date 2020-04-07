@@ -73,7 +73,7 @@
 <div class="container">
     <div class="row main">
         <div class="main-login main-center">
-            <form autocomplete="off" action="#" th:action="@{/user/signUp}"
+            <form autocomplete="off" action="#" th:action="@{/main/signUp}"
                   th:object="${user}" method="post" class="form-horizontal"
                   role="form">
                 <fieldset>
@@ -170,7 +170,7 @@
                 </fieldset>
             </form>
             <div class="panel-footer ">
-                Already have an account? <a th:href="@{/user/signIn}" onClick="">
+                Already have an account? <a th:href="@{/main/signIn}" onClick="">
                 Login </a>
             </div>
         </div>

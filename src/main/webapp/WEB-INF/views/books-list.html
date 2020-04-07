@@ -30,7 +30,7 @@
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">Actions</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" sec:authorize="isAuthenticated()" th:href="@{/user/profile}">Your Profile</a>
+                    <a class="dropdown-item" sec:authorize="isAuthenticated()" th:href="@{/userPage/profile}">Your Profile</a>
                     <a class="dropdown-item"  th:if="${control == 'ADMIN'}" th:href="@{/admin/read}">Users</a>
                     <a class="dropdown-item btn nBtn">Add Book</a>
                     <form class="dropdown-item" th:action="@{/logout}" method="post">
@@ -86,46 +86,6 @@
 </div>
 </div>
 
-
-<!--Modal form for book update-->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <form th:action="@{/book/update}" method="put">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Book</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <!--                        <label  class="col-form-label">Id:</label>-->
-                        <input type="hidden" class="form-control" id="idEdit" name="id">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-form-label">Title:</label>
-                        <input type="text" class="form-control" id="titleEdit" name="title" >
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-form-label">Author:</label>
-                        <input type="text" class="form-control" id="authorEdit" name="author">
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-
-
 <!--#Modal for book create-->
 <div class="myFormCreate">
     <form th:action="@{/book/create}" method="post" >
@@ -165,6 +125,45 @@
 </div>
 <!--End form-->
 
+<!--Modal form for book update-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <form th:action="@{/book/update}" method="put">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Book</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <!--                        <label  class="col-form-label">Id:</label>-->
+                        <input type="hidden" class="form-control" id="idEdit" name="id">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-form-label">Title:</label>
+                        <input type="text" class="form-control" id="titleEdit" name="title" >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-form-label">Author:</label>
+                        <input type="text" class="form-control" id="authorEdit" name="author">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--End form-->
+
 <!--#Modal for removing books-->
 <div class="modal fade" id="removeModalCenter" tabindex="-1" role="dialog" aria-labelledby="removeModalCenterTitle"
      aria-hidden="true">
@@ -188,6 +187,7 @@
         </div>
     </div>
 </div>
+<!--End form-->
 
 <script>
     $(document).ready(function () {
@@ -197,13 +197,6 @@
             $('.myFormCreate #title').val('');
             $('.myFormCreate #author').val('');
             $('.myFormCreate #myModalCreate').modal();
-        });
-        //for delete book
-        $('.table .delBtn').on('click', function (event) {
-            event.preventDefault();
-            var href = $(this).attr('href');
-            $('#removeModalCenter #delRef').attr('href', href);
-            $('#removeModalCenter').modal();
         });
         //for update book
         $('.table .btn-success').on('click', function (event) {
@@ -216,10 +209,14 @@
             });
             $('#editModal').modal();
         });
-
+        //for delete book
+        $('.table .delBtn').on('click', function (event) {
+            event.preventDefault();
+            var href = $(this).attr('href');
+            $('#removeModalCenter #delRef').attr('href', href);
+            $('#removeModalCenter').modal();
+        });
     });
-
-
 </script>
 
 <!-- Optional JavaScript -->

@@ -100,7 +100,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         System.out.println(message);
         LOGGER.debug(message);
 
-        request.getRequestDispatcher(String.format("/user/login-error?error=%s", errorCode)).forward(request, response);
+        request.getRequestDispatcher(String.format("/main/login-error?error=%s", errorCode)).forward(request, response);
     }
 }
 

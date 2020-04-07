@@ -4,6 +4,9 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
+
+    <title>User Profile</title>
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,7 +15,6 @@
     <script src="https://code.jquery.com/jquery.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-    <title>User Profile</title>
 </head>
 
 <body>
@@ -31,6 +33,7 @@
                    aria-expanded="false">Actions</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
                     <a class="dropdown-item" th:href="@{/book/read}">Books</a>
+                    <a class="dropdown-item chBtn">Change Password</a>
                     <form class="dropdown-item" th:action="@{/logout}" method="post">
                         <button sec:authorize="isAuthenticated()" class="btn-outline">Logout</button>
                     </form>
@@ -49,6 +52,19 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
+
+            <div th:if="${process == 'SUCCESS'}">
+                <div class="alert alert-success" role="alert"
+                     th:utext="${pw_success}">...
+                </div>
+            </div>
+
+            <div th:if="${process == 'ERROR'}">
+                <div class="alert alert-danger" role="alert"
+                     th:utext="${pw_error}">...
+                </div>
+            </div>
+
             <table class="table table-bordered my-2">
 
                 <thead>
@@ -66,7 +82,8 @@
                     <td th:text="${user.surName}">surName</td>
                     <td th:text="${user.age}">age</td>
                     <td>
-                        <a class="btn btn-success eBtn" th:href="@{/user/edit/(id=${user.id})}" >
+                        <a class="btn btn-success eBtn"
+                           th:href="@{/user/edit/(id=${user.id})}" >
                             <i class="fas fa-edit"></i></a>
                     </td>
                 </tr>
@@ -119,6 +136,54 @@
         </div>
     </form>
 </div>
+<!--End form-->
+
+<!--#Modal form for change password-->
+<div class="myFormChangePassword">
+    <form th:action="@{/userPage/savePass_change}" method="post" th:object="${user}">
+        <div class="modal fade" id="myModalChangePassword" tabindex="-1" role="dialog"
+             aria-labelledby="modalLabelCreate"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabelCreate">Change Password</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="alert alert-info">
+                            Input data to the fields
+                        </p>
+                        <input type="hidden" name="id" th:field="${user.id}"/>
+
+                        <div class="form-group">
+                            <label class="col-form-label">Old password:</label>
+                            <input type="text" class="form-control" id="password" name="password"
+                                   th:field="${user.name}" value="" required/>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">New password:</label>
+                            <input type="text" class="form-control"
+                                   th:field="${user.password}" value="" required/>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Confirm new password:</label>
+                            <input type="text" class="form-control" value="" required/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Save"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--End form-->
 
 
 <script>
@@ -132,11 +197,17 @@
                 $('#nameEdit').val(user.name);
                 $('#surNameEdit').val(user.surName);
                 $('#ageEdit').val(user.age);
-
             });
             $('#editModal').modal();
         });
-
+        // for change password
+        $('.chBtn').on('click', function (event) {
+            event.preventDefault();
+            $('.myFormChangePassword #password').val('');
+            $('.myFormChangePassword  ').val('');
+            $('.myFormChangePassword ').val('');
+            $('.myFormChangePassword #myModalChangePassword').modal();
+        });
     });
 </script>
 

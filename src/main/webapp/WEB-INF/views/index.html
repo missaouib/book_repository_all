@@ -34,7 +34,7 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand"  th:href="@{/user/}">Book Repository</a>
+    <a class="navbar-brand"  th:href="@{/main/}">Book Repository</a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,15 +43,15 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/profile}">Your Profile</a>
+                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/userPage/profile}">Your Profile</a>
 
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
             <a sec:authorize="!isAuthenticated()" class="btn btn-outline-primary"
-               th:href="@{/user/signIn}">Login</a>
+               th:href="@{/main/signIn}">Login</a>
             <a sec:authorize="!isAuthenticated()" class="btn btn-outline-primary"
-               th:href="@{/user/signUp}">Register</a>
+               th:href="@{/main/signUp}">Register</a>
             <button sec:authorize="isAuthenticated()" class="btn btn-outline-primary">Logout</button>
         </form>
     </div>
