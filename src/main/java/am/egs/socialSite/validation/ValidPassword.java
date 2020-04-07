@@ -18,7 +18,7 @@ import javax.validation.Payload;
 @Retention(RUNTIME)
 public @interface ValidPassword {
 
-    String message() default " *Minimum eight characters, at least one letter and one number:";
+    String message() default "*Invalid Password";
 
     Class<?>[] groups() default {};
 

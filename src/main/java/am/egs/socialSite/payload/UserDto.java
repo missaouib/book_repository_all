@@ -3,6 +3,7 @@ package am.egs.socialSite.payload;
 import am.egs.socialSite.validation.ValidEmail;
 import am.egs.socialSite.validation.ValidPassword;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,16 +11,22 @@ import javax.validation.constraints.*;
 import java.util.Objects;
 
 public class UserDto {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @NotNull
     @Size(min = 3, max = 12, message = "{Size.name}")
     private String name;
 
     @NotEmpty(message = "{NotEmpty.surName}")
     private String surName;
+
+    /**
+     * TODO
+     * registracia lineluc 0 e age dashum grum
+     */
 
     @NotNull(message = "{age.notNull}")
     @Min(value = 18, message = "{age.size}")
@@ -30,6 +37,7 @@ public class UserDto {
     private String email;
 
     @ValidPassword
+//  @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")
     private String password;
 
 
@@ -47,6 +55,7 @@ public class UserDto {
     public Long getId() {
         return id;
     }
+
 
 
     public String getEmail() {
@@ -90,22 +99,10 @@ public class UserDto {
     }
 
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(email, password, name, surName);
-    }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserDto userDto = (UserDto) o;
-        return Objects.equals(id, userDto.id) &&
-                Objects.equals(name, userDto.name) &&
-                Objects.equals(surName, userDto.surName) &&
-                Objects.equals(age, userDto.age) &&
-                Objects.equals(email, userDto.email) &&
-                Objects.equals(password, userDto.password);
+    public int hashCode() {
+        return Objects.hash( email, password, name, surName);
     }
 }
 

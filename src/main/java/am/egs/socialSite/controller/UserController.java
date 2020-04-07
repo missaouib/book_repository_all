@@ -39,17 +39,25 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+
+    @PostMapping("/signed-successfully")
+    public String signedSuccessfully() {
+        return "redirect:/user/userProfile";
+    }
+
+    @GetMapping("/userProfile")
+    public String userProfile(Model model) {
+        UserDto userDto = new UserDto();
+
+        model.addAttribute("user", userDto);
+        return "userProfile";
+    }
+
     @PostMapping(ACTIVATE_CODE)
     public String activate(@PathVariable String code) {
         userService.activateUser(code);
         logger.info(" Activation code successful sended to user and successfully confirmed");
         return ACTIVATION_CODE;
-    }
-
-
-    @GetMapping("/userProfile")
-    public String userProfilePage() {
-        return "userProfile";
     }
 
     @GetMapping(HOME_PAGE)
@@ -91,7 +99,7 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         userService.signIn(email, password);
         logger.info(" User successful loged.");
-        return USER_PROFILE;
+        return "redirect:userProfile";
     }
 
     @PostMapping(UPDATE)

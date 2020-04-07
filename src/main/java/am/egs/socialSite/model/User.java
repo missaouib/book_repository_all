@@ -3,7 +3,6 @@ package am.egs.socialSite.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "user")
@@ -185,34 +184,6 @@ public class User {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return tryNumber == user.tryNumber &&
-                isEnabled == user.isEnabled &&
-                isAccountNonExpired == user.isAccountNonExpired &&
-                isAccountNonLocked == user.isAccountNonLocked &&
-                Objects.equals(id, user.id) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(name, user.name) &&
-                Objects.equals(surName, user.surName) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(age, user.age) &&
-                Objects.equals(expireDate, user.expireDate) &&
-                Objects.equals(lockedTime, user.lockedTime) &&
-                Objects.equals(unLockedTime, user.unLockedTime) &&
-                Objects.equals(activationCode, user.activationCode) &&
-                Objects.equals(emailVerified, user.emailVerified) &&
-                Objects.equals(roles, user.roles);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, name, surName, password, age, tryNumber, expireDate, lockedTime, unLockedTime, activationCode, emailVerified, isEnabled, isAccountNonExpired, isAccountNonLocked, roles);
     }
 
     @Override

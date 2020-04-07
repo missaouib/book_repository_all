@@ -53,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
                 .authorizeRequests()
+                //              .loginProcessingUrl("/authenticateTheUser")
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest()
@@ -60,14 +61,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/user/signIn")
+                .successForwardUrl("/user/signed-successfully")
                 .loginProcessingUrl("/authenticateTheUser")
                 .permitAll();
+
+
     }
 
     @Override
-protected void configure(AuthenticationManagerBuilder auth) {
-    auth.authenticationProvider(authenticationProvider()); // inject anelu hamar bavarar e metodn aystex kanchel
-}
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(authenticationProvider());
+    }
 
 
     @Bean
