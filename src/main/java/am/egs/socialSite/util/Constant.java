@@ -19,7 +19,7 @@ public final class Constant {
     public static final String ACTIVATION_CODE = "activationCode";
     public static final String USER_PROFILE = "userProfile";
 
-    public static final String DJADJ = "user.auth.failed";
+    public static final String USER_AUTH_FAILED = "user.auth.failed";
 
 
     public static final String NOT_VERIFIED = "email.not.verified";

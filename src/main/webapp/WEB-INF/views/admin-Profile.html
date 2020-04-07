@@ -35,31 +35,43 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="container">
-        <div class="row py-2">
-            <div class="col-12">
-                <a class="btn btn-primary" th:href="@{/admin/read}">All Users</a>
-            </div>
-        </div>
-    </div>
+<!--    <div class="container">-->
+<!--        <div class="row py-2">-->
+<!--            <div class="col-12">-->
+<!--            </div>-->
+<!--            <div class="col-12">-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </div>-->
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active"></li>
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/admin/read}">All Users</a>
+
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/book/read}">Books</a>
+
+            </li>
+
         </ul>
         <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
-            <button sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0">Logout</button>
+
+            <button sec:authorize="isAuthenticated()" class="btn btn-primary">Logout</button>
         </form>
     </div>
 </nav>
 
-<h2> Hello, Admin!</h2>
+<!--<h2> Hello, Admin!</h2>-->
 
 <div class="container">
     <div class="row py-2">
-        <div class="col-12">
-            <div th:text="${time}"/>
-        </div>
+
+<!--        <div class="col-12">-->
+<!--            <div th:text="${time}"/>-->
+<!--        </div>-->
         <div class="col-12">
             <table class="table table-bordered my-2">
                 <thead>

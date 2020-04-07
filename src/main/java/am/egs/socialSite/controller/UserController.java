@@ -104,7 +104,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("time", LocalDateTime.now());
         modelAndView.addObject("user", userDto);
-        modelAndView.setViewName("user-Profile");
+        modelAndView.setViewName("user-profile");
         return modelAndView;
     }
 
@@ -130,7 +130,7 @@ public class UserController {
         } else {
             model.addAttribute("user", new User());
         }
-        return "edit-user";
+        return "user-edit";
     }
 
     @PostMapping(UPDATE)
@@ -160,7 +160,7 @@ public class UserController {
 //            messageKey = NOT_VERIFIED;
 
         }else {
-            messageKey = DJADJ;
+            messageKey = USER_AUTH_FAILED;
         }
 
         errorMessage = messageSource.getMessage(messageKey, null, locale);

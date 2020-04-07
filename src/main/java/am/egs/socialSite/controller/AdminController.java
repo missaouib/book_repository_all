@@ -48,7 +48,7 @@ public class AdminController {
         final List<User> userList = userService.findAllUsers();
         model.addAttribute("users", userList);
         logger.info(" ADMIN successful read list of all users.");
-        return "list-users";
+        return "users-list";
     }
 
     @RequestMapping(value = "/delete/{id}", method={RequestMethod.DELETE, RequestMethod.GET})
@@ -68,7 +68,7 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("time", LocalDateTime.now());
         modelAndView.addObject("user", userDto);
-        modelAndView.setViewName("admin-Profile");
+        modelAndView.setViewName("admin-profile");
         return modelAndView;
     }
 }

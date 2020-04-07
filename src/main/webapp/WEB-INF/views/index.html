@@ -23,36 +23,41 @@
 <body>
 
 <style>
-    body{
+    body {
         height: 100%;
         background-repeat: no-repeat;
-        background:url(https://i.ytimg.com/vi/4kfXjatgeEU/maxresdefault.jpg);
+        background: url(https://i.ytimg.com/vi/4kfXjatgeEU/maxresdefault.jpg);
         font-family: 'Oxygen', sans-serif;
         background-size: cover;
     }
 </style>
 
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" th:href="@{/user/}">Book Repository</a>
+    <a class="navbar-brand"  th:href="@{/user/}">Book Repository</a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active"></li>
-        </ul>
+            <li class="nav-item active">
+<!--                <a class="nav-link" th:href="@{/book/read}">Books</a>-->
+                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/profile}">Your Profile</a>
 
+            </li>
+        </ul>
         <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
-            <a sec:authorize="!isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0"
+            <a sec:authorize="!isAuthenticated()" class="btn btn-primary"
                th:href="@{/user/signIn}">Login</a>
-            <a sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0"
-               th:href="@{/user/profile}">Your Profile</a>
-            <a sec:authorize="!isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0"
+
+<!--            <a sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0"-->
+<!--               th:href="@{/user/profile}">Your Profile</a>-->
+
+            <a sec:authorize="!isAuthenticated()" class="btn btn-primary"
                th:href="@{/user/signUp}">Register</a>
-            <button sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0">Logout</button>
+            <button sec:authorize="isAuthenticated()" class="btn btn-primary">Logout</button>
         </form>
     </div>
 </nav>
