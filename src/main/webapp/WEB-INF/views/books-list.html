@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 
+
 </head>
 
 <body>
@@ -110,12 +111,12 @@
 
                     <div class="form-group">
                         <label class="col-form-label">Title:</label>
-                        <input type="text" class="form-control" id="titleEdit" name="title">
+                        <input type="text" class="form-control" id="titleEdit" name="title"  require/>
                     </div>
 
                     <div class="form-group">
                         <label class="col-form-label">Author:</label>
-                        <input type="text" class="form-control" id="authorEdit" name="author">
+                        <input type="text" class="form-control" id="authorEdit" name="author"  require/>
                     </div>
 
                 </div>
@@ -131,7 +132,7 @@
 
 <!--#Modal for book create-->
 <div class="myFormCreate">
-    <form th:action="@{/book/create}" method="post">
+    <form th:action="@{/book/create}" method="post" >
         <div class="modal fade" id="myModalCreate" tabindex="-1" role="dialog" aria-labelledby="modalLabelCreate"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -149,11 +150,12 @@
 
                         <div class="form-group">
                             <label class="col-form-label">Title:</label>
-                            <input type="text" class="form-control" id="title" name="title" value=""/>
+                            <input type="text" class="form-control" id="title" name="title" value="" required/>
+
                         </div>
                         <div class="form-group">
                             <label class="col-form-label">Author:</label>
-                            <input type="text" class="form-control" id="author" name="author" value=""/>
+                            <input type="text" class="form-control" id="author" name="author" value="" required/>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -220,6 +222,8 @@
         });
 
     });
+
+
 </script>
 
 <!-- Optional JavaScript -->
