@@ -46,6 +46,12 @@ public class UserController {
         return ACTIVATION_CODE;
     }
 
+
+    @GetMapping("/userProfile")
+    public String userProfilePage() {
+        return "userProfile";
+    }
+
     @GetMapping(HOME_PAGE)
     public String indexPage() {
         return INDEX;

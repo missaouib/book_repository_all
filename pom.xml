@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>am.egs</groupId>
-    <artifactId>socialSyte</artifactId>
+    <artifactId>socialSite</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>socialSite</name>
     <description>Social site project for Spring Boot</description>
