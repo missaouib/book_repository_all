@@ -17,8 +17,12 @@ import static am.egs.socialSite.util.Constant.*;
 @ControllerAdvice
 public class CustomExceptionHandler {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public CustomExceptionHandler (final UserService userService ) {
+        this.userService = userService;
+    }
 
     @ExceptionHandler({
             UserNotFoundException.class,

@@ -130,9 +130,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void tryNumberIncrement(String email, String password) {
         LocalDateTime unLockedTime;
-        int count;
         User user = userRepository.findUserByEmail(email);
-        count = user.getTryNumber();
+        int count = user.getTryNumber();
         count++;
         user.setTryNumber(count);
         if (count >= 3) {

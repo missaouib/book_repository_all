@@ -2,14 +2,16 @@ package am.egs.socialSite.payload;
 
 import am.egs.socialSite.validation.ValidEmail;
 import am.egs.socialSite.validation.ValidPassword;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class UserDto {
+public class UserDto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,11 +23,6 @@ public class UserDto {
 
     @NotEmpty(message = "{NotEmpty.surName}")
     private String surName;
-
-    /**
-     * TODO
-     * registracia lineluc 0 e age dashum grum
-     */
 
     @NotNull(message = "{age.notNull}")
     @Min(value = 18, message = "{age.size}")

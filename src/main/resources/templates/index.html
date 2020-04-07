@@ -31,9 +31,10 @@
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
-            <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/signIn}">Login</a>
-                        <button sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0">Logout</button>
-            <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/signUp}">Register</a>
+            <a  sec:authorize="!isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/signIn}">Login</a>
+            <a  sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/userProfile}">User Profile</a>
+            <button sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0">Logout</button>
+            <a  sec:authorize="!isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/signUp}">Register</a>
         </form>
     </div>
 </nav>

@@ -12,10 +12,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>
-    <title>ToDo list application</title>
+    <title>User Profile</title>
 </head>
 
 <body>
+
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" th:href="@{/user/}">Book repository</a>
@@ -52,7 +53,7 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <div th:text="${time}"/>
+<!--            <div th:text="${time}"/>-->
 
             <!--            <a class="btn btn-primary" th:href="@{/todo}">Add Todo</a>-->
         </div>
@@ -64,20 +65,21 @@
 <!--                    <th scope="col">Id</th>-->
                     <th scope="col">Name</th>
                     <th scope="col">Surname</th>
-                    <th scope="col">Age</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Age</th>
 <!--                    <th scope="col">Password</th>-->
                     <th scope="col">Actions</th>
 
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+
+                <tr th:each="us : ${user}">
 <!--                    <td th:object="${user}" th:text="*{id}"></td>-->
-                    <td th:object="${user}" th:field="*{name}"></td>
-                    <td th:object="${user}" th:field="*{surName}"></td>
-                    <td th:object="${user}" th:field="*{age}"></td>
-                    <td th:object="${user}" th:field="*{email}"></td>
+                    <td th:text="${user.name}">Name</td>
+                    <td th:text="${user.surName}">Name</td>
+                    <td th:text="${user.email}">Name</td>
+                    <td th:text="${user.age}">Name</td>
 <!--                    <td th:object="${user}" th:text="*{password}"></td>-->
 
                     <!--                    <th scope="row">1</th>-->

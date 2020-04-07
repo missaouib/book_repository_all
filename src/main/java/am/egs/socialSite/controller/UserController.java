@@ -4,6 +4,7 @@ import am.egs.socialSite.mappers.UserMapper;
 import am.egs.socialSite.model.User;
 import am.egs.socialSite.payload.UserDto;
 import am.egs.socialSite.repository.UserRepository;
+import am.egs.socialSite.security.UserPrincipal;
 import am.egs.socialSite.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,15 +14,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.time.LocalTime;
 
 import static am.egs.socialSite.util.Constant.*;
 
@@ -42,27 +43,6 @@ public class UserController {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-    }
-
-    @GetMapping("/userProfile")
-    public String userProfile(Model model) {
-        UserDto userDto = new UserDto();
-        userDto.setName("Valod");
-        model.addAttribute("time", LocalTime.now());
-        model.addAttribute("user",userDto);
-        return "userProfile";
-    }
-
-    @PostMapping("/signed-successfully")
-    public String signedSuccessfully() {
-        return "redirect:/user/userProfile";
-    }
-
-    @PostMapping(ACTIVATE_CODE)
-    public String activate(@PathVariable String code) {
-        userService.activateUser(code);
-        logger.info(" Activation code successful  to user and successfully confirmed");
-        return ACTIVATION_CODE;
     }
 
     @GetMapping(HOME_PAGE)
@@ -92,18 +72,42 @@ public class UserController {
         return ACTIVATION_CODE;
     }
 
+    @PostMapping(ACTIVATE_CODE)
+    public String activate(@PathVariable String code) {
+        userService.activateUser(code);
+        logger.info(" Activation code successful  to user and successfully confirmed");
+        return ACTIVATION_CODE;
+    }
+
     @GetMapping(SIGN_IN)
     public String loginPage() {
         return LOGIN;
     }
 
-    @PostMapping(SIGN_IN)
+    @PostMapping("/signed-successfully")
+    public String signedSuccessfully() {
+        return "redirect:/user/userProfile";
+    }
+
+    @PostMapping("/signIn")
     public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password) {
         final Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         userService.signIn(email, password);
         logger.info(" User successful logged.");
         return "redirect:/user/userProfile";
+    }
+
+    @RequestMapping(value = "/userProfile", method = RequestMethod.GET)
+    public ModelAndView currentUserName(@AuthenticationPrincipal UserPrincipal principal) {
+        String email = principal.getUsername();
+        System.out.println(email);
+        User user = userRepository.findUserByEmail(email);
+        UserDto userDto = userMapper.map(user, UserDto.class);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("user", userDto);
+        modelAndView.setViewName("userProfile");
+        return modelAndView;
     }
 
     @PostMapping(UPDATE)
