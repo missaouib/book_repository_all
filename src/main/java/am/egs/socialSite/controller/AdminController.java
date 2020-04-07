@@ -1,18 +1,21 @@
 package am.egs.socialSite.controller;
 
+import am.egs.socialSite.mappers.UserMapper;
 import am.egs.socialSite.model.User;
+import am.egs.socialSite.payload.UserDto;
+import am.egs.socialSite.repository.UserRepository;
+import am.egs.socialSite.security.UserPrincipal;
 import am.egs.socialSite.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static am.egs.socialSite.util.Constant.*;
@@ -24,10 +27,14 @@ public class AdminController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
+    private UserRepository userRepository;
+    private UserMapper userMapper;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, UserRepository userRepository, UserMapper userMapper) {
         this.userService = userService;
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     @GetMapping(READ)
@@ -36,7 +43,6 @@ public class AdminController {
         userList = userService.findAllUsers();
         model.addAttribute("users", userList);
         logger.info(" ADMIN successful read list of all users.");
-
         return "list-users";
     }
 
@@ -45,9 +51,19 @@ public class AdminController {
         userService.delete(id);
         logger.info(" User successful deleted.");
         return "redirect:/admin/read";
-//        return new ResponseEntity("User successful deleted", HttpStatus.OK);
     }
 
-
-
+    @RequestMapping(value = "/admin-Profile", method = RequestMethod.GET)
+    public ModelAndView currentAdminName(@AuthenticationPrincipal UserPrincipal principal) {
+        String email = principal.getUsername();
+        System.out.println(email);
+        userService.signInSuccess(email);
+        User user = userRepository.findUserByEmail(email);
+        UserDto userDto = userMapper.map(user, UserDto.class);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("time", LocalDateTime.now());
+        modelAndView.addObject("user", userDto);
+        modelAndView.setViewName("admin-Profile");
+        return modelAndView;
+    }
 }

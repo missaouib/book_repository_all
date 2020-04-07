@@ -1,6 +1,7 @@
 package am.egs.socialSite.controller;
 
 import am.egs.socialSite.mappers.UserMapper;
+import am.egs.socialSite.model.Role;
 import am.egs.socialSite.model.User;
 import am.egs.socialSite.payload.UserDto;
 import am.egs.socialSite.repository.UserRepository;
@@ -9,8 +10,6 @@ import am.egs.socialSite.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,8 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static am.egs.socialSite.util.Constant.*;
@@ -89,21 +88,12 @@ public class UserController {
         return "redirect:/user/userProfile";
     }
 
-//    @PostMapping("/signIn")
-//    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password) {
-//        final Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-//        SecurityContextHolder.getContext().setAuthentication(authenticate);
-//        userService.signIn(email, password);
-//        logger.info(" User successful logged.");
-//        return "redirect:/user/userProfile";
-//    }
-
-
     @RequestMapping(value = "/userProfile", method = RequestMethod.GET)
     public ModelAndView currentUserName(@AuthenticationPrincipal UserPrincipal principal) {
         String email = principal.getUsername();
         System.out.println(email);
         User user = userRepository.findUserByEmail(email);
+        userService.signInSuccess(email);
         UserDto userDto = userMapper.map(user, UserDto.class);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("time", LocalDateTime.now());
@@ -112,52 +102,37 @@ public class UserController {
         return modelAndView;
     }
 
-
-    @RequestMapping(value = "/admin-Profile", method = RequestMethod.GET)
-    public ModelAndView currentAdminName(@AuthenticationPrincipal UserPrincipal principal) {
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String current(@AuthenticationPrincipal UserPrincipal principal) {
         String email = principal.getUsername();
         System.out.println(email);
         User user = userRepository.findUserByEmail(email);
-        UserDto userDto = userMapper.map(user, UserDto.class);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("time", LocalDateTime.now());
-        modelAndView.addObject("user", userDto);
-        modelAndView.setViewName("admin-Profile");
-        return modelAndView;
+        userService.signInSuccess(email);
+        List<Role> role = user.getRoles();
+        if (role.stream().map(Role::getRole).anyMatch("USER"::equals)) {
+            return "redirect:/user/userProfile";
+        } else {
+            return "redirect:/admin/admin-Profile";
+        }
     }
 
     @RequestMapping(path = {"/edit", "/edit/{id}"})
     public String editEmployeeById(Model model, @PathVariable("id") Optional<Long> id) throws Exception {
         if (id.isPresent()) {
-            User entity = userService.getEmployeeById(id.get());
-            model.addAttribute("employee", entity);
+            User entity = userService.getUserById(id.get());
+            model.addAttribute("user", entity);
         } else {
-            model.addAttribute("employee", new User());
+            model.addAttribute("user", new User());
         }
         return "edit-user";
     }
 
-
-//    @RequestMapping(path = "/createEmployee", method = RequestMethod.POST)
-//    public String createOrUpdateEmployee(User employee) {
-//        userService.createOrUpdateEmployee(employee);
-//        return "redirect:/admin/read";
-//    }
-
     @PostMapping(UPDATE)
-//    public String update(@RequestBody User user) {
-    public String update(User user,@AuthenticationPrincipal UserPrincipal principal) {
-
-//        userService.update(user);
-        userService.createOrUpdateEmployee(user,principal);
-
+    public String update(User user, @AuthenticationPrincipal UserPrincipal principal) {
+        userService.createOrUpdateEmployee(user, principal);
         logger.info(" User account was successful updated.");
-        return "redirect:/admin/read";
-
-//        return new ResponseEntity("User successful updated!", HttpStatus.MOVED_PERMANENTLY);
+        return "redirect:/user/profile";
     }
-
-
 
     @RequestMapping(value = "/loginFailed")
     public String loginFailed() {
@@ -178,6 +153,4 @@ public class UserController {
     public String usernameNotFound() {
         return "error-404";
     }
-
-
 }

@@ -16,12 +16,6 @@
 </head>
 
 <body>
-<!--<style>-->
-<!--    body {-->
-<!--        background-color: #017e57;-->
-<!--    }-->
-
-<!--</style>-->
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" th:href="@{/user/}">Book repository</a>
@@ -30,25 +24,14 @@
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-<!--    <div class="container">-->
-<!--        <div class="row py-2">-->
-<!--            <div class="col-12">-->
-<!--                <a class="btn btn-primary" th:href="@{/userProfile}">User profile</a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <!--                <a class="nav-link" th:href="@{/user/}">User Profile</a>-->
-            </li>
+            <li class="nav-item active"></li>
         </ul>
 
         <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
-
             <button sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0">Logout</button>
-
         </form>
     </div>
 </nav>
@@ -58,47 +41,34 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-<!--            <div th:text="${time}"/>-->
-
-            <!--            <a class="btn btn-primary" th:href="@{/todo}">Add Todo</a>-->
+            <div th:text="${time}"/>
         </div>
 
         <div class="col-12">
             <table class="table table-bordered my-2">
+
                 <thead>
                 <tr>
-<!--                    <th scope="col">Id</th>-->
                     <th scope="col">Name</th>
                     <th scope="col">Surname</th>
                     <th scope="col">Email</th>
                     <th scope="col">Age</th>
-<!--                    <th scope="col">Password</th>-->
                     <th scope="col">Actions</th>
-
                 </tr>
                 </thead>
+
                 <tbody>
-
                 <tr th:each="us : ${user}">
-<!--                    <td th:object="${user}" th:text="*{id}"></td>-->
                     <td th:text="${user.name}">Name</td>
-                    <td th:text="${user.surName}">Name</td>
-                    <td th:text="${user.email}">Name</td>
-                    <td th:text="${user.age}">Name</td>
-<!--                    <td th:object="${user}" th:text="*{password}"></td>-->
-
-                    <!--                    <th scope="row">1</th>-->
-<!--                    <td>Ofelya</td>-->
-<!--                    <td>Shahbazyan</td>-->
-<!--                    <td>28</td>-->
-<!--                    <td>shahbazyanofelya.9@gmail.com</td>-->
-<!--                    <td>A123a123</td>-->
+                    <td th:text="${user.surName}">surName</td>
+                    <td th:text="${user.email}">email</td>
+                    <td th:text="${user.age}">age</td>
                     <td>
-                        <a class="btn btn-success" href="todo.html"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" href="#"><i class="far fa-trash-alt"></i></a>
+                        <a class="btn btn-success" th:href="@{/user/edit/{id}(id=${user.id})}" ><i class="fas fa-edit"></i></a>
                     </td>
                 </tr>
                 </tbody>
+
             </table>
         </div>
     </div>

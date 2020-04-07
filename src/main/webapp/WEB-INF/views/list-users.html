@@ -11,58 +11,88 @@
 </head>
 
 <body>
-<div class="container my-2">
-    <div class="card">
-        <div class="card-body">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" th:href="@{/user/}">Book repository</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="container">
+        <div class="row py-2">
+            <div class="col-12">
+                <a class="btn btn-primary" th:href="@{/admin/admin-Profile}">See Your Profile</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active"></li>
+        </ul>
+
+        <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
+            <button sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0">Logout</button>
+        </form>
+
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row py-2">
+        <div class="col-12">
             <div th:switch="${users}" class="container my-5">
-                <p class="my-5">
-                    <a sec:authorize="isAuthenticated()" th:href="@{/user/admin-Profile}" class="btn btn-primary">
-                        <i class="fas fa-user-plus ml-2"> See Your Profile </i></a>
-                </p>
-                <div class="col-md-10">
+                <div class="col-12">
+
                     <h2 th:case="null">No record found !!</h2>
+
                     <div th:case="*">
-                        <table class="table table-striped table-responsive-md">
+                        <table class="table table-bordered my-2">
+
                             <thead>
                             <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
+                                <th>Name</th>
+                                <th>Surname</th>
                                 <th>Email</th>
                                 <th>Age</th>
-                                <th>Password</th>
-
-                                <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
                             </thead>
+
                             <tbody>
                             <tr th:each="user : ${users}">
                                 <td th:text="${user.name}"></td>
                                 <td th:text="${user.surName}"></td>
                                 <td th:text="${user.email}"></td>
                                 <td th:text="${user.age}"></td>
-                                <td th:text="${user.password}"></td>
 
                                 <td>
-                                    <a th:href="@{/user/edit/{id}(id=${user.id})}" class="btn btn-primary">
-                                        <i class="fas fa-user-edit ml-2"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a th:href="@{/admin/delete/{id}(id=${user.id})}" class="btn btn-primary">
-                                        <i class="fas fa-user-times ml-2"></i>
+                                    <a th:href="@{/admin/delete/{id}(id=${user.id})}" class="btn btn-danger">
+                                        <i class="far fa-trash-alt"></i>
                                     </a>
                                 </td>
                             </tr>
                             </tbody>
+
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
-
 </html>

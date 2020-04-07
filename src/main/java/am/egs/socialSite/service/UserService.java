@@ -12,7 +12,7 @@ public interface UserService {
 
     void addUser(UserDto userDto);
 
-    User signIn(String email, String password);
+    User signInSuccess(String email);
 
     void delete(Long id);
 
@@ -28,7 +28,7 @@ public interface UserService {
 
     boolean exists(final String email);
 
-    User getEmployeeById(Long id) throws Exception;
+    User getUserById(Long id) throws Exception;
 
     User createOrUpdateEmployee(User entity, UserPrincipal principal);
 

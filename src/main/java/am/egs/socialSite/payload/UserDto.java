@@ -24,7 +24,7 @@ public class UserDto implements Serializable {
     @NotEmpty(message = "{NotEmpty.surName}")
     private String surName;
 
-    @NotNull(message = "{age.notNull}")
+    @NotNull(message = "{notNull.age}")
     @Min(value = 18, message = "{age.size}")
     private Integer age;
 
