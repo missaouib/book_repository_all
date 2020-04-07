@@ -2,6 +2,7 @@ package am.egs.bookRepository.service;
 
 import am.egs.bookRepository.model.User;
 import am.egs.bookRepository.payload.UserDto;
+import am.egs.bookRepository.payload.UserEditForm;
 import am.egs.bookRepository.security.UserPrincipal;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public interface UserService {
 
     User getUserById(Long id) ;
 
-    User updateUser(UserDto userDto, UserPrincipal principal);
+    User updateUser(UserEditForm userEditForm, UserPrincipal principal);
 
     void save(User user);
 }

@@ -4,6 +4,7 @@ import am.egs.bookRepository.mappers.UserMapper;
 import am.egs.bookRepository.model.Role;
 import am.egs.bookRepository.model.User;
 import am.egs.bookRepository.payload.UserDto;
+import am.egs.bookRepository.payload.UserEditForm;
 import am.egs.bookRepository.repository.RoleRepository;
 import am.egs.bookRepository.repository.UserRepository;
 import am.egs.bookRepository.security.UserPrincipal;
@@ -90,13 +91,13 @@ public class UserServiceImpl implements UserService {
                 .ifPresent(user -> userRepository.delete(user));
     }
 
-    public User updateUser(UserDto userDto, @AuthenticationPrincipal UserPrincipal principal) {
+    public User updateUser(UserEditForm userEditForm, @AuthenticationPrincipal UserPrincipal principal) {
         String email = principal.getUsername();
         System.out.println(email);
         User user = userRepository.findUserByEmail(email);
-        user.setName(userDto.getName());
-        user.setSurName(userDto.getSurName());
-        user.setAge(userDto.getAge());
+        user.setName(userEditForm.getName());
+        user.setSurName(userEditForm.getSurName());
+        user.setAge(userEditForm.getAge());
         User userUpdated = userRepository.save(user);
         return userUpdated;
     }
