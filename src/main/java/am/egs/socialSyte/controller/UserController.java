@@ -2,7 +2,6 @@ package am.egs.socialSyte.controller;
 
 import am.egs.socialSyte.model.User;
 import am.egs.socialSyte.payload.auth.AuthResponse;
-import am.egs.socialSyte.payload.auth.SignInRequest;
 import am.egs.socialSyte.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,21 +44,26 @@ public class UserController {
         return ResponseEntity.ok().body(authResponse);
     }
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String indexPage() {
         return "index";
     }
 
 
     @GetMapping("/signUp")
-    public String registerPage(User user, Model model) {
-        model.addAttribute("user", user);
+    public String registerPage( Model model) {
+        model.addAttribute("user", new User());
         return "register";
+    }
+
+    @GetMapping("/signIn")
+    public String loginPage() {
+        return "login";
     }
 
     @PostMapping("/signUp")
     //   public ResponseEntity registerUser(@Valid @RequestBody User user) {
-    public String registerNewUser(@Valid @RequestBody User user, Model model) {
+    public String registerNewUser(@Valid @RequestBody User user) {
         logger.info("New user", user);
         userService.addUser(user);
         authResponse = AuthResponse.builder()

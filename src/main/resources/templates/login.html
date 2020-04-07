@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <!-- Required meta tags -->
@@ -16,14 +18,23 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand">Book Repository</a>
+    <a class="navbar-brand" th:href="@{/user/}">Book Repository</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!--        <ul class="navbar-nav mr-auto">-->
+        <!--            <li class="nav-item active">-->
+        <!--                <a class="nav-link" th:href="@{/}">List</a>-->
+        <!--            </li>-->
+        <!--        </ul>-->
 
-        <form class="form-inline my-2 my-lg-0">
-            <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/login}">Login</a>
-            <a class="btn btn-outline-success my-2 my-sm-0" href="#">Logout</a>
-            <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/register}">Register</a>
+        <form class="form-inline my-2 my-lg-0" method="post">
+            <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/signIn}">Login</a>
+            <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/user/signUp}">Register</a>
         </form>
     </div>
 </nav>
@@ -31,20 +42,19 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <form>
+            <form th:action="@{/authenticateTheUser}" method="post">
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter user name">
+                    <label for="email">User email</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter user email">
+<!--                    <small class="form-text text-danger" th:if="${param.error != null}">Incorrect email or password</small>-->
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
-                <a class="px-3" th:href="@{/register}">Register</a>
+                <a class="px-3" th:href="@{/user/signUp}">Register</a>
             </form>
         </div>
     </div>
 </div>
-
-
