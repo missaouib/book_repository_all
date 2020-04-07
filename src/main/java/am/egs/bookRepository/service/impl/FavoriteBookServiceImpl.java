@@ -2,6 +2,7 @@ package am.egs.bookRepository.service.impl;
 
 import am.egs.bookRepository.model.Book;
 import am.egs.bookRepository.model.FavoriteBook;
+import am.egs.bookRepository.model.User;
 import am.egs.bookRepository.repository.FavoriteBookRepository;
 import am.egs.bookRepository.service.FavoriteBookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,20 @@ public class FavoriteBookServiceImpl implements FavoriteBookService {
         this.favoriteBookRepository = favoriteBookRepository;
     }
 
-    @Override
-    public Book getOne(Long id) {
-        return favoriteBookRepository.findBookById(id);
-    }
 
     @Override
     public void save(FavoriteBook favoriteBook) {
         favoriteBookRepository.save(favoriteBook);
+    }
+
+    @Override
+    public FavoriteBook findByUserAndBook(User user, Book book) {
+        return favoriteBookRepository.findByUserAndBook(user, book);
+    }
+
+
+    @Override
+    public Object getOne(Long id) {
+        return favoriteBookRepository.getOne(id);
     }
 }

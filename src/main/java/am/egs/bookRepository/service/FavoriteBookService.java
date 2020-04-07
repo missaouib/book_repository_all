@@ -2,13 +2,13 @@ package am.egs.bookRepository.service;
 
 import am.egs.bookRepository.model.Book;
 import am.egs.bookRepository.model.FavoriteBook;
-
-import java.util.List;
-import java.util.Optional;
+import am.egs.bookRepository.model.User;
 
 public interface FavoriteBookService {
 
-    Book getOne(Long id);
-
     void save(FavoriteBook favoriteBook);
+
+    FavoriteBook findByUserAndBook(User user, Book book);
+
+    Object getOne(Long id);
 }

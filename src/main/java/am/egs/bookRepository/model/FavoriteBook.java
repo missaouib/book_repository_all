@@ -18,6 +18,12 @@ public class FavoriteBook implements Serializable {
     @JoinColumn(name = "book_id", referencedColumnName = "id")
     private Book book;
 
+    public FavoriteBook() {
+    }
+
+
+
+
     public Long getId() {
         return id;
     }
@@ -41,5 +47,14 @@ public class FavoriteBook implements Serializable {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    @Override
+    public String toString() {
+        return "FavoriteBook{" +
+                "id=" + id +
+                ", user=" + user +
+                ", book=" + book +
+                '}';
     }
 }

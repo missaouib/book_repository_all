@@ -94,7 +94,7 @@ public class UserPageController {
             modelAndView.addObject("user", userService.getUserById(userDto.getId()));
             modelAndView.addObject("process", "ERROR");
             modelAndView.addObject("pw_error", "Error : Check your old password!");
-            modelAndView.addObject("rule", new User());
+//            modelAndView.addObject("rule", new User());
             if (role.stream().map(Role::getRole).anyMatch("USER"::equals)) {
                 modelAndView.setViewName("user-profile");
             } else {
