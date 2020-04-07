@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -40,9 +41,21 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
-    public String deleteUser(@PathVariable Long id) {
+    public ModelAndView deleteUser(@PathVariable Long id) {
+        logger.info(" ADMIN getting delete user.");
+
         userService.delete(id);
-        logger.info(" User successfully deleted.");
-        return "redirect:/admin/read";
+        ModelAndView modelAndView = new ModelAndView();
+        final List<User> userList = userService.findAllUsers();
+
+        modelAndView.addObject("users", userList);
+        modelAndView.addObject("process", "SUCCESS");
+        modelAndView.addObject("pw_success", "Well done! You successfully  delete this user.");
+        modelAndView.setViewName("users-list");
+        logger.info(" You successfully delete this user.");
+
+//        return "redirect:/admin/read";
+        return modelAndView;
+
     }
 }
