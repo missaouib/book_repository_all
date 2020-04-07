@@ -3,7 +3,6 @@ package am.egs.socialSite.payload;
 import am.egs.socialSite.validation.ValidEmail;
 import am.egs.socialSite.validation.ValidPassword;
 
-import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,7 +44,7 @@ public class UserDto {
     }
 
     public UserDto(Long id, String email, String password, String name, String surName) {
-
+        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -55,7 +54,6 @@ public class UserDto {
     public Long getId() {
         return id;
     }
-
 
 
     public String getEmail() {
@@ -99,10 +97,9 @@ public class UserDto {
     }
 
 
-
     @Override
     public int hashCode() {
-        return Objects.hash( email, password, name, surName);
+        return Objects.hash(email, password, name, surName);
     }
 }
 

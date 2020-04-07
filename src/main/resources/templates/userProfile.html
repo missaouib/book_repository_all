@@ -47,6 +47,56 @@
     </div>
 </nav>
 
+<h2>   Profile Details</h2>
+
+<div class="container">
+    <div class="row py-2">
+        <div class="col-12">
+            <div th:text="${time}"/>
+
+            <!--            <a class="btn btn-primary" th:href="@{/todo}">Add Todo</a>-->
+        </div>
+
+        <div class="col-12">
+            <table class="table table-bordered my-2">
+                <thead>
+                <tr>
+<!--                    <th scope="col">Id</th>-->
+                    <th scope="col">Name</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Email</th>
+<!--                    <th scope="col">Password</th>-->
+                    <th scope="col">Actions</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+<!--                    <td th:object="${user}" th:text="*{id}"></td>-->
+                    <td th:object="${user}" th:field="*{name}"></td>
+                    <td th:object="${user}" th:field="*{surName}"></td>
+                    <td th:object="${user}" th:field="*{age}"></td>
+                    <td th:object="${user}" th:field="*{email}"></td>
+<!--                    <td th:object="${user}" th:text="*{password}"></td>-->
+
+                    <!--                    <th scope="row">1</th>-->
+<!--                    <td>Ofelya</td>-->
+<!--                    <td>Shahbazyan</td>-->
+<!--                    <td>28</td>-->
+<!--                    <td>shahbazyanofelya.9@gmail.com</td>-->
+<!--                    <td>A123a123</td>-->
+                    <td>
+                        <a class="btn btn-success" href="todo.html"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-danger" href="#"><i class="far fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -61,3 +111,4 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
+

@@ -1,5 +1,6 @@
 package am.egs.socialSite.controller;
 
+import am.egs.socialSite.mappers.UserMapper;
 import am.egs.socialSite.model.User;
 import am.egs.socialSite.payload.UserDto;
 import am.egs.socialSite.repository.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalTime;
 
 import static am.egs.socialSite.util.Constant.*;
 
@@ -31,32 +34,34 @@ public class UserController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final UserRepository userRepository;
+    private UserMapper userMapper;
 
     @Autowired
-    public UserController(UserService userService, AuthenticationManager authenticationManager, UserRepository userRepository) {
+    public UserController(UserService userService, AuthenticationManager authenticationManager, UserRepository userRepository, UserMapper userMapper) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
+    @GetMapping("/userProfile")
+    public String userProfile(Model model) {
+        UserDto userDto = new UserDto();
+        userDto.setName("Valod");
+        model.addAttribute("time", LocalTime.now());
+        model.addAttribute("user",userDto);
+        return "userProfile";
+    }
 
     @PostMapping("/signed-successfully")
     public String signedSuccessfully() {
         return "redirect:/user/userProfile";
     }
 
-    @GetMapping("/userProfile")
-    public String userProfile(Model model) {
-        UserDto userDto = new UserDto();
-
-        model.addAttribute("user", userDto);
-        return "userProfile";
-    }
-
     @PostMapping(ACTIVATE_CODE)
     public String activate(@PathVariable String code) {
         userService.activateUser(code);
-        logger.info(" Activation code successful sended to user and successfully confirmed");
+        logger.info(" Activation code successful  to user and successfully confirmed");
         return ACTIVATION_CODE;
     }
 
@@ -65,18 +70,17 @@ public class UserController {
         return INDEX;
     }
 
-
     @GetMapping(SIGN_UP)
-    public String registerPage(Model model,@ModelAttribute("user") UserDto userDto) {
+    public String registerPage(Model model, @ModelAttribute("user") UserDto userDto) {
         model.addAttribute("user", new UserDto());
         return REGISTER;
     }
 
     @PostMapping(SIGN_UP)
-    public String registerNewUser( @Valid @ModelAttribute("user") @RequestBody UserDto userDto,
+    public String registerNewUser(@Valid @ModelAttribute("user") @RequestBody UserDto userDto,
                                   BindingResult result) {
         logger.info("New user {}", userDto);
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return REGISTER;
         }
         User existing = userRepository.findUserByEmail(userDto.getEmail());
@@ -98,8 +102,8 @@ public class UserController {
         final Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         userService.signIn(email, password);
-        logger.info(" User successful loged.");
-        return "redirect:userProfile";
+        logger.info(" User successful logged.");
+        return "redirect:/user/userProfile";
     }
 
     @PostMapping(UPDATE)

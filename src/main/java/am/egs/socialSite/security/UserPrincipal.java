@@ -32,8 +32,8 @@ public class UserPrincipal implements UserDetails {
 
     private UserService userService;
 
-    private UserPrincipal(Long id, String email, String password, boolean isAccountNonLocked,
-                          boolean isEnabled, LocalDateTime expireDate, boolean isAccountNonExpired, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Long id, String email, String password, boolean isAccountNonLocked,
+                         boolean isEnabled, LocalDateTime expireDate, boolean isAccountNonExpired, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -42,6 +42,10 @@ public class UserPrincipal implements UserDetails {
         this.isAccountNonExpired = isAccountNonExpired;
         this.isEnabled = isEnabled;
         this.expireDate = expireDate;
+    }
+
+    public UserPrincipal() {
+
     }
 
     static UserPrincipal create(User user) {
