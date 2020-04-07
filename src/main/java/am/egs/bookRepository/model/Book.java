@@ -1,10 +1,14 @@
 package am.egs.bookRepository.model;
 
+import org.springframework.data.jpa.repository.Query;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@NamedQuery(name = "Book.findByTitleLike",
+        query = "SELECT c FROM Book c where c.title like :search" )
 @Table(name = "books")
 public class Book {
 

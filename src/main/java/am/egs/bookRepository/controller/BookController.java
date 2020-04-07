@@ -119,11 +119,11 @@ public class BookController {
     }
 
     @GetMapping(value = "/search")
-    public ModelAndView bookInfo(@RequestParam(required = false, value = "search") String search,
+    public ModelAndView search(@RequestParam(required = false, value = "search") String search,
                                  @AuthenticationPrincipal UserPrincipal principal)  {
         ModelAndView modelAndView = new ModelAndView();
 
-        List<Book> searchResult = bookService.findByTitle(search);
+        List<Book> searchResult = bookService.findByTitleLike(search);
         if (searchResult.isEmpty()) {
             final List<Book> bookList = bookService.findAllBooks();
             modelAndView.addObject("books", bookList);
@@ -132,6 +132,8 @@ public class BookController {
             modelAndView.addObject("pw_error", "Error : Oops, no result!");
             modelAndView.setViewName("books-list");
         } else {
+            modelAndView.addObject("control",showRole(principal));
+
             modelAndView.addObject("process", "SUCCESS");
             modelAndView.addObject("pw_success", "Well done! Enjoy!");
             modelAndView.addObject("searchResult", searchResult);

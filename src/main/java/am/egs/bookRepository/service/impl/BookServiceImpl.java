@@ -52,8 +52,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> findByTitle(String search) {
-        return bookRepository.findByTitleLike("%"+search+"%");
+    public List<Book> findByTitleLike(String search) {
+        return bookRepository.findByTitleLike("%" + search + "%");
     }
 
 }

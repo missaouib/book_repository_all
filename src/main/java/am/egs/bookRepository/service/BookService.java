@@ -17,6 +17,6 @@ public interface BookService {
 
     void update(BookDto bookDto);
 
-    List<Book> findByTitle(String search);
+    List<Book> findByTitleLike(String search);
 
 }
