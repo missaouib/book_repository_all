@@ -1,5 +1,6 @@
 package am.egs.socialSite.config;
 
+import am.egs.socialSite.security.CustomAuthenticationFailureHandler;
 import am.egs.socialSite.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
+    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
+    @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
@@ -32,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void setCustomUserDetailsService(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -63,10 +68,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/user/signIn")
                 .successForwardUrl("/user/signed-successfully")
 //                .loginProcessingUrl("/authenticateTheUser")
+                .failureHandler(customAuthenticationFailureHandler)
                 .permitAll();
 
-
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
