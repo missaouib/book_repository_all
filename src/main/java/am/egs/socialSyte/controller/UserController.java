@@ -44,29 +44,34 @@ public class UserController {
         logger.info(" Activation code successful sended to user and successfully confirmed");
         return ResponseEntity.ok().body(authResponse);
     }
-@GetMapping("/signUp")
-public String registerUser1(SignInRequest user, Model model) {
-        model.addAttribute("user",user);
 
-    return "register";
-}
+    @GetMapping("/home")
+    public String indexPage() {
+        return "index";
+    }
+
+
+    @GetMapping("/signUp")
+    public String registerPage(User user, Model model) {
+        model.addAttribute("user", user);
+        return "register";
+    }
 
     @PostMapping("/signUp")
     //   public ResponseEntity registerUser(@Valid @RequestBody User user) {
-    public String registerUser( User user, Model model) {
-
+    public String registerNewUser(@Valid @RequestBody User user, Model model) {
         logger.info("New user", user);
         userService.addUser(user);
         authResponse = AuthResponse.builder()
                 .message(" User successfully registered.")
                 .build();
         logger.info(" User successful registered.");
-        return "register";
+        return "redirect:/user/signIn";
         //return ResponseEntity.ok().body(authResponse);
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity loginUser(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password) {
         final Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         authResponse = userService.signIn(email, password);
@@ -74,7 +79,8 @@ public String registerUser1(SignInRequest user, Model model) {
                 .message(" User successfully loged.")
                 .build();
         logger.info(" User successful loged.");
-        return ResponseEntity.ok().body(authResponse);
+        return "login";
+        //return ResponseEntity.ok().body(authResponse);
     }
 
 //    @PostMapping("/signIn")
