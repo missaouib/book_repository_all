@@ -82,13 +82,13 @@ public class BookController {
     @RequestMapping("/getOne")
     @ResponseBody
     public BookDto getOne(Long id) {
-      Book book= bookService.getOne(id);
+        Book book = bookService.getOne(id);
         System.out.println(book.toString());
-        BookDto bookDto = bookMapper.map(book,BookDto.class);
+        BookDto bookDto = bookMapper.map(book, BookDto.class);
         return bookDto;
     }
 
-    @RequestMapping(value="/update", method = {RequestMethod.PUT, RequestMethod.GET})
+    @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
     public ModelAndView update(BookDto bookDto) {
         logger.info(" User getting update this book.");
         bookService.update(bookDto);
