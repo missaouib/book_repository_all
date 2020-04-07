@@ -11,22 +11,21 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class UserDto implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank
     @Size(min = 3, max = 12, message = "{Size.name}")
     private String name;
 
-    @NotEmpty(message = "{NotEmpty.surName}")
+    @NotBlank
     private String surName;
 
-    @NotNull(message = "{notNull.age}")
-    @Min(value = 18, message = "{age.size}")
+    @Min(value = 18, message = "{Min.age}")
     private Integer age;
 
-//    @Email
     @ValidEmail
     private String email;
 

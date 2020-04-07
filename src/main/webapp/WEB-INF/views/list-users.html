@@ -1,16 +1,31 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
+
+    <title>All Users</title>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>All Employees</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+
 </head>
 
+
 <body>
+
+<style>
+    body {
+        height: 100%;
+        background-repeat: no-repeat;
+        background: url(https://i.ytimg.com/vi/4kfXjatgeEU/maxresdefault.jpg);
+        font-family: 'Oxygen', sans-serif;
+        background-size: cover;
+    }
+</style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" th:href="@{/user/}">Book repository</a>
@@ -23,7 +38,7 @@
     <div class="container">
         <div class="row py-2">
             <div class="col-12">
-                <a class="btn btn-primary" th:href="@{/admin/admin-Profile}">See Your Profile</a>
+                <a class="btn btn-primary" th:href="@{/admin/admin-Profile}">Your Profile</a>
             </div>
         </div>
     </div>
@@ -39,7 +54,6 @@
 
     </div>
 </nav>
-
 
 <div class="container">
     <div class="row py-2">
@@ -71,7 +85,7 @@
 
                                 <td>
                                     <a th:href="@{/admin/delete/{id}(id=${user.id})}"
-                                       class="btn btn-danger">
+                                       class="btn btn-danger modDel" id="deleteButton">
                                         <i class="far fa-trash-alt"></i>
                                     </a>
                                 </td>
@@ -85,8 +99,51 @@
         </div>
     </div>
 </div>
+
+
+<!--#Modal for removing users-->
+<div class="modal fade" id="removeModalCenter" tabindex="-1" role="dialog" aria-labelledby="removeModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeModalCenterTitle">Delete Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="alert alert-danger">
+                    Are You sure You want to delete this User?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-danger  delBtn" id="delRef">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $(".modDel").on('click', function (event) {
+            event.preventDefault();
+            let href = $(this).attr('href');
+            $('#removeModalCenter #delRef').attr('href', href);
+            $('#removeModalCenter').modal();
+        });
+    });
+
+
+</script>
+
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

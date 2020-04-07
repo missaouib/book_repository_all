@@ -22,6 +22,16 @@
 
 <body>
 
+<style>
+    body{
+        height: 100%;
+        background-repeat: no-repeat;
+        background:url(https://i.ytimg.com/vi/4kfXjatgeEU/maxresdefault.jpg);
+        font-family: 'Oxygen', sans-serif;
+        background-size: cover;
+    }
+</style>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" th:href="@{/user/}">Book Repository</a>
 
@@ -39,7 +49,7 @@
             <a sec:authorize="!isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0"
                th:href="@{/user/signIn}">Login</a>
             <a sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0"
-               th:href="@{/user/profile}">User Profile</a>
+               th:href="@{/user/profile}">Your Profile</a>
             <a sec:authorize="!isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0"
                th:href="@{/user/signUp}">Register</a>
             <button sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0">Logout</button>
@@ -48,11 +58,6 @@
 </nav>
 
 
-<style>
-    body {
-        background-color: #016042;
-    }
-</style>
 
 <div class="container my-2">
     <div class="card">

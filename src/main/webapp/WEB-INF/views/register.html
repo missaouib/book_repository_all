@@ -18,6 +18,38 @@
 </head>
 
 <body>
+<style>
+
+    body{
+        height: 100%;
+        background-repeat: no-repeat;
+        background:url(https://i.ytimg.com/vi/4kfXjatgeEU/maxresdefault.jpg);
+        font-family: 'Oxygen', sans-serif;
+        background-size: cover;
+    }
+
+
+    .form-control {
+        position: relative;
+        font-size: 16px;
+        height: auto;
+        padding: 10px;
+    }
+
+    input[type="text"] {
+        margin-bottom: 0px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    input[type="password"] {
+        margin-bottom: 20px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+</style>
+
 
 <div th:replace="fragments/header :: header"/>
 
@@ -29,48 +61,34 @@
                 <fieldset>
                     <h1>Please Register</h1>
 
-                    <div th:if="${param.error}">
-                        <div class="alert alert-danger">
-                            Invalid username and password.
-                        </div>
-                    </div>
-                    <div th:if="${param.logout}">
-                        <div class="alert alert-info">
-                            You have been logged out.
-                        </div>
-                    </div>
-
-
-
-                    <div class="form-group">
-                        <input type="text"  th:field="*{email}"  class="form-control input-lg"
+                    <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error':''">
+                        <input type="email"  th:field="*{email}"  class="form-control input-lg"
                                placeholder="email"  autofocus="true"/>
                         <small class="text-danger" th:each="err: ${#fields.errors('email')}" th:text="${err}"></small>
-
                     </div>
+
                     <div class="form-group">
                         <input type="text" th:field="*{name}"  class="form-control input-lg"
                                placeholder="name" required="true" autofocus="true"/>
                         <small class="text-danger" th:each="err: ${#fields.errors('name')}" th:text="${err}"></small>
-
                     </div>
+
                     <div class="form-group">
                         <input type="text" th:field="*{surName}" class="form-control input-lg"
                                placeholder="surname" required="true" autofocus="true"/>
                         <small class="text-danger" th:each="err: ${#fields.errors('surName')}" th:text="${err}"></small>
-
                     </div>
+
                     <div class="form-group">
                         <input type="password" th:field="*{password}"   class="form-control input-lg"
                                placeholder="password" required="true"/>
                         <small class="text-danger" th:each="err: ${#fields.errors('password')}" th:text="${err}"></small>
-
                     </div>
+
                     <div class="form-group">
                         <input type="text" th:field="*{age}" id="username" class="form-control input-lg"
                                placeholder="age" required="true" autofocus="true"/>
                         <small class="text-danger" th:each="err: ${#fields.errors('age')}" th:text="${err}"></small>
-
                     </div>
 
 

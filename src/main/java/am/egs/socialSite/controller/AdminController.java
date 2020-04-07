@@ -51,10 +51,10 @@ public class AdminController {
         return "list-users";
     }
 
-    @GetMapping("/delete/{id}")
+    @RequestMapping(value = "/delete/{id}", method={RequestMethod.DELETE, RequestMethod.GET})
     public String deleteUser(@PathVariable Long id) {
         userService.delete(id);
-        logger.info(" User successful deleted.");
+        logger.info(" User successfully deleted.");
         return "redirect:/admin/read";
     }
 
