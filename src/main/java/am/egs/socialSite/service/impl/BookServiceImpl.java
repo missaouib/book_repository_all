@@ -15,12 +15,10 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-//    private BookMapper bookMapper;
 
     @Autowired
     public BookServiceImpl(BookRepository bookRepository){
         this.bookRepository = bookRepository;
-//        this.bookMapper = bookMapper;
     }
 
     @Override
@@ -31,7 +29,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void addBook(Book book) {
-//        Book book = bookMapper.map(bookDto,Book.class);
         bookRepository.save(book);
+    }
+
+    @Override
+    public void deleteBook(Long id) {
+        bookRepository.findById(id)
+                .ifPresent(book -> bookRepository.delete(book));
     }
 }

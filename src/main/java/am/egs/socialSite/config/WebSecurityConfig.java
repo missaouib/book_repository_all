@@ -62,6 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sameOrigin()
                 .disable()
                 .authorizeRequests()
+                .antMatchers("/book/**").permitAll()
+//                .authenticated()
                 .antMatchers("/resources/**")
                 .permitAll()
                 .and()

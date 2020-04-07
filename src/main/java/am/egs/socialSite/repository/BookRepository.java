@@ -9,4 +9,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface BookRepository extends JpaRepository<Book, Long> {
+
 }

@@ -50,7 +50,6 @@
 <div class="container">
     <div class="row py-2">
         <div class="col">
-            <!--            <a class="btn btn-primary nBtn" th:href="@{/book/create}">Add Book</a>-->
             <a class="btn btn-primary nBtn">Add Book</a>
 
         </div>
@@ -60,6 +59,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Author</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
 
@@ -71,7 +71,6 @@
                 <tr th:each="book : ${books}">
                     <td th:text="${book.title}"></td>
                     <td th:text="${book.author}"></td>
-
                     <td>
                         <a th:href="@{/book/delete/{id}(id=${book.id})}"
                            class="btn btn-danger delBtn" id="deleteButton">
@@ -110,11 +109,11 @@
 
                         <div class="form-group">
                             <label fclass="col-form-label">Title:</label>
-                            <input type="text" class="form-control" value=""/>
+                            <input type="text" class="form-control" id="title" name="title" value=""/>
                         </div>
                         <div class="form-group">
                             <label class="col-form-label">Author:</label>
-                            <input type="text" class="form-control" value=""/>
+                            <input type="text" class="form-control" id="author" name="author" value=""/>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -148,7 +147,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="" class="btn btn-danger  delBtn" id="delRef">Delete</a>
+                <a href="" class="btn btn-danger" id="delRef">Delete</a>
             </div>
         </div>
     </div>
@@ -157,28 +156,23 @@
 
 <script>
     $(document).ready(function () {
-
-        $(".modDel").on('click', function (event) {
+        //for creating book
+        $('.nBtn, .table .eBtn').on('click', function (event) {
             event.preventDefault();
-            var href = $(this).attr('href');
-
-            //for delete user
-            $('#removeModalCenter #delRef').attr('href', href);
-            $('#removeModalCenter').modal();
-
-
-            });
-
-        //for creating user
-        $('.nBtn, .table').on('click', function (event) {
             $('.myFormCreate #title').val('');
             $('.myFormCreate #author').val('');
             $('.myFormCreate #myModalCreate').modal();
 
         });
+        //for delete book
+
+        $('.table .delBtn').on('click', function(event) {
+            event.preventDefault();
+            var href = $(this).attr('href');
+            $('#removeModalCenter #delRef').attr('href', href);
+            $('#removeModalCenter').modal();
+        });
     });
-
-
 </script>
 
 
