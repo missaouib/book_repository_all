@@ -57,12 +57,22 @@ public class BookController {
     }
 
     @PostMapping("/create")
-    public String creatNewBook(@Valid BookDto bookDto) {
+    public ModelAndView creatNewBook(@Valid BookDto bookDto) {
         Book book = bookMapper.map(bookDto, Book.class);
         logger.info("User getting creat book " + book);
         bookService.addBook(book);
+
+
+        ModelAndView modelAndView = new ModelAndView();
+        final List<Book> bookList = bookService.findAllBooks();
+        modelAndView.addObject("books", bookList);
+        modelAndView.addObject("process", "SUCCESS");
+        modelAndView.addObject("pw_success", "Well done! You successfully  create this book.");
+        modelAndView.setViewName("books-list");
         logger.info(" User successfully create book." + book);
-        return "redirect:/book/read";
+        return modelAndView;
+
+//        return "redirect:/book/read";
     }
 
     @GetMapping(value = "/delete/{id}")
