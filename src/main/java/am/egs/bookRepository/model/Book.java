@@ -1,9 +1,11 @@
 package am.egs.bookRepository.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "book")
+@Table(name = "books")
 public class Book {
 
     @Id
@@ -16,6 +18,10 @@ public class Book {
 
     @Column(name = "author", columnDefinition = "VARCHAR(50)", nullable = false)
     private String author;
+
+    @OneToMany(mappedBy = "book")
+    private Set<FavoriteBook> favoriteBooks = new HashSet<FavoriteBook>();
+
 
     public Book() {
     }
@@ -42,6 +48,14 @@ public class Book {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public Set<FavoriteBook> getFavoriteBooks() {
+        return favoriteBooks;
+    }
+
+    public void setFavoriteBooks(Set<FavoriteBook> favoriteBooks) {
+        this.favoriteBooks = favoriteBooks;
     }
 
     @Override

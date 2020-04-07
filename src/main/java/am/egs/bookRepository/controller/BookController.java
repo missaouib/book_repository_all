@@ -5,7 +5,6 @@ import am.egs.bookRepository.model.Book;
 import am.egs.bookRepository.model.Role;
 import am.egs.bookRepository.model.User;
 import am.egs.bookRepository.payload.BookDto;
-import am.egs.bookRepository.repository.UserRepository;
 import am.egs.bookRepository.security.UserPrincipal;
 import am.egs.bookRepository.service.BookService;
 import am.egs.bookRepository.service.UserService;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static am.egs.bookRepository.util.Constant.READ;
 
@@ -76,8 +74,11 @@ public class BookController {
 
     @RequestMapping("/getOne")
     @ResponseBody
-    public Book getOne(Long id) {
-        return bookService.getOne(id);
+    public BookDto getOne(Long id) {
+      Book book= bookService.getOne(id);
+        System.out.println(book.toString());
+        BookDto bookDto = bookMapper.map(book,BookDto.class);
+        return bookDto;
     }
 
     @RequestMapping(value="/update", method = {RequestMethod.PUT, RequestMethod.GET})

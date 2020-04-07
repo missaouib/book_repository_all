@@ -2,10 +2,12 @@ package am.egs.bookRepository.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -56,10 +58,21 @@ public class User {
     private boolean isAccountNonLocked;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
+    @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
+
+////    @ManyToMany(fetch = FetchType.EAGER)
+//    @OneToMany
+//    @JoinTable(name = "user_book",
+//            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+//            inverseJoinColumns = {@JoinColumn(name = "book_id", referencedColumnName = "id")})
+//    private List<Book> favoriteBooks;
+
+
+    @OneToMany(mappedBy = "user")
+    private Set<FavoriteBook> favoriteBooks = new HashSet<FavoriteBook>();
 
     public User() {
     }
@@ -191,6 +204,24 @@ public class User {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+//    public List<Book> getFavoriteBooks() {
+//        return favoriteBooks;
+//    }
+//
+//    public void setFavoriteBooks(List<Book> favoriteBooks) {
+//        this.favoriteBooks = favoriteBooks;
+//    }
+//
+
+
+    public Set<FavoriteBook> getFavoriteBooks() {
+        return favoriteBooks;
+    }
+
+    public void setFavoriteBooks(Set<FavoriteBook> favoriteBooks) {
+        this.favoriteBooks = favoriteBooks;
     }
 
     @Override

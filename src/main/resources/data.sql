@@ -1,9 +1,9 @@
-use users;
+use book_repository;
 
-INSERT INTO users.roles (role)
-SELECT 'USER' WHERE NOT EXISTS (SELECT * FROM users.roles)
+INSERT INTO book_repository.roles (role)
+SELECT 'USER' WHERE NOT EXISTS (SELECT * FROM book_repository.roles)
 UNION
-SELECT 'ADMIN' WHERE NOT EXISTS (SELECT * FROM users.roles)
+SELECT 'ADMIN' WHERE NOT EXISTS (SELECT * FROM book_repository.roles)
 
 
 
