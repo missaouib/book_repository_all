@@ -10,6 +10,7 @@ import am.egs.socialSite.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,16 +19,23 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import static am.egs.socialSite.util.Constant.*;
 
+import am.egs.socialSite.util.ResponseStatus;
+
 @Controller
 @RequestMapping(value = USER)
 public class UserController {
+
+    @Autowired
+    private MessageSource messageSource;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -153,4 +161,52 @@ public class UserController {
     public String usernameNotFound() {
         return "error-404";
     }
+
+
+    /**
+     * Login form with error.
+     */
+    @RequestMapping("/login-error")
+    public String loginError(@RequestParam(value = PAGE_ERROR, required = false) final int error, Model model, Locale locale) {
+        ResponseStatus errorStatus = ResponseStatus.valueOf(error);
+        String errorMessage;
+        String messageKey;
+
+        if (errorStatus != null) {
+            messageKey = errorStatus.getMessageKey();
+
+        } else {
+            messageKey = "user.auth.failed";
+        }
+
+        errorMessage = messageSource.getMessage(messageKey, null, locale);
+        model.addAttribute("loginError", true);
+        model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("authenticationForm", new User());
+
+        return "error";
+    }
+
+    /**
+     * Login form with error.
+     */
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(Model model) {
+        return "redirect:/login";
+    }
+
+    /**
+     * Error page.
+     */
+    @RequestMapping(value = REQUEST_ERROR, method = RequestMethod.GET)
+    public String error(HttpServletRequest request, Model model) {
+        model.addAttribute(ERROR_CODE, ERROR + request.getAttribute("javax.servlet.error.status_code"));
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append("<ul>");
+
+        errorMessage.append("</ul>");
+        model.addAttribute(ERROR_MESSAGE, errorMessage.toString());
+        return PAGE_ERROR;
+    }
+
 }

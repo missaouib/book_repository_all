@@ -22,4 +22,13 @@ public final class Constant {
     public static final String ERROR_423 = "error-423";
     public static final String ACTIVATION_CODE = "activationCode";
     public static final String USER_PROFILE = "userProfile";
+
+    public static final String  PAGE_ERROR  = "error";
+    public static final String  URL  = "url";
+    public static final String ERROR_MESSAGE = "errorMessage";
+    public static final String  EXCEPTION  = "exception";
+    public static final String  REQUEST_ERROR  = "/error";
+    public static final String  ERROR = "Error";
+    public static final String  ERROR_CODE  = "errorCode";
+
 }
