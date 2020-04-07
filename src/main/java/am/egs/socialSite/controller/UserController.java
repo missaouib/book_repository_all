@@ -123,7 +123,7 @@ public class UserController {
     }
 
     @RequestMapping(path = {"/edit", "/edit/{id}"})
-    public String editEmployeeById(Model model, @PathVariable("id") Optional<Long> id) throws Exception {
+    public String editUsersById(Model model, @PathVariable("id") Optional<Long> id) throws Exception {
         if (id.isPresent()) {
             User entity = userService.getUserById(id.get());
             model.addAttribute("user", entity);
@@ -135,7 +135,7 @@ public class UserController {
 
     @PostMapping(UPDATE)
     public String update(User user, @AuthenticationPrincipal UserPrincipal principal) {
-        userService.createOrUpdateEmployee(user, principal);
+        userService.createOrUpdateUser(user, principal);
         logger.info(" User account was successful updated.");
         return "redirect:/user/profile";
     }

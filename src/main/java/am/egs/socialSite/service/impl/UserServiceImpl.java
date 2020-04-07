@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
 //        return userRepository.save(user);
 //    }
 
-    public User createOrUpdateEmployee(User entity, @AuthenticationPrincipal UserPrincipal principal) {
+    public User createOrUpdateUser(User entity, @AuthenticationPrincipal UserPrincipal principal) {
         String email = principal.getUsername();
         System.out.println(email);
         User user = userRepository.findUserByEmail(email);

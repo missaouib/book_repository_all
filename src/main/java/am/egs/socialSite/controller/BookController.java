@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -22,18 +23,26 @@ public class BookController {
 
 
     private BookService bookService;
+//    private BookMapper bookMapper;
 
     @Autowired
     public BookController(BookService bookService){
         this.bookService = bookService;
+//        this.bookMapper = bookMapper;
     }
 
     @GetMapping(READ)
-    public String readUsersList(Model model) {
-//        logger.info(" ADMIN getting users read list of all users.");
+    public String readBooksList(Model model) {
+        logger.info(" User getting books read list of all books.");
         final List<Book> bookList = bookService.findAllBooks();
         model.addAttribute("books", bookList);
-        logger.info(" ADMIN successful read list of all users.");
+        logger.info(" User successfully read list of all books.");
         return "books-list";
+    }
+
+    @PostMapping("/create")
+    public String creatNewBook(Book book){
+        bookService.addBook(book);
+        return "redirect:/book/read";
     }
 }

@@ -30,7 +30,7 @@ public interface UserService {
 
     User getUserById(Long id) throws Exception;
 
-    User createOrUpdateEmployee(User entity, UserPrincipal principal);
+    User createOrUpdateUser(User entity, UserPrincipal principal);
 
 
 }

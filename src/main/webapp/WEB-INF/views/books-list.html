@@ -14,7 +14,6 @@
 
 </head>
 
-
 <body>
 
 <style>
@@ -35,78 +34,100 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-<!--    <div class="container">-->
-<!--        <div class="row py-2">-->
-<!--            <div class="col-12">-->
-<!--                <a class="nav-link" th:href="@{/admin/admin-Profile}">Your Profile</a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <!--                <a class="nav-link" th:href="@{/book/read}">Books</a>-->
                 <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/profile}">Your Profile</a>
-
             </li>
         </ul>
-
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active"></li>
-        </ul>
-
         <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
             <button sec:authorize="isAuthenticated()" class="btn btn-primary">Logout</button>
         </form>
-
     </div>
 </nav>
+
 
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <a class="btn btn-primary" th:href="@{/book/create}">Add Book</a>
+            <a class="btn btn-primary nBtn" th:href="@{/book/create}">Add Book</a>
         </div>
 
-            <div th:switch="${books}" class="container my-5">
-                <div class="col-12">
+        <div th:switch="${books}" class="container my-5">
+            <div class="col-12">
 
-                    <h2 th:case="null">No record found !!</h2>
+                <h2 th:case="null">No record found !!</h2>
 
-                    <div th:case="*">
-                        <table class="table table-bordered my-2">
+                <div th:case="*">
+                    <table class="table table-bordered my-2">
 
-                            <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Author</th>
-                            </tr>
-                            </thead>
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                        </tr>
+                        </thead>
 
-                            <tbody>
-                            <tr th:each="book : ${books}">
-                                <td th:text="${book.title}"></td>
-                                <td th:text="${book.author}"></td>
+                        <tbody>
+                        <tr th:each="book : ${books}">
+                            <td th:text="${book.title}"></td>
+                            <td th:text="${book.author}"></td>
 
-                                <td>
-                                    <a th:href="@{/book/delete/{id}(id=${book.id})}"
-                                       class="btn btn-danger modDel" id="deleteButton">
-                                        <i class="far fa-trash-alt"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
+                            <td>
+                                <a th:href="@{/book/delete/{id}(id=${book.id})}"
+                                   class="btn btn-danger delBtn" id="deleteButton">
+                                    <i class="far fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
 
-                        </table>
-                    </div>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+
+
+<!--#Modal for book create-->
+<div class="myFormCreate">
+    <form th:action="@{/book/create}" method="post">
+        <div class="modal fade" id="myModalCreate" tabindex="-1" role="dialog" aria-labelledby="modalLabelCreate" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabelCreate">Create book</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="alert alert-info">
+                            Input data to the fields
+                        </p>
+
+                        <div class="form-group">
+                            <label fclass="col-form-label">Title:</label>
+                            <input type="text" class="form-control"  value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-form-label">Author:</label>
+                            <input type="text" class="form-control"  value=""/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Save"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--End form-->
+
 
 
 <!--#Modal for removing books
@@ -145,6 +166,24 @@
             $('#removeModalCenter').modal();
         });
     });
+
+    $(document).ready(function(){
+        alert("Alert 2")
+        $('.nBtn, .table').on('click', function(event) {
+            event.preventDefault();
+            var href = $(this).attr('href');
+            var text = $(this).text();
+
+                //for creating user
+                $('.myFormCreate #title').val('');
+                $('.myFormCreate #author').val('');
+                $('.myFormCreate #myModalCreate').modal();
+            });
+        });
+
+
+
+
 
 
 </script>
