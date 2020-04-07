@@ -73,7 +73,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
 
@@ -89,6 +89,10 @@
                        class="btn btn-danger delBtn" id="deleteButton">
                         <i class="far fa-trash-alt"></i>
                     </a>
+                        <a th:href="@{/book/info/{id}(id=${book.id})}"
+                           class="btn btn-info">
+                            <i class="fas fa-poll-h"></i>
+                        </a>
                     </td>
                 </tr>
                 </tbody>

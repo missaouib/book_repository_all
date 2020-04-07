@@ -19,6 +19,9 @@ public class Book {
     @Column(name = "author", columnDefinition = "VARCHAR(50)", nullable = false)
     private String author;
 
+    @Column(name = "info", nullable = false)
+    private String info;
+
     @OneToMany(mappedBy = "book")
     private Set<FavoriteBook> favoriteBooks = new HashSet<FavoriteBook>();
 
@@ -58,14 +61,22 @@ public class Book {
         this.favoriteBooks = favoriteBooks;
     }
 
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
+                ", info='" + info + '\'' +
+                ", favoriteBooks=" + favoriteBooks +
                 '}';
     }
-
-
 }

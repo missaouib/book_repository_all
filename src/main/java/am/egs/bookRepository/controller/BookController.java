@@ -51,14 +51,14 @@ public class BookController {
     }
 
     @PostMapping("/create")
-    public ModelAndView creatNewBook(@Valid BookDto bookDto,@AuthenticationPrincipal UserPrincipal principal) {
+    public ModelAndView creatNewBook(@Valid BookDto bookDto, @AuthenticationPrincipal UserPrincipal principal) {
         Book book = bookMapper.map(bookDto, Book.class);
         logger.info("User getting creat book " + book);
         bookService.addBook(book);
         ModelAndView modelAndView = new ModelAndView();
         final List<Book> bookList = bookService.findAllBooks();
         modelAndView.addObject("books", bookList);
-        modelAndView.addObject("control",showRole(principal));
+        modelAndView.addObject("control", showRole(principal));
         modelAndView.addObject("process", "SUCCESS");
         modelAndView.addObject("pw_success", "Well done! You successfully  create this book.");
         modelAndView.setViewName("books-list");
@@ -67,13 +67,13 @@ public class BookController {
     }
 
     @GetMapping(value = "/delete/{id}")
-    public ModelAndView deleteBook(@PathVariable Long id,@AuthenticationPrincipal UserPrincipal principal) {
+    public ModelAndView deleteBook(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal principal) {
         logger.info("User getting delete book " + id);
         bookService.deleteBook(id);
         ModelAndView modelAndView = new ModelAndView();
         final List<Book> bookList = bookService.findAllBooks();
         modelAndView.addObject("books", bookList);
-        modelAndView.addObject("control",showRole(principal));
+        modelAndView.addObject("control", showRole(principal));
         modelAndView.addObject("process", "SUCCESS");
         modelAndView.addObject("pw_success", "Well done! You successfully  delete this book.");
         modelAndView.setViewName("books-list");
@@ -91,17 +91,26 @@ public class BookController {
     }
 
     @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
-    public ModelAndView update(BookDto bookDto,@AuthenticationPrincipal UserPrincipal principal) {
+    public ModelAndView update(BookDto bookDto, @AuthenticationPrincipal UserPrincipal principal) {
         logger.info(" User getting update this book.");
         bookService.update(bookDto);
         ModelAndView modelAndView = new ModelAndView();
         final List<Book> bookList = bookService.findAllBooks();
         modelAndView.addObject("books", bookList);
-        modelAndView.addObject("control",showRole(principal));
+        modelAndView.addObject("control", showRole(principal));
         modelAndView.addObject("process", "SUCCESS");
         modelAndView.addObject("pw_success", "Well done! You successfully  updated this book.");
         modelAndView.setViewName("books-list");
         logger.info(" You successfully updated this book.");
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/info/{id}")
+    public ModelAndView bookInfo(@PathVariable Long id) {
+        ModelAndView modelAndView = new ModelAndView();
+        Book book = bookService.getOne(id);
+        modelAndView.addObject("book", book);
+        modelAndView.setViewName("book_info");
         return modelAndView;
     }
 

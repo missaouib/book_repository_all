@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.net.URL;
 
 public class BookDto implements Serializable {
 
@@ -21,13 +22,17 @@ public class BookDto implements Serializable {
     @Size(min = 2, max = 256)
     private String author;
 
+    private String info;
+
+
     public BookDto() {
     }
 
-    public BookDto(Long id, String title, String author) {
+    public BookDto(Long id, String title, String author,  String info) {
         this.id = id;
         this.title = title;
         this.author = author;
+        this.info = info;
     }
 
     public Long getId() {
@@ -52,5 +57,13 @@ public class BookDto implements Serializable {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 }
