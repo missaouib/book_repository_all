@@ -16,4 +16,5 @@ public interface FavoriteBookService {
 
     List<FavoriteBook> findByUser(User user);
 
+    void delete(User user, Book book);
 }

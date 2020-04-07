@@ -38,9 +38,14 @@ public class FavoriteBookServiceImpl implements FavoriteBookService {
 //    public Object getOne(Long id) {
 //        return favoriteBookRepository.getOne(id);
 //    }
-
+//
     @Override
     public List<FavoriteBook> findByUser(User user) {
         return favoriteBookRepository.findByUser(user);
+    }
+
+    @Override
+    public void delete(User user, Book book) {
+        favoriteBookRepository.deleteByUserAndBook(user,book);
     }
 }

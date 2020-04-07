@@ -17,6 +17,7 @@ public interface FavoriteBookRepository extends JpaRepository<FavoriteBook, Long
 
     List<FavoriteBook> findByUser(User user);
 
+    void deleteByUserAndBook(User user, Book book);
 }
 
 

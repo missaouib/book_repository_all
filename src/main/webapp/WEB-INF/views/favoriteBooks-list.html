@@ -57,12 +57,23 @@
         <div class="col">
         </div>
         <div class="col-12">
+            <div th:if="${process == 'SUCCESS'}">
+                <div class="alert alert-success" role="alert"
+                     th:utext="${pw_success}">...
+                </div>
+            </div>
 
+            <div th:if="${process == 'ERROR'}">
+                <div class="alert alert-danger" role="alert"
+                     th:utext="${pw_error}">...
+                </div>
+            </div>
             <table class="table table-bordered my-2">
                 <thead>
                 <tr>
                     <th>Title</th>
                     <th>Author</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
 
@@ -73,6 +84,12 @@
                 <tr th:each="book : ${favoriteBooks}">
                     <td th:text="${book.title}"></td>
                     <td th:text="${book.author}"></td>
+                    <td>
+                    <a th:href="@{/favoriteBook/delete/{id}(id=${book.id})}"
+                       class="btn btn-danger delBtn" id="deleteButton">
+                        <i class="far fa-trash-alt"></i>
+                    </a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -83,7 +100,45 @@
 </div>
 </div>
 
+<!--#Modal for removing favoriteBooks-->
+<div class="modal fade" id="favoriteBookModalCenter" tabindex="-1" role="dialog" aria-labelledby="favoriteBookModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="favoriteBookModalCenterTitle">Delete Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="alert alert-danger">
+                    Are You sure You want to delete this favorite book?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-danger" id="delRef">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End form-->
 
+
+<script>
+    $(document).ready(function () {
+
+        //for delete book
+        $('.table .delBtn').on('click', function (event) {
+            event.preventDefault();
+            var href = $(this).attr('href');
+            $('#favoriteBookModalCenter #delRef').attr('href', href);
+            $('#favoriteBookModalCenter').modal();
+        });
+
+    });
+</script>
 
 
 <!-- Optional JavaScript -->

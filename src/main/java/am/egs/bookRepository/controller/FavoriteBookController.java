@@ -4,7 +4,6 @@ import am.egs.bookRepository.model.Book;
 import am.egs.bookRepository.model.FavoriteBook;
 import am.egs.bookRepository.model.Role;
 import am.egs.bookRepository.model.User;
-import am.egs.bookRepository.payload.BookDto;
 import am.egs.bookRepository.security.UserPrincipal;
 import am.egs.bookRepository.service.BookService;
 import am.egs.bookRepository.service.FavoriteBookService;
@@ -14,19 +13,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import static am.egs.bookRepository.util.Constant.READ;
 
 @Controller
 @RequestMapping("/favoriteBook")
@@ -47,11 +41,9 @@ public class FavoriteBookController {
 
 
     @GetMapping(value = "/add/{id}")
-    public ModelAndView addFavoriteBook(  @PathVariable Long id, @AuthenticationPrincipal UserPrincipal principal) {
-//            @Valid FavoriteBook favoriteBook , BindingResult bindingResult,
-
-        String email = principal.getUsername();
-        User user = userService.findByEmail(email);
+    public ModelAndView addFavoriteBook(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal principal) {
+        logger.info(" User getting add favorite book.");
+        User user = getUser(principal);
         Book book = bookService.getOne(id);
         FavoriteBook favoriteBookFromDb = favoriteBookService.findByUserAndBook(user, book);
         ModelAndView modelAndView = new ModelAndView();
@@ -70,17 +62,43 @@ public class FavoriteBookController {
             modelAndView.addObject("pw_error", "Error : This book already favorite for you!");
         }
         modelAndView.setViewName("books-list");
+        logger.info(" User successfully added favorite book.");
         return modelAndView;
     }
 
     @GetMapping("/all")
-    public String readFavoriteBooksList(Model model, @AuthenticationPrincipal UserPrincipal principal) {
+    public ModelAndView readFavoriteBooksList(ModelAndView modelAndView, @AuthenticationPrincipal UserPrincipal principal) {
         logger.info(" User getting favorite books read.");
-        String email = principal.getUsername();
-        User user = userService.findByEmail(email);
-        List<Role> role = user.getRoles();
-        final List<FavoriteBook> userFavoriteBooks = favoriteBookService.findByUser(user);
+        List<Book> books = showFavoriteBooks(principal);
+        modelAndView.addObject("favoriteBooks", books);
+        String control = showRole(principal);
+        modelAndView.addObject("control", control);
+        modelAndView.setViewName("favoriteBooks-list");
+        logger.info(" User successfully read list of all favorite books.");
+        return modelAndView;
+    }
 
+    @GetMapping(value = "/delete/{id}")
+    public ModelAndView deleteBook(ModelAndView modelAndView, @PathVariable Long id, @AuthenticationPrincipal UserPrincipal principal) {
+        logger.info("User getting delete favorite book " + id);
+        Book book = bookService.getOne(id);
+        User user = getUser(principal);
+        favoriteBookService.delete(user, book);
+        List<Book> books = showFavoriteBooks(principal);
+        modelAndView.addObject("favoriteBooks", books);
+        String control = showRole(principal);
+        modelAndView.addObject("control", control);
+        modelAndView.addObject("process", "SUCCESS");
+        modelAndView.addObject("pw_success", "Well done! You successfully  delete this favorite book.");
+        modelAndView.setViewName("favoriteBooks-list");
+        logger.info(" User successfully delete favorite book.");
+        return modelAndView;
+    }
+
+
+    public List<Book> showFavoriteBooks(UserPrincipal principal) {
+        User user = getUser(principal);
+        final List<FavoriteBook> userFavoriteBooks = favoriteBookService.findByUser(user);
         Iterator<FavoriteBook> iterator = userFavoriteBooks.iterator();
         List<Book> books = new ArrayList<>();
         while (iterator.hasNext()) {
@@ -88,13 +106,26 @@ public class FavoriteBookController {
             Book book = favoriteBook.getBook();
             books.add(book);
         }
-        model.addAttribute("favoriteBooks", books);
+        return books;
+    }
+
+    public List<Role> getRole(UserPrincipal principal) {
+        User user = getUser(principal);
+        List<Role> role = user.getRoles();
+        return role;
+    }
+
+    public User getUser(UserPrincipal principal) {
+        String email = principal.getUsername();
+        User user = userService.findByEmail(email);
+        return user;
+    }
+
+    public String showRole(UserPrincipal principal) {
+        List<Role> role = getRole(principal);
         if (role.stream().map(Role::getRole).anyMatch("USER"::equals)) {
-            model.addAttribute("control", "USER");
-        } else {
-            model.addAttribute("control", "ADMIN");
-        }
-        logger.info(" User successfully read list of all favorite books.");
-        return "favoriteBooks-list";
+            return "USER";
+        } else
+        return "ADMIN";
     }
 }
