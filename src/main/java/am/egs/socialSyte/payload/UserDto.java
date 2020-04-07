@@ -9,16 +9,15 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Objects;
 
-
 public class UserDto {
+
     private Long id;
 
     @Email(message = "{Email.email}")
     @UniqueEmail(message = "{Unique.email}")
     private String email;
 
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",
-            message = "{Pattern.password}}")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")
     private String password;
 
     @Size(min = 3, max = 50, message = "{Size.name}}")

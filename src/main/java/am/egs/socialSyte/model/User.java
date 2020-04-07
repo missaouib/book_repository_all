@@ -1,8 +1,5 @@
 package am.egs.socialSyte.model;
 
-import am.egs.socialSyte.payload.UserDto;
-import am.egs.socialSyte.validator.UniqueEmail;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -24,7 +21,6 @@ public class User {
     @NotEmpty(message = "{NotEmpty.email}}")
     private String email;
 
-    @NotEmpty(message = "{NotEmpty.name}")
     @Column(name = "name", columnDefinition = "VARCHAR(50)", nullable = false)
     private String name;
 
@@ -38,8 +34,8 @@ public class User {
     @Column(name = "age", columnDefinition = "INT(11)", nullable = false)
     private int age;
 
-    @Column(name = "isAccountNotLocked")
-    private boolean isAccountNotLocked;
+    @Column(name = "isAccountNonLocked")
+    private boolean isAccountNonLocked;
 
     @Column(name = "expireDate")
     private LocalDateTime expireDate;
@@ -53,6 +49,10 @@ public class User {
     @Column(name = "lokedTime")
     private LocalDateTime lokedTime;
 
+    @Column(name = "unLokedTime")
+    private LocalDateTime unLokedTime;
+
+    @Column(name = "activationCode")
     private String activationCode;
 
     @Column(nullable = false)
@@ -116,12 +116,12 @@ public class User {
         this.roles = roles;
     }
 
-    public boolean isAccountNotLocked() {
-        return isAccountNotLocked;
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
     }
 
-    public void setAccountNotLocked(boolean accountNotLocked) {
-        isAccountNotLocked = accountNotLocked;
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
     }
 
     public LocalDateTime getExpireDate() {
@@ -156,6 +156,13 @@ public class User {
         this.lokedTime = lokedTime;
     }
 
+    public LocalDateTime getUnLokedTime() {
+        return unLokedTime;
+    }
+
+    public void setUnLokedTime(LocalDateTime unLokedTime) {
+        this.unLokedTime = unLokedTime;
+    }
 
     public String getActivationCode() {
         return activationCode;
@@ -177,11 +184,18 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surName + '\'' +
                 ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", surName='" + surName + '\'' +
                 ", password='" + password + '\'' +
                 ", age=" + age +
+                ", isAccountNonLocked=" + isAccountNonLocked +
+                ", expireDate=" + expireDate +
+                ", isEnabled=" + isEnabled +
+                ", tryNumber=" + tryNumber +
+                ", lokedTime=" + lokedTime +
+                ", activationCode='" + activationCode + '\'' +
+                ", emailVerified=" + emailVerified +
                 ", roles=" + roles +
                 '}';
     }

@@ -3,7 +3,8 @@ package am.egs.socialSyte.service;
 import am.egs.socialSyte.model.User;
 import am.egs.socialSyte.payload.UserDto;
 import am.egs.socialSyte.payload.auth.AuthResponse;
-import am.egs.socialSyte.payload.auth.SignInRequest;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -11,17 +12,18 @@ public interface UserService {
 
     void addUser(User user);
 
-    AuthResponse signIn(SignInRequest inRequest);
+    AuthResponse signIn(String email, String password);
+
+    void delete(String email);
 
     UserDto getUserByEmail(String email);
-//
-//
-//
-//    List<User> findAllUsers();
-//
-//    User update(User user);
-//
-//    void delete(String email);
-//
-//    List<User> userList(Role role);
+
+    void tryNuymberIncrement(String email, String password);
+
+    List<User> findAllUsers();
+
+    User update(User user);
+
+    void isUserNonLocked(String email, String password);
+
 }

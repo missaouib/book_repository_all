@@ -1,17 +1,50 @@
 package am.egs.socialSyte.util;
 
+import am.egs.socialSyte.model.User;
+
 import java.time.LocalDateTime;
 
 public class UserLocalDateTime {
 
-    LocalDateTime currentDateTime = LocalDateTime.now();
+    private static LocalDateTime currentDateTime;
+    private static LocalDateTime expireDate;
+    private static int countYears = 2;
+    private static User user;
 
-    public void userCurrentDateTime(long countYears) {
-        boolean expireStatus = true;
+    public static LocalDateTime userExpiredDateTime() {
 
-        LocalDateTime expireDate = currentDateTime.plusYears(countYears);
-        while (expireDate.isBefore(currentDateTime)) {
-             expireStatus = false;
-        }
+        currentDateTime = LocalDateTime.now();
+        expireDate = currentDateTime.plusYears(countYears);
+        return expireDate;
+
+//        user.setExpireDate(expireDate);
+//        boolean expireStatus = true;
+//        while (expireDate.isBefore(currentDateTime)) {
+//            return expireStatus = false;
+//            return expireStatus = true;
+//            user.setExpireDate(expireDate);
     }
+
+    public static boolean isUserNonLocked() {
+        LocalDateTime lockedTime, unLockedTime;
+        int afterSecondsUserUnLocked = 10;
+        lockedTime = user.getLokedTime();
+        unLockedTime = lockedTime.plusSeconds(afterSecondsUserUnLocked);
+        if (currentDateTime.isBefore(unLockedTime)) {
+            return false;
+        }
+        return true;
+    }
+
+    public static LocalDateTime userUnLockedTime() {
+        LocalDateTime lockedTime, unLockedTime;
+        int afterSecondsUserUnLocked = 10;
+        lockedTime = user.getLokedTime();
+        unLockedTime = lockedTime.plusSeconds(afterSecondsUserUnLocked);
+        return unLockedTime;
+    }
+
+
 }
+
+

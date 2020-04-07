@@ -12,15 +12,15 @@ import org.springframework.stereotype.Service;
 public class MailSender {
 
     private final JavaMailSender mailSender;
+
     @Value("${server.port}")
     private int port;
+
     @Value(value = "${spring.mail.username}")
     private String userName;
 
     public void send(User user) {
-
         String subject = "Activation Code";
-
         String message = String.format(
                 "Hello, %s! welcome " +
                         "click on this link to activate your email " +

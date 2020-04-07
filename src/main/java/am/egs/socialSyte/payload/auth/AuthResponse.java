@@ -7,6 +7,7 @@ import java.util.Objects;
 
 @Builder
 public class AuthResponse {
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
 
