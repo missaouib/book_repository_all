@@ -1,14 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://java.sun.com/JSP/Page">
 <head lang="en">
     <meta charset="UTF-8">
     <title>Error 423!</title>
 </head>
-<body>
-<h1>:-(</h1>
-<h2> User is locked!</h2>
-<h1> You can try to login after 12 hours.</h1>
-<a href="/user/signUp">Go back to home page</a>
+<style>
+
+    body {
+        background-color: #F7F7F7;
+    }
+
+    .error-template {
+        padding: 40px 15px;
+        text-align: center;
+        margin-top: 20%;
+    }
+
+    .error-actions {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .error-actions .btn {
+        margin-right: 10px;
+    }
+
+</style>
+<body th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>:-(</h1>
+                <h2> User is locked!</h2>
+                <h1> You can try to login after 12 hours.</h1>
+                <div class="error-actions">
+
+                    <a href="/user/" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-envelope"></span>Go back to home page</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 

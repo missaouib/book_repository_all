@@ -23,10 +23,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private PasswordEncoder passwordEncoder;
     private CustomUserDetailsService customUserDetailsService;
-
-    @Autowired
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
+    @Autowired
+    public void setCustomAuthenticationFailureHandler(CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
+    }
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -36,7 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void setCustomUserDetailsService(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
-
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -54,6 +55,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf()
                 .disable()
+                .authorizeRequests()
+                .antMatchers("/user/loginFailed")
+                .permitAll()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
@@ -68,17 +73,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/user/signIn")
                 .successForwardUrl("/user/signed-successfully")
 //                .loginProcessingUrl("/authenticateTheUser")
-                .failureHandler(customAuthenticationFailureHandler)
+                .failureHandler(customAuthenticationFailureHandler)                 // on authentication fail custom handler
                 .permitAll();
-
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authenticationProvider());
     }
-
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -87,4 +89,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.setPasswordEncoder(passwordEncoder);
         return auth;
     }
+
+
 }

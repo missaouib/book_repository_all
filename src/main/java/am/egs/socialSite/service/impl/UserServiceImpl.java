@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
     public void delete(String email) {
         User user = userRepository.findUserByEmail(email);
         if (user == null) {
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("User not found");
         }
         userRepository.deleteByEmail(email);
     }
@@ -128,9 +128,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void tryNumberIncrement(String email, String password) {
+    public void tryNumberIncrement(String email) {
         LocalDateTime unLockedTime;
         User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new UserNotFoundException("User Not Found");
+        }
         int count = user.getTryNumber();
         count++;
         user.setTryNumber(count);
@@ -143,4 +146,10 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.save(user);
     }
+
+    @Override
+    public boolean exists(String email) {
+        return userRepository.existsUserByEmail(email);
+    }
+
 }

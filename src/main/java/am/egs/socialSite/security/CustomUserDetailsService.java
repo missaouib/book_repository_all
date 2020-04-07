@@ -5,6 +5,7 @@ import am.egs.socialSite.repository.UserRepository;
 import am.egs.socialSite.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,6 +25,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) {
         User user = userRepository.findUserByEmail(email);
+        if(user==null){
+            throw new UsernameNotFoundException(" User not authorized. ");
+        }
         if (user.isAccountNonExpired()) {
             if (!user.isAccountNonLocked()) {
                 userService.userUnLocked(email);

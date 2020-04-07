@@ -23,5 +23,7 @@ public interface UserService {
 
     void userUnLocked(String email);
 
-    void tryNumberIncrement(String email, String password);
+    void tryNumberIncrement(String email);
+
+    boolean exists(final String email);
 }

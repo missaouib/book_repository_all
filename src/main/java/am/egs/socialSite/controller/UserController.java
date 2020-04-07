@@ -72,7 +72,7 @@ public class UserController {
         return ACTIVATION_CODE;
     }
 
-    @PostMapping(ACTIVATE_CODE)
+    @GetMapping(ACTIVATE_CODE)
     public String activate(@PathVariable String code) {
         userService.activateUser(code);
         logger.info(" Activation code successful  to user and successfully confirmed");
@@ -85,8 +85,16 @@ public class UserController {
     }
 
     @PostMapping("/signed-successfully")
-    public String signedSuccessfully() {
-        return "redirect:/user/userProfile";
+    public String signedSuccessfully(@RequestParam("email") String email) {
+        User user = userRepository.findUserByEmail(email);
+        boolean isVerified = user.getEmailVerified();
+        if (isVerified) {
+            return "redirect:/user/userProfile";
+        }else{
+            return "emailNotVerified";
+        }
+    //    return "redirect:/user/userProfile";
+
     }
 
     @PostMapping("/signIn")
@@ -97,6 +105,7 @@ public class UserController {
         logger.info(" User successful logged.");
         return "redirect:/user/userProfile";
     }
+
 
     @RequestMapping(value = "/userProfile", method = RequestMethod.GET)
     public ModelAndView currentUserName(@AuthenticationPrincipal UserPrincipal principal) {
@@ -116,4 +125,27 @@ public class UserController {
         logger.info(" User account was successful updated.");
         return new ResponseEntity("User successful updated!", HttpStatus.MOVED_PERMANENTLY);
     }
+
+
+    @RequestMapping(value = "/loginFailed")
+    public String loginFailed() {
+        return "error-403";
+    }
+
+    @RequestMapping(value = "/error-423")
+    public String userLocked() {
+        return "error-423";
+    }
+
+    @RequestMapping(value = "/error-401")
+    public String userExpired() {
+        return "error-401";
+    }
+
+    @RequestMapping(value = "/error-404")
+    public String usernameNotFound() {
+        return "error-404";
+    }
+
+
 }
