@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -65,11 +66,17 @@ public class BookController {
     }
 
     @GetMapping(value = "/delete/{id}")
-    public String deleteBook(@PathVariable Long id) {
+    public ModelAndView deleteBook(@PathVariable Long id) {
         logger.info("User getting delete book " + id);
         bookService.deleteBook(id);
-        logger.info(" User successfully delete book.");
-        return "redirect:/book/read";
+        ModelAndView modelAndView = new ModelAndView();
+        final List<Book> bookList = bookService.findAllBooks();
+        modelAndView.addObject("books", bookList);
+        modelAndView.addObject("process", "SUCCESS");
+        modelAndView.addObject("pw_success", "Well done! You successfully  delete this book.");
+        modelAndView.setViewName("books-list");
+        logger.info(" You successfully delete this book.");
+        return modelAndView;
     }
 
     @RequestMapping("/getOne")

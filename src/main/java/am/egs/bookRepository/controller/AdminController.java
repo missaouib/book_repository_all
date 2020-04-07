@@ -43,19 +43,14 @@ public class AdminController {
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
     public ModelAndView deleteUser(@PathVariable Long id) {
         logger.info(" ADMIN getting delete user.");
-
         userService.delete(id);
         ModelAndView modelAndView = new ModelAndView();
         final List<User> userList = userService.findAllUsers();
-
         modelAndView.addObject("users", userList);
         modelAndView.addObject("process", "SUCCESS");
         modelAndView.addObject("pw_success", "Well done! You successfully  delete this user.");
         modelAndView.setViewName("users-list");
         logger.info(" You successfully delete this user.");
-
-//        return "redirect:/admin/read";
         return modelAndView;
-
     }
 }
