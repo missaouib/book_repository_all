@@ -56,7 +56,7 @@ public class BookController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("control", showRole(principal));
         modelAndView.addObject("book", bookDto);
-        modelAndView.setViewName("book_add");
+        modelAndView.setViewName("book_add_edit");
         return modelAndView;
     }
 
@@ -65,18 +65,18 @@ public class BookController {
                                     @Valid @ModelAttribute("book") BookDto bookDto, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         List<Book> book = bookService.findByInfo(bookDto.getInfo());
-        if(!book.isEmpty()){
+        if (!book.isEmpty()) {
             bindingResult.rejectValue("info", " ", "*There is already this book!");
             modelAndView.addObject("control", showRole(principal));
-            modelAndView.addObject("book",bookDto);
-            modelAndView.setViewName("book_add");
+            modelAndView.addObject("book", bookDto);
+            modelAndView.setViewName("book_add_edit");
             return modelAndView;
         }
         if (bindingResult.hasErrors()) {
             modelAndView.addObject("book", bookDto);
             modelAndView.addObject("control", showRole(principal));
-            modelAndView.setViewName("book_add");
-        }else {
+            modelAndView.setViewName("book_add_edit");
+        } else {
             Book newBook = bookMapper.map(bookDto, Book.class);
             logger.info("User getting creat book " + newBook);
             bookService.addBook(newBook);
@@ -124,29 +124,48 @@ public class BookController {
         return modelAndView;
     }
 
-    @RequestMapping("/getOne")
-    @ResponseBody
-    public BookDto getOne(Long id) {
-        Book book = bookService.getOne(id);
-        System.out.println(book.toString());
-        BookDto bookDto = bookMapper.map(book, BookDto.class);
-        return bookDto;
-    }
-
-    @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
-    public ModelAndView update(BookDto bookDto, @AuthenticationPrincipal UserPrincipal principal) {
-        logger.info(" User getting update this book.");
-        bookService.update(bookDto);
+    @GetMapping("/getOne")
+    public ModelAndView showBookEditForm(@AuthenticationPrincipal UserPrincipal principal, Long id) {
         ModelAndView modelAndView = new ModelAndView();
-        final List<Book> bookList = bookService.findAllBooks();
-        modelAndView.addObject("books", bookList);
+        Book book = bookService.getOne(id);
+        BookDto bookDto = bookMapper.map(book, BookDto.class);
+        modelAndView.addObject("book", bookDto);
         modelAndView.addObject("control", showRole(principal));
-        modelAndView.addObject("process", "SUCCESS");
-        modelAndView.addObject("pw_success", "Well done! You successfully  updated this book.");
-        modelAndView.setViewName("books-list");
-        logger.info(" You successfully updated this book.");
+        modelAndView.setViewName("book_add_edit");
         return modelAndView;
     }
+
+    @PostMapping("/update")
+    public String saveUpdatedBook(@AuthenticationPrincipal UserPrincipal principal,
+                                        @Valid @ModelAttribute("book") BookDto bookDto, BindingResult bindingResult) {
+        return "redirect:/book/saveNewBook";
+    }
+
+//start>>> for update using modal form
+//    @RequestMapping("/getOne")
+//    @ResponseBody
+//    public BookDto getOne(Long id) {
+//        Book book = bookService.getOne(id);
+//        System.out.println(book.toString());
+//        BookDto bookDto = bookMapper.map(book, BookDto.class);
+//        return bookDto;
+//    }
+//
+//    @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
+//    public ModelAndView update(BookDto bookDto, @AuthenticationPrincipal UserPrincipal principal) {
+//        logger.info(" User getting update this book.");
+//        bookService.update(bookDto);
+//        ModelAndView modelAndView = new ModelAndView();
+//        final List<Book> bookList = bookService.findAllBooks();
+//        modelAndView.addObject("books", bookList);
+//        modelAndView.addObject("control", showRole(principal));
+//        modelAndView.addObject("process", "SUCCESS");
+//        modelAndView.addObject("pw_success", "Well done! You successfully  updated this book.");
+//        modelAndView.setViewName("books-list");
+//        logger.info(" You successfully updated this book.");
+//        return modelAndView;
+//    }
+//end>>>
 
     @GetMapping(value = "/info/{id}")
     public ModelAndView bookInfo(@PathVariable Long id) {
