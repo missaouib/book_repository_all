@@ -40,7 +40,8 @@
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">Settings</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item chBtn">Change Password</a>
+<!--                    <a class="dropdown-item chBtn">Change Password</a>-->
+                    <a class="dropdown-item" th:href="@{/userPage/change_pass}">Change Password</a>
                     <form class="dropdown-item" th:action="@{/logout}" method="post">
                         <button sec:authorize="isAuthenticated()" class="btn-outline">Logout</button>
                     </form>
@@ -149,77 +150,77 @@
 <!--End form-->
 
 <!--#Modal form for change password-->
-<div class="myFormChangePassword">
-    <form th:action="@{/userPage/savePass_change}" method="post" th:object="${user}">
-        <div class="modal fade" id="myModalChangePassword" tabindex="-1" role="dialog"
-             aria-labelledby="modalLabelCreate"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabelCreate">Change Password</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="alert alert-info">
-                            Input data to the fields
-                        </p>
-                        <input type="hidden" name="id" th:field="${user.id}"/>
+<!--<div class="myFormChangePassword">-->
+<!--    <form th:action="@{/userPage/savePass_change}" method="post" th:object="${user}">-->
+<!--        <div class="modal fade" id="myModalChangePassword" tabindex="-1" role="dialog"-->
+<!--             aria-labelledby="modalLabelCreate"-->
+<!--             aria-hidden="true">-->
+<!--            <div class="modal-dialog" role="document">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h5 class="modal-title" id="modalLabelCreate">Change Password</h5>-->
+<!--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                            <span aria-hidden="true">&times;</span>-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body">-->
+<!--                        <p class="alert alert-info">-->
+<!--                            Input data to the fields-->
+<!--                        </p>-->
+<!--                        <input type="hidden" name="id" th:field="${user.id}"/>-->
 
-                        <div class="form-group">
-                            <label class="col-form-label">Old password:</label>
-                            <input type="text" class="form-control" id="password" name="password"
-                                   th:field="${user.name}" value="" required/>
+<!--                        <div class="form-group">-->
+<!--                            <label class="col-form-label">Old password:</label>-->
+<!--                            <input type="text" class="form-control" id="password" name="password"-->
+<!--                                   th:field="${user.name}" value="" required/>-->
 
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">New password:</label>
-                            <input type="text" class="form-control"
-                                   th:field="${user.password}" value="" required/>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Confirm new password:</label>
-                            <input type="text" class="form-control" value="" required/>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-primary" value="Save"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label class="col-form-label">New password:</label>-->
+<!--                            <input type="text" class="form-control"-->
+<!--                                   th:field="${user.password}" value="" required/>-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label class="col-form-label">Confirm new password:</label>-->
+<!--                            <input type="text" class="form-control" value="" required/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--                        <input type="submit" class="btn btn-primary" value="Save"/>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
 <!--End form-->
 
 
-<script>
-    $(document).ready(function () {
-        //for update user
-        // $('.table .eBtn').on('click', function (event) {
-        //     event.preventDefault();
-        //     var href = $(this).attr('href');
-        //     $.get(href, function (user, status) {
-        //         $('#idEdit').val(user.id);
-        //         $('#nameEdit').val(user.name);
-        //         $('#surNameEdit').val(user.surName);
-        //         $('#ageEdit').val(user.age);
-        //     });
-        //     $('#editModal').modal();
-        // });
-        // for change password
-        $('.chBtn').on('click', function (event) {
-            event.preventDefault();
-            $('.myFormChangePassword #password').val('');
-            $('.myFormChangePassword  ').val('');
-            $('.myFormChangePassword ').val('');
-            $('.myFormChangePassword #myModalChangePassword').modal();
-        });
-    });
-</script>
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        //for update user-->
+<!--        // $('.table .eBtn').on('click', function (event) {-->
+<!--        //     event.preventDefault();-->
+<!--        //     var href = $(this).attr('href');-->
+<!--        //     $.get(href, function (user, status) {-->
+<!--        //         $('#idEdit').val(user.id);-->
+<!--        //         $('#nameEdit').val(user.name);-->
+<!--        //         $('#surNameEdit').val(user.surName);-->
+<!--        //         $('#ageEdit').val(user.age);-->
+<!--        //     });-->
+<!--        //     $('#editModal').modal();-->
+<!--        // });-->
+<!--        // for change password-->
+<!--        $('.chBtn').on('click', function (event) {-->
+<!--            event.preventDefault();-->
+<!--            $('.myFormChangePassword #password').val('');-->
+<!--            $('.myFormChangePassword  ').val('');-->
+<!--            $('.myFormChangePassword ').val('');-->
+<!--            $('.myFormChangePassword #myModalChangePassword').modal();-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 
 
 <!-- Optional JavaScript -->
