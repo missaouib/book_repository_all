@@ -15,11 +15,11 @@ public class BookDto implements Serializable {
     private Long id;
 
     @NotBlank
-    @Size(min = 2, max = 256)
+    @Size(min = 2, max = 256, message = "{Size.title}")
     private String title;
 
     @NotBlank
-    @Size(min = 2, max = 256)
+    @Size(min = 2, max = 256, message = "{Size.author}")
     private String author;
 
     private String info;
@@ -28,7 +28,7 @@ public class BookDto implements Serializable {
     public BookDto() {
     }
 
-    public BookDto(Long id, String title, String author,  String info) {
+    public BookDto(Long id, String title, String author, String info) {
         this.id = id;
         this.title = title;
         this.author = author;

@@ -19,4 +19,6 @@ public interface BookService {
 
     List<Book> findByTitleLike(String search);
 
+    List<Book> findByInfo(String info);
+
 }

@@ -76,8 +76,8 @@
                      th:utext="${pw_error}">...
                 </div>
             </div>
-            <a class="btn btn-success nBtn" th:if="${control == 'ADMIN'}">Add Book</a>
-
+<!--            <a class="btn btn-success nBtn" th:if="${control == 'ADMIN'}">Add Book</a>-->
+            <a class="btn btn-success" th:if="${control == 'ADMIN'}" th:href="@{/book/showBookCreateForm}">Add Book</a>
 
             <table class="table table-bordered my-2">
                 <thead>
@@ -128,46 +128,46 @@
 </div>
 
 <!--#Modal for book create-->
-<div class="myFormCreate">
-    <form th:action="@{/book/create}" method="post">
-        <div class="modal fade" id="myModalCreate" tabindex="-1" role="dialog" aria-labelledby="modalLabelCreate"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabelCreate">Create book</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="alert alert-info">
-                            Input data to the fields
-                        </p>
+<!--<div class="myFormCreate">-->
+<!--    <form th:action="@{/book/create}" method="post">-->
+<!--        <div class="modal fade" id="myModalCreate" tabindex="-1" role="dialog" aria-labelledby="modalLabelCreate"-->
+<!--             aria-hidden="true">-->
+<!--            <div class="modal-dialog" role="document">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h5 class="modal-title" id="modalLabelCreate">Create book</h5>-->
+<!--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                            <span aria-hidden="true">&times;</span>-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body">-->
+<!--                        <p class="alert alert-info">-->
+<!--                            Input data to the fields-->
+<!--                        </p>-->
 
-                        <div class="form-group">
-                            <label class="col-form-label">Title:</label>
-                            <input type="text" class="form-control" id="title" name="title" value="" required/>
+<!--                        <div class="form-group">-->
+<!--                            <label class="col-form-label">Title:</label>-->
+<!--                            <input type="text" class="form-control" id="title" name="title" value="" required/>-->
 
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Author:</label>
-                            <input type="text" class="form-control" id="author" name="author" value="" required/>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Info:</label>
-                            <input type="text" class="form-control" id="info" name="info" value="" required/>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-primary" value="Save"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label class="col-form-label">Author:</label>-->
+<!--                            <input type="text" class="form-control" id="author" name="author" value="" required/>-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label class="col-form-label">Info:</label>-->
+<!--                            <input type="text" class="form-control" id="info" name="info" value="" required/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--                        <input type="submit" class="btn btn-primary" value="Save"/>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
 <!--End form-->
 
 <!--Modal form for book update-->
@@ -265,12 +265,12 @@
 <script>
     $(document).ready(function () {
         //for creating book
-        $('.nBtn').on('click', function (event) {
-            event.preventDefault();
-            $('.myFormCreate #title').val('');
-            $('.myFormCreate #author').val('');
-            $('.myFormCreate #myModalCreate').modal();
-        });
+        // $('.nBtn').on('click', function (event) {
+        //     event.preventDefault();
+        //     $('.myFormCreate #title').val('');
+        //     $('.myFormCreate #author').val('');
+        //     $('.myFormCreate #myModalCreate').modal();
+        // });
         //for update book
         $('.table .eBtn').on('click', function (event) {
             event.preventDefault();

@@ -8,19 +8,16 @@ import am.egs.bookRepository.payload.BookDto;
 import am.egs.bookRepository.security.UserPrincipal;
 import am.egs.bookRepository.service.BookService;
 import am.egs.bookRepository.service.UserService;
-import com.jayway.jsonpath.Criteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static am.egs.bookRepository.util.Constant.READ;
@@ -54,21 +51,63 @@ public class BookController {
         return modelAndView;
     }
 
-    @PostMapping("/create")
-    public ModelAndView creatNewBook(@Valid BookDto bookDto, @AuthenticationPrincipal UserPrincipal principal) {
-        Book book = bookMapper.map(bookDto, Book.class);
-        logger.info("User getting creat book " + book);
-        bookService.addBook(book);
+    @GetMapping("/showBookCreateForm")
+    public ModelAndView showBookCreateForm(@AuthenticationPrincipal UserPrincipal principal, BookDto bookDto) {
         ModelAndView modelAndView = new ModelAndView();
-        final List<Book> bookList = bookService.findAllBooks();
-        modelAndView.addObject("books", bookList);
         modelAndView.addObject("control", showRole(principal));
-        modelAndView.addObject("process", "SUCCESS");
-        modelAndView.addObject("pw_success", "Well done! You successfully  create this book.");
-        modelAndView.setViewName("books-list");
-        logger.info(" User successfully create book." + book);
+        modelAndView.addObject("book", bookDto);
+        modelAndView.setViewName("book_add");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/saveNewBook", method = RequestMethod.POST)
+    public ModelAndView saveNewBook(@AuthenticationPrincipal UserPrincipal principal,
+                                    @Valid @ModelAttribute("book") BookDto bookDto, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView();
+        List<Book> book = bookService.findByInfo(bookDto.getInfo());
+        if(!book.isEmpty()){
+            bindingResult.rejectValue("info", " ", "*There is already this book!");
+            modelAndView.addObject("control", showRole(principal));
+            modelAndView.addObject("book",bookDto);
+            modelAndView.setViewName("book_add");
+            return modelAndView;
+        }
+        if (bindingResult.hasErrors()) {
+            modelAndView.addObject("book", bookDto);
+            modelAndView.addObject("control", showRole(principal));
+            modelAndView.setViewName("book_add");
+        }else {
+            Book newBook = bookMapper.map(bookDto, Book.class);
+            logger.info("User getting creat book " + newBook);
+            bookService.addBook(newBook);
+            modelAndView.addObject("control", showRole(principal));
+            final List<Book> bookList = bookService.findAllBooks();
+            modelAndView.addObject("books", bookList);
+            modelAndView.addObject("process", "SUCCESS");
+            modelAndView.addObject("pw_success", "Well done! You successfully  create this book.");
+            modelAndView.setViewName("books-list");
+            logger.info(" User successfully create book." + newBook);
+        }
+        return modelAndView;
+    }
+
+//start>>>for create book using modal form
+//    @PostMapping("/create")
+//    public ModelAndView creatNewBook(@Valid BookDto bookDto, @AuthenticationPrincipal UserPrincipal principal) {
+//        Book book = bookMapper.map(bookDto, Book.class);
+//        logger.info("User getting creat book " + book);
+//        bookService.addBook(book);
+//        ModelAndView modelAndView = new ModelAndView();
+//        final List<Book> bookList = bookService.findAllBooks();
+//        modelAndView.addObject("books", bookList);
+//        modelAndView.addObject("control", showRole(principal));
+//        modelAndView.addObject("process", "SUCCESS");
+//        modelAndView.addObject("pw_success", "Well done! You successfully  create this book.");
+//        modelAndView.setViewName("books-list");
+//        logger.info(" User successfully create book." + book);
+//        return modelAndView;
+//    }
+//end>>>
 
     @GetMapping(value = "/delete/{id}")
     public ModelAndView deleteBook(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal principal) {
@@ -120,19 +159,19 @@ public class BookController {
 
     @GetMapping(value = "/search")
     public ModelAndView search(@RequestParam(required = false, value = "search") String search,
-                                 @AuthenticationPrincipal UserPrincipal principal)  {
+                               @AuthenticationPrincipal UserPrincipal principal) {
         ModelAndView modelAndView = new ModelAndView();
 
         List<Book> searchResult = bookService.findByTitleLike(search);
         if (searchResult.isEmpty()) {
             final List<Book> bookList = bookService.findAllBooks();
             modelAndView.addObject("books", bookList);
-            modelAndView.addObject("control",showRole(principal));
+            modelAndView.addObject("control", showRole(principal));
             modelAndView.addObject("process", "ERROR");
             modelAndView.addObject("pw_error", "Error : Oops, no result!");
             modelAndView.setViewName("books-list");
         } else {
-            modelAndView.addObject("control",showRole(principal));
+            modelAndView.addObject("control", showRole(principal));
 
             modelAndView.addObject("process", "SUCCESS");
             modelAndView.addObject("pw_success", "Well done! Enjoy!");
